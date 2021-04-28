@@ -47,7 +47,7 @@ Demo GIF
    ],
 
    "dependencies": {
-       "@eeacms/volto-tableau": "github:eea/volto-tableau#1.0.0"
+       "@eeacms/volto-tableau": "^1.0.0"
    }
    ```
 
@@ -84,3 +84,4 @@ See [LICENSE.md](https://github.com/eea/volto-tableau/blob/master/LICENSE.md) fo
 ## Funding
 
 [European Environment Agency (EU)](http://eea.europa.eu)
+](http://eea.europa.eu)

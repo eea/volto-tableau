@@ -45,7 +45,7 @@ const View = (props) => {
   React.useEffect(() => {
     setMounted(true);
     /* eslint-disable-next-line */
-  }, [])
+  }, []);
 
   React.useEffect(() => {
     const newExtraFilters = { ...extraFilters };

@@ -147,7 +147,7 @@ const Tableau = (props) => {
       setLoaded(false);
     }
     /* eslint-disable-next-line */
-  }, [hideTabs, hideToolbar, sheetname, tableau,  toolbarPosition, url]);
+  }, [hideTabs, hideToolbar, sheetname, tableau, toolbarPosition, url]);
 
   React.useEffect(() => {
     if (mounted.current && loaded && viz) {

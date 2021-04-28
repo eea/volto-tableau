@@ -52,7 +52,7 @@ const View = (props) => {
     });
     setExtraFilters(newExtraFilters);
     /* eslint-disable-next-line */
-  }, [JSON.stringify(query), JSON.stringify(urlParameters)])
+  }, [JSON.stringify(query), JSON.stringify(urlParameters)]);
 
   return (
     <div className="tableau-block">
@@ -81,8 +81,8 @@ const View = (props) => {
 export default compose(
   connect((state, props) => ({
     query: {
-      ...(qs.parse(state.router.location.search.replace('?', '')) || {}),
-      ...(state.discodata_query.search || {}),
+      ...(qs.parse(state.router.location?.search?.replace('?', '')) || {}),
+      ...(state.discodata_query?.search || {}),
     },
     screen: state.screen,
   })),

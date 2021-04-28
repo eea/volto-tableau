@@ -27,13 +27,7 @@ export default (version, alert = false) => {
     // Don't load tableau if current version is the
     // same as the new incomming version
     if (tableauVersions.indexOf(version) < 0) {
-      toast.error(
-        <Toast
-          error
-          title={'Setting tableau api'}
-          content={'Wrong tableau version'}
-        />,
-      );
+      toast.error(<Toast error title={'Wrong tableau version'} />);
       return reject(null);
     }
     window.tableau = undefined;
@@ -43,11 +37,7 @@ export default (version, alert = false) => {
       if (window.tableau) {
         if (alert) {
           toast.success(
-            <Toast
-              success
-              title={'Setting tableau api'}
-              content={`Current version: ${version}`}
-            />,
+            <Toast success title={`Current tableau api version: ${version}`} />,
           );
         }
         resolve(window.tableau);

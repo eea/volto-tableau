@@ -25,6 +25,11 @@ const applyConfig = (config) => {
       addPermission: [],
       view: [],
     },
+    breakpoints: {
+      desktop: [Infinity, 982],
+      tablet: [981, 768],
+      mobile: [767, 0],
+    },
   };
 
   return config;

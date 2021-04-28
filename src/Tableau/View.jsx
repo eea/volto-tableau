@@ -86,7 +86,6 @@ const Tableau = (props) => {
           newViz.addEventListener(
             tableau.TableauEventName.FILTER_CHANGE,
             (event) => {
-              console.log('HERE FILTER_CHANGE');
               event.getFilterAsync().then((filter) => {
                 onFilterChange(filter);
               });
@@ -157,12 +156,12 @@ const Tableau = (props) => {
     /* eslint-disable-next-line */
   }, [JSON.stringify(extraFilters)]);
 
-  React.useEffect(() => {
-    if (mounted.current && loaded && viz) {
-      addExtraFilters(extraOptions);
-    }
-    /* eslint-disable-next-line */
-  }, [JSON.stringify(extraOptions)]);
+  // React.useEffect(() => {
+  //   if (mounted.current && loaded && viz) {
+  //     addExtraFilters(extraOptions);
+  //   }
+  //   /* eslint-disable-next-line */
+  // }, [JSON.stringify(extraOptions)]);
 
   return <div className={cx('tableau', version)} ref={ref} />;
 };

@@ -57,6 +57,7 @@ const Tableau = (props) => {
   const initViz = () => {
     if (viz) {
       viz.dispose();
+      setLoaded(false);
     }
     const newViz = new tableau.Viz(ref.current, url || defaultUrl, {
       hideTabs,
@@ -85,6 +86,7 @@ const Tableau = (props) => {
           newViz.addEventListener(
             tableau.TableauEventName.FILTER_CHANGE,
             (event) => {
+              console.log('HERE FILTER_CHANGE');
               event.getFilterAsync().then((filter) => {
                 onFilterChange(filter);
               });
@@ -97,7 +99,7 @@ const Tableau = (props) => {
     return setViz(newViz);
   };
 
-  const addExtraFilters = () => {
+  const addExtraFilters = (extraFilters) => {
     const worksheets = viz.getWorkbook().getActiveSheet().getWorksheets() || [];
 
     worksheets.forEach((worksheet) => {
@@ -143,16 +145,24 @@ const Tableau = (props) => {
       initViz();
     } else if (viz) {
       viz.dispose();
+      setLoaded(false);
     }
     /* eslint-disable-next-line */
   }, [hideTabs, hideToolbar, sheetname, tableau,  toolbarPosition, url]);
 
   React.useEffect(() => {
     if (mounted.current && loaded && viz) {
-      addExtraFilters();
+      addExtraFilters(extraFilters);
     }
     /* eslint-disable-next-line */
-  }, [loaded, JSON.stringify(extraFilters)]);
+  }, [JSON.stringify(extraFilters)]);
+
+  React.useEffect(() => {
+    if (mounted.current && loaded && viz) {
+      addExtraFilters(extraOptions);
+    }
+    /* eslint-disable-next-line */
+  }, [JSON.stringify(extraOptions)]);
 
   return <div className={cx('tableau', version)} ref={ref} />;
 };

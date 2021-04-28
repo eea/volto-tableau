@@ -23,6 +23,7 @@ const getDevice = (config, width) => {
 };
 
 const View = (props) => {
+  const [mounted, setMounted] = React.useState(false);
   const [extraFilters, setExtraFilters] = React.useState({});
   const { data = {}, query = {}, screen = {} } = props;
   const {
@@ -42,6 +43,11 @@ const View = (props) => {
   const url = breakpointUrl || data.url;
 
   React.useEffect(() => {
+    setMounted(true);
+    /* eslint-disable-next-line */
+  }, [])
+
+  React.useEffect(() => {
     const newExtraFilters = { ...extraFilters };
     urlParameters.forEach((element) => {
       if (element.field && typeof query[element.urlParam] !== 'undefined') {
@@ -54,7 +60,7 @@ const View = (props) => {
     /* eslint-disable-next-line */
   }, [JSON.stringify(query), JSON.stringify(urlParameters)]);
 
-  return (
+  return mounted ? (
     <div className="tableau-block">
       {props.mode === 'edit' ? (
         <>
@@ -75,6 +81,8 @@ const View = (props) => {
         extraOptions={{ device }}
       />
     </div>
+  ) : (
+    ''
   );
 };
 

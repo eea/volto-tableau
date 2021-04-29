@@ -1,0 +1,42 @@
+@import './globals.less';
+
+@addon: 'volto-tableau';
+@addontype: 'tableauBlock';
+@addonelement: 'tableau';
+
+.loadAddonVariables();
+
+.tableau-block {
+  .tableau-info {
+    h3.tableau-version {
+      color: @tableauTitleColor;
+      margin-right: .5rem;
+    }
+
+    p.tableau-error {
+      color: @tableauErrorColor;
+      font-weight: bold;
+    }
+  }
+
+  h3.tableau-title {
+    color: @tableauTitleColor;
+    margin: @tableauTitleMargin;
+  }
+
+  p.tableau-description {
+    color: @tableauDescriptionColor;
+    margin: @tableauDescriptionMargin;
+  }
+
+  .tableau iframe {
+    width: @tableauIframeWidth;
+    padding: @tableauIframePadding;
+    margin: @tableauIframeMargin;
+    border: @tableauIframeBorder;
+    border-radius: @tableauIframeBorderRadius;
+  }
+
+}
+
+.loadAddonOverrides();

@@ -1,0 +1,13 @@
+@tableauTitleColor: #4296b2;
+@tableauTitleMargin: 0 0 1rem 0;
+
+@tableauDescriptionColor: #000;
+@tableauDescriptionMargin: 0 0 1rem 0;
+
+@tableauErrorColor: #E9776D;
+
+@tableauIframeWidth: 100% !important;
+@tableauIframePadding: 0;
+@tableauIframeMargin: 0 0 1rem 0;
+@tableauIframeBorder: none;
+@tableauIframeBorderRadius: 0;

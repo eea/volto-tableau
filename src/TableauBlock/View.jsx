@@ -6,7 +6,7 @@ import Tableau from '@eeacms/volto-tableau/Tableau/View';
 import config from '@plone/volto/registry';
 import { getLatestTableauVersion } from '@eeacms/volto-tableau/Tableau/tableau-api';
 import qs from 'querystring';
-import './styles.less';
+import '@eeacms/volto-tableau/less/tableau.less';
 
 const getDevice = (config, width) => {
   const breakpoints = config.blocks.blocksConfig.tableau_block.breakpoints;
@@ -23,6 +23,7 @@ const getDevice = (config, width) => {
 };
 
 const View = (props) => {
+  const [error, setError] = React.useState(null);
   const [mounted, setMounted] = React.useState(false);
   const [extraFilters, setExtraFilters] = React.useState({});
   const { data = {}, query = {}, screen = {} } = props;
@@ -63,22 +64,25 @@ const View = (props) => {
   return mounted ? (
     <div className="tableau-block">
       {props.mode === 'edit' ? (
-        <>
-          <h3>Tableau {version}</h3>
-          {!props.data.url ? <p>URL required</p> : ''}
-        </>
+        <div className="tableau-info">
+          <h3 className="tableau-version">== Tableau {version} ==</h3>
+          {!props.data.url ? <p className="tableau-error">URL required</p> : ''}
+          {error ? <p className="tableau-error">{error}</p> : ''}
+        </div>
       ) : (
         ''
       )}
-      {title ? <h3>{title}</h3> : ''}
-      {description ? <p>{description}</p> : ''}
+      {title ? <h3 className="tableau-title">{title}</h3> : ''}
+      {description ? <p className="tableau-description">{description}</p> : ''}
       <Tableau
         {...props}
-        url={url}
         canUpdateUrl={!breakpointUrl}
-        version={version}
         extraFilters={extraFilters}
         extraOptions={{ device }}
+        error={error}
+        setError={setError}
+        version={version}
+        url={url}
       />
     </div>
   ) : (

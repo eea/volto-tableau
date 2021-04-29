@@ -16,9 +16,11 @@ const Tableau = (props) => {
   const {
     canUpdateUrl = true,
     data = {},
+    error = null,
     mode = 'view',
     extraOptions = {},
     extraFilters = {},
+    setError = () => {},
     version = getLatestTableauVersion(),
   } = props;
   const {
@@ -54,48 +56,61 @@ const Tableau = (props) => {
     }
   };
 
-  const initViz = () => {
+  const disposeViz = () => {
     if (viz) {
       viz.dispose();
+    }
+    if (loaded) {
       setLoaded(false);
     }
-    const newViz = new tableau.Viz(ref.current, url || defaultUrl, {
-      hideTabs,
-      hideToolbar,
-      sheetname,
-      toolbarPosition,
-      ...filters,
-      ...extraFilters,
-      ...extraOptions,
-      onFirstInteractive: () => {
-        setLoaded(true);
-        if (newViz && mode === 'edit') {
-          const workbook = newViz.getWorkbook();
-          const newData = {
-            url: canUpdateUrl ? newViz.getUrl() : defaultUrl,
-            sheetname: workbook.getActiveSheet().getName(),
-          };
-          if (newData.url !== url || newData.sheetname !== sheetname) {
-            props.onChangeBlock(props.block, {
-              ...data,
-              ...newData,
-            });
-            toast.success(<Toast success title={'Tableau data updated'} />);
-          }
-          // Filter change event
-          newViz.addEventListener(
-            tableau.TableauEventName.FILTER_CHANGE,
-            (event) => {
-              event.getFilterAsync().then((filter) => {
-                onFilterChange(filter);
-              });
-            },
-          );
-        }
-      },
-    });
+    if (error) {
+      setError(null);
+    }
+  };
 
-    return setViz(newViz);
+  const initViz = () => {
+    disposeViz();
+    try {
+      const newViz = new tableau.Viz(ref.current, url || defaultUrl, {
+        hideTabs,
+        hideToolbar,
+        sheetname,
+        toolbarPosition,
+        ...filters,
+        ...extraFilters,
+        ...extraOptions,
+        onFirstInteractive: () => {
+          setLoaded(true);
+          if (newViz && mode === 'edit') {
+            const workbook = newViz.getWorkbook();
+            const newData = {
+              url: canUpdateUrl ? newViz.getUrl() : defaultUrl,
+              sheetname: workbook.getActiveSheet().getName(),
+            };
+            if (newData.url !== url || newData.sheetname !== sheetname) {
+              props.onChangeBlock(props.block, {
+                ...data,
+                ...newData,
+              });
+              toast.success(<Toast success title={'Tableau data updated'} />);
+            }
+            // Filter change event
+            newViz.addEventListener(
+              tableau.TableauEventName.FILTER_CHANGE,
+              (event) => {
+                event.getFilterAsync().then((filter) => {
+                  onFilterChange(filter);
+                });
+              },
+            );
+          }
+        },
+      });
+
+      return setViz(newViz);
+    } catch (e) {
+      setError(e._message);
+    }
   };
 
   const addExtraFilters = (extraFilters) => {
@@ -142,9 +157,8 @@ const Tableau = (props) => {
   React.useEffect(() => {
     if (__CLIENT__ && tableau && url) {
       initViz();
-    } else if (viz) {
-      viz.dispose();
-      setLoaded(false);
+    } else {
+      disposeViz();
     }
     /* eslint-disable-next-line */
   }, [hideTabs, hideToolbar, sheetname, tableau, toolbarPosition, url]);

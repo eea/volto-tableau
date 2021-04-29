@@ -37,7 +37,7 @@ const breakpointUrlSchema = (config) => {
         ]),
       },
       url: {
-        title: 'URL param',
+        title: 'Url',
         widget: 'textarea',
       },
     },
@@ -112,11 +112,13 @@ export default (config) => ({
       title: 'URL parameters',
       widget: 'object_list',
       schema: urlParametersSchema,
+      description: 'Set a list of url parameters to filter the tableau',
     },
     breakpointUrls: {
       title: 'Breakpoint urls',
       widget: 'object_list',
       schema: breakpointUrlSchema(config),
+      description: 'Set different vizualization for specific breakpoint',
     },
   },
   required: ['version', 'url'],

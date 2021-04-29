@@ -1,4 +1,5 @@
 /*! tableau-2.4.0 */
+/* eslint-disable  */
 !(function () {
   /*! BEGIN MscorlibSlim */
   var e = {};

@@ -172,6 +172,15 @@ const Tableau = (props) => {
 
   // React.useEffect(() => {
   //   if (mounted.current && loaded && viz) {
+  //     const workbook = viz.getWorkbook();
+  //     if (extraOptions.device === 'desktop') {
+  //       workbook.activateSheetAsync(0);
+  //     } else if (extraOptions.device === 'tablet') {
+  //       workbook.activateSheetAsync(1);
+  //     } else {
+  //       workbook.activateSheetAsync(2);
+  //     }
+  //     console.log('HERE', workbook.getPublishedSheetsInfo());
   //     addExtraFilters(extraOptions);
   //   }
   //   /* eslint-disable-next-line */

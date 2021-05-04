@@ -3,8 +3,8 @@ import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { toast } from 'react-toastify';
 import { Toast } from '@plone/volto/components';
-import { getLatestTableauVersion } from './tableau-api';
-import loadTableauApi from './tableau-api';
+import { getLatestTableauVersion } from 'tableau-api-js';
+import loadTableauApi from 'tableau-api-js';
 import { setTableauApi } from '@eeacms/volto-tableau/actions';
 import cx from 'classnames';
 
@@ -147,9 +147,16 @@ const Tableau = (props) => {
     if (__CLIENT__ && !props.tableau[version]) {
       loadTableauApi(version, !!Object.keys(props.tableau).length)
         .then((response) => {
-          props.setTableauApi(version, response);
+          props.setTableauApi(version, response.tableau);
+          if (mode === 'edit') {
+            toast.success(<Toast success title={response.message} />);
+          }
         })
-        .catch((errors) => {});
+        .catch((error) => {
+          if (mode === 'edit') {
+            toast.error(<Toast error title={error.message} />);
+          }
+        });
     }
     /* eslint-disable-next-line */
   }, [version]);

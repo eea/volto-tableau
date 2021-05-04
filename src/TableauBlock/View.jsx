@@ -4,7 +4,7 @@ import { compose } from 'redux';
 import { withRouter } from 'react-router';
 import Tableau from '@eeacms/volto-tableau/Tableau/View';
 import config from '@plone/volto/registry';
-import { getLatestTableauVersion } from '@eeacms/volto-tableau/Tableau/tableau-api';
+import { getLatestTableauVersion } from 'tableau-api-js';
 import qs from 'querystring';
 import '@eeacms/volto-tableau/less/tableau.less';
 

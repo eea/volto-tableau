@@ -1,7 +1,4 @@
-import {
-  tableauVersions,
-  getLatestTableauVersion,
-} from '@eeacms/volto-tableau/Tableau/tableau-api';
+import { tableauVersions, getLatestTableauVersion } from 'tableau-api-js';
 
 const urlParametersSchema = {
   title: 'Parameter',

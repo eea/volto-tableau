@@ -47,7 +47,7 @@ Demo GIF
    ],
 
    "dependencies": {
-       "@eeacms/volto-tableau": "github:eea/volto-tableau#1.0.0"
+       "@eeacms/volto-tableau": "github:eea/volto-tableau#1.1.0"
    }
    ```
 

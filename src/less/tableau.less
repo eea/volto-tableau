@@ -9,8 +9,8 @@
 .tableau-block {
   .tableau-info {
     h3.tableau-version {
+      margin-right: 0.5rem;
       color: @tableauTitleColor;
-      margin-right: .5rem;
     }
 
     p.tableau-error {
@@ -20,23 +20,22 @@
   }
 
   h3.tableau-title {
-    color: @tableauTitleColor;
     margin: @tableauTitleMargin;
+    color: @tableauTitleColor;
   }
 
   p.tableau-description {
-    color: @tableauDescriptionColor;
     margin: @tableauDescriptionMargin;
+    color: @tableauDescriptionColor;
   }
 
   .tableau iframe {
     width: @tableauIframeWidth;
     padding: @tableauIframePadding;
-    margin: @tableauIframeMargin;
     border: @tableauIframeBorder;
+    margin: @tableauIframeMargin;
     border-radius: @tableauIframeBorderRadius;
   }
-
 }
 
 .loadAddonOverrides();

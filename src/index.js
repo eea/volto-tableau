@@ -12,7 +12,10 @@ const applyConfig = (config) => {
     tableau: tableauStore,
   };
 
-  config.settings.storeExtenders = [tableauMiddleware];
+  config.settings.storeExtenders = [
+    ...(config.settings.storeExtenders || []),
+    tableauMiddleware,
+  ];
 
   config.blocks.blocksConfig.tableau_block = {
     id: 'tableau_block',

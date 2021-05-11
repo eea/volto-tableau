@@ -24,6 +24,7 @@ const getDevice = (config, width) => {
 
 const View = (props) => {
   const [error, setError] = React.useState(null);
+  const [loaded, setLoaded] = React.useState(null);
   const [mounted, setMounted] = React.useState(false);
   const [extraFilters, setExtraFilters] = React.useState({});
   const { data = {}, query = {}, screen = {} } = props;
@@ -72,15 +73,21 @@ const View = (props) => {
       ) : (
         ''
       )}
-      {title ? <h3 className="tableau-title">{title}</h3> : ''}
-      {description ? <p className="tableau-description">{description}</p> : ''}
+      {loaded && title ? <h3 className="tableau-title">{title}</h3> : ''}
+      {loaded && description ? (
+        <p className="tableau-description">{description}</p>
+      ) : (
+        ''
+      )}
       <Tableau
         {...props}
         canUpdateUrl={!breakpointUrl}
         extraFilters={extraFilters}
         extraOptions={{ device }}
         error={error}
+        loaded={loaded}
         setError={setError}
+        setLoaded={setLoaded}
         version={version}
         url={url}
       />

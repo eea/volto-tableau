@@ -2,13 +2,17 @@ import sliderSVG from '@plone/volto/icons/slider.svg';
 import TableauEdit from './TableauBlock/Edit';
 import TableauView from './TableauBlock/View';
 
-import * as addonReducers from './reducers';
+import tableauStore from './store';
+
+import tableauMiddleware from './middleware';
 
 const applyConfig = (config) => {
   config.addonReducers = {
     ...config.addonReducers,
-    ...addonReducers,
+    tableau: tableauStore,
   };
+
+  config.settings.storeExtenders = [tableauMiddleware];
 
   config.blocks.blocksConfig.tableau_block = {
     id: 'tableau_block',

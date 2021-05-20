@@ -4,23 +4,23 @@ import { compose } from 'redux';
 import { toast } from 'react-toastify';
 import { Toast } from '@plone/volto/components';
 import { getLatestTableauVersion } from 'tableau-api-js';
-import loadTableauApi from 'tableau-api-js';
 import { setTableauApi } from '@eeacms/volto-tableau/actions';
 import cx from 'classnames';
 
 const Tableau = (props) => {
   const ref = React.useRef(null);
   const mounted = React.useRef(false);
-  const [loaded, setLoaded] = React.useState(false);
   const [viz, setViz] = React.useState(null);
   const {
     canUpdateUrl = true,
     data = {},
     error = null,
+    loaded = false,
     mode = 'view',
     extraOptions = {},
     extraFilters = {},
     setError = () => {},
+    setLoaded = () => {},
     version = getLatestTableauVersion(),
   } = props;
   const {
@@ -145,18 +145,7 @@ const Tableau = (props) => {
   React.useEffect(() => {
     // Load new tableau api
     if (__CLIENT__ && !props.tableau[version]) {
-      loadTableauApi(version, !!Object.keys(props.tableau).length)
-        .then((response) => {
-          props.setTableauApi(version, response.tableau);
-          if (mode === 'edit') {
-            toast.success(<Toast success title={response.message} />);
-          }
-        })
-        .catch((error) => {
-          if (mode === 'edit') {
-            toast.error(<Toast error title={error.message} />);
-          }
-        });
+      props.setTableauApi(version, props.mode);
     }
     /* eslint-disable-next-line */
   }, [version]);

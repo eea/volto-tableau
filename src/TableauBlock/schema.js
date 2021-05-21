@@ -53,7 +53,13 @@ export default (config) => ({
     {
       id: 'options',
       title: 'Options',
-      fields: ['sheetname', 'hideTabs', 'hideToolbar', 'toolbarPosition'],
+      fields: [
+        'sheetname',
+        'hideTabs',
+        'hideToolbar',
+        'autoScale',
+        'toolbarPosition',
+      ],
     },
     {
       id: 'extra_options',
@@ -95,6 +101,12 @@ export default (config) => ({
       title: 'Hide toolbar',
       type: 'boolean',
       default: false,
+    },
+    autoScale: {
+      title: 'Auto scale',
+      type: 'boolean',
+      default: false,
+      description: 'Scale down tableau according to width',
     },
     toolbarPosition: {
       title: 'Toolbar position',

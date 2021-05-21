@@ -25,6 +25,7 @@ const Tableau = (props) => {
   } = props;
   const {
     hideTabs = false,
+    autoScale = false,
     hideToolbar = false,
     sheetname = '',
     toolbarPosition = 'Top',
@@ -157,7 +158,15 @@ const Tableau = (props) => {
       disposeViz();
     }
     /* eslint-disable-next-line */
-  }, [hideTabs, hideToolbar, sheetname, tableau, toolbarPosition, url]);
+  }, [
+    hideTabs,
+    hideToolbar,
+    autoScale,
+    sheetname,
+    tableau,
+    toolbarPosition,
+    url,
+  ]);
 
   React.useEffect(() => {
     if (mounted.current && loaded && viz) {
@@ -182,7 +191,14 @@ const Tableau = (props) => {
   //   /* eslint-disable-next-line */
   // }, [JSON.stringify(extraOptions)]);
 
-  return <div className={cx('tableau', version)} ref={ref} />;
+  return (
+    <div
+      className={cx('tableau', version, {
+        'tableau-scale': autoScale,
+      })}
+      ref={ref}
+    />
+  );
 };
 
 export default compose(

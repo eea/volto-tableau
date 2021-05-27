@@ -175,6 +175,33 @@ const Tableau = (props) => {
     /* eslint-disable-next-line */
   }, [JSON.stringify(extraFilters)]);
 
+  React.useEffect(() => {
+    if (autoScale) {
+      window.addEventListener('resize', scaleContent);
+      window.addEventListener('load', scaleContent);
+
+      return () => {
+        window.removeEventListener('resize', scaleContent);
+      };
+    }
+    /* eslint-disable-next-line */
+  }, []);
+
+  const scaleContent = () => {
+    const vpWidth =
+      document.querySelector('main.content-page').offsetWidth - 50;
+    const iframeWidth = 900;
+    // if we wanna scale wrt to height
+    //  // const iframeHeight = document.querySelector('.tableau-scale iframe')
+    //     ?.clientHeight;
+    // const wScale = vpWidth / iframeWidth;
+    // const hScale = vpHeight / iframeHeight;
+    const scale = Math.min(vpWidth / iframeWidth);
+    const iframe = document.querySelector('.tableau-scale iframe');
+    if (iframe)
+      iframe.style.cssText += `transform: scale(${scale}); transform-origin: top left`;
+  };
+
   // React.useEffect(() => {
   //   if (mounted.current && loaded && viz) {
   //     const workbook = viz.getWorkbook();
@@ -192,12 +219,14 @@ const Tableau = (props) => {
   // }, [JSON.stringify(extraOptions)]);
 
   return (
-    <div
-      className={cx('tableau', version, {
-        'tableau-scale': autoScale,
-      })}
-      ref={ref}
-    />
+    <div id="tableau-outer">
+      <div
+        className={cx('tableau', version, {
+          'tableau-scale': autoScale,
+        })}
+        ref={ref}
+      />
+    </div>
   );
 };
 

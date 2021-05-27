@@ -176,6 +176,7 @@ const Tableau = (props) => {
   }, [JSON.stringify(extraFilters)]);
 
   React.useEffect(() => {
+    //initiate resizer fn if flag is set
     if (autoScale) {
       window.addEventListener('resize', scaleContent);
       window.addEventListener('load', scaleContent);
@@ -189,7 +190,7 @@ const Tableau = (props) => {
 
   const scaleContent = () => {
     const vpWidth =
-      document.querySelector('main.content-page').offsetWidth - 50;
+      document.querySelector('main.content-page')?.offsetWidth - 50;
     const iframeWidth = 900;
     // if we wanna scale wrt to height
     //  // const iframeHeight = document.querySelector('.tableau-scale iframe')

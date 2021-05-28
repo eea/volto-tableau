@@ -179,6 +179,13 @@ const Tableau = (props) => {
     //initiate resizer fn if flag is set
     if (autoScale) {
       window.addEventListener('resize', scaleContent);
+      const iframe = document.querySelector('.tableau-scale iframe');
+      if (iframe) {
+        iframe.addEventListener('load', () => {
+          scaleContent();
+        });
+      }
+
       window.addEventListener('load', scaleContent);
 
       return () => {
@@ -186,7 +193,7 @@ const Tableau = (props) => {
       };
     }
     /* eslint-disable-next-line */
-  }, []);
+  }, [document]);
 
   const scaleContent = () => {
     const vpWidth =

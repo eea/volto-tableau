@@ -176,33 +176,36 @@ const Tableau = (props) => {
   }, [JSON.stringify(extraFilters)]);
 
   let tableauOuter;
+  let iframe = document.querySelector('.tableau-scale iframe');
 
   React.useEffect(() => {
     //initiate resizer fn if flag is set
     if (autoScale) {
       window.addEventListener('resize', scaleContent);
-      window.addEventListener('load', () => {
-        tableauOuter = document.querySelector('#tableau-outer')?.clientWidth;
-        const vpWidth =
-          document.querySelector('main.content-page')?.offsetWidth - 60;
-        let scale;
-        if (vpWidth >= tableauOuter) {
+      if (iframe) {
+        iframe.addEventListener('load', () => {
+          tableauOuter = document.querySelector('#tableau-outer')?.offsetWidth;
+          const vpWidth =
+            document.querySelector('main.content-page')?.offsetWidth - 60;
+          let scale;
+          if (vpWidth >= tableauOuter) {
+            document.querySelector(
+              '#tableau-outer',
+            ).style.cssText = `-webkit-transform: '';`;
+            document.querySelector(
+              '#tableau-wrap',
+            ).style.cssText = ` width: ''; height: '';`;
+            return;
+          }
+          scale = Math.min(vpWidth / tableauOuter);
           document.querySelector(
             '#tableau-outer',
-          ).style.cssText += `-webkit-transform: '';`;
-          document.querySelector(
-            '#tableau-wrap',
-          ).style.cssText += ` width: ''; height: '';`;
-          return;
-        }
-        scale = Math.min(vpWidth / tableauOuter);
-        document.querySelector(
-          '#tableau-outer',
-        ).style.cssText += `-webkit-transform: scale(${scale}); -webkit-transform-origin: top left;`;
-        document.querySelector('#tableau-wrap').style.cssText += `width: ${
-          tableauOuter * scale
-        };`;
-      });
+          ).style.cssText = `-webkit-transform: scale(${scale}); -webkit-transform-origin: top left;`;
+          document.querySelector('#tableau-wrap').style.cssText = `width: ${
+            tableauOuter * scale
+          };`;
+        });
+      }
     }
 
     //window.addEventListener('load', scaleContent);
@@ -212,7 +215,7 @@ const Tableau = (props) => {
     };
 
     /* eslint-disable-next-line */
-  }, [document, window]);
+  }, [iframe]);
 
   const scaleContent = () => {
     const vpWidth =
@@ -221,17 +224,17 @@ const Tableau = (props) => {
     if (vpWidth >= tableauOuter) {
       document.querySelector(
         '#tableau-outer',
-      ).style.cssText += `-webkit-transform: '';`;
+      ).style.cssText = `-webkit-transform: '';`;
       document.querySelector(
         '#tableau-wrap',
-      ).style.cssText += ` width: ''; height: '';`;
+      ).style.cssText = ` width: ''; height: '';`;
       return;
     }
     scale = Math.min(vpWidth / tableauOuter);
     document.querySelector(
       '#tableau-outer',
     ).style.cssText = `-webkit-transform: scale(${scale}); -webkit-transform-origin: top left;`;
-    document.querySelector('#tableau-wrap').style.cssText += `width: ${
+    document.querySelector('#tableau-wrap').style.cssText = `width: ${
       tableauOuter * scale
     };`;
     // const vpWidth =
@@ -261,7 +264,7 @@ const Tableau = (props) => {
 
   return (
     <div id="tableau-wrap">
-      <div id="tableau-outer">
+      <div id="tableau-outer" style={{ width: `${iframe?.offsetWidth}px` }}>
         <div
           className={cx('tableau', version, {
             'tableau-scale': autoScale,

@@ -175,39 +175,72 @@ const Tableau = (props) => {
     /* eslint-disable-next-line */
   }, [JSON.stringify(extraFilters)]);
 
+  let tableauOuter;
+
   React.useEffect(() => {
     //initiate resizer fn if flag is set
     if (autoScale) {
       window.addEventListener('resize', scaleContent);
-      const iframe = document.querySelector('.tableau-scale iframe');
-      if (iframe) {
-        iframe.addEventListener('load', () => {
-          scaleContent();
-        });
-      }
-
-      window.addEventListener('load', scaleContent);
-
-      return () => {
-        window.removeEventListener('resize', scaleContent);
-      };
+      window.addEventListener('load', () => {
+        tableauOuter = document.querySelector('#tableau-outer')?.clientWidth;
+        const vpWidth =
+          document.querySelector('main.content-page')?.offsetWidth - 60;
+        let scale;
+        if (vpWidth >= tableauOuter) {
+          document.querySelector(
+            '#tableau-outer',
+          ).style.cssText += `-webkit-transform: '';`;
+          document.querySelector(
+            '#tableau-wrap',
+          ).style.cssText += ` width: ''; height: '';`;
+          return;
+        }
+        scale = Math.min(vpWidth / tableauOuter);
+        document.querySelector(
+          '#tableau-outer',
+        ).style.cssText += `-webkit-transform: scale(${scale}); -webkit-transform-origin: top left;`;
+        document.querySelector('#tableau-wrap').style.cssText += `width: ${
+          tableauOuter * scale
+        };`;
+      });
     }
+
+    //window.addEventListener('load', scaleContent);
+
+    return () => {
+      window.removeEventListener('resize', scaleContent);
+    };
+
     /* eslint-disable-next-line */
-  }, [document]);
+  }, [document, window]);
 
   const scaleContent = () => {
     const vpWidth =
-      document.querySelector('main.content-page')?.offsetWidth - 50;
-    const iframeWidth = 900;
-    // if we wanna scale wrt to height
-    //  // const iframeHeight = document.querySelector('.tableau-scale iframe')
-    //     ?.clientHeight;
-    // const wScale = vpWidth / iframeWidth;
-    // const hScale = vpHeight / iframeHeight;
-    const scale = Math.min(vpWidth / iframeWidth);
-    const iframe = document.querySelector('.tableau-scale iframe');
-    if (iframe)
-      iframe.style.cssText += `transform: scale(${scale}); transform-origin: top left`;
+      document.querySelector('main.content-page')?.offsetWidth - 60;
+    let scale;
+    if (vpWidth >= tableauOuter) {
+      document.querySelector(
+        '#tableau-outer',
+      ).style.cssText += `-webkit-transform: '';`;
+      document.querySelector(
+        '#tableau-wrap',
+      ).style.cssText += ` width: ''; height: '';`;
+      return;
+    }
+    scale = Math.min(vpWidth / tableauOuter);
+    document.querySelector(
+      '#tableau-outer',
+    ).style.cssText = `-webkit-transform: scale(${scale}); -webkit-transform-origin: top left;`;
+    document.querySelector('#tableau-wrap').style.cssText += `width: ${
+      tableauOuter * scale
+    };`;
+    // const vpWidth =
+    //   document.querySelector('main.content-page')?.offsetWidth - 28;
+
+    // const scale = Math.min(vpWidth / tableauOuter);
+    // const iframe = document.querySelector('.tableau-scale iframe');
+    // if (iframe)
+    //   iframe.style.cssText += `transform: scale(${scale}); transform-origin: top left`;
   };
 
   // React.useEffect(() => {
@@ -227,13 +260,15 @@ const Tableau = (props) => {
   // }, [JSON.stringify(extraOptions)]);
 
   return (
-    <div id="tableau-outer">
-      <div
-        className={cx('tableau', version, {
-          'tableau-scale': autoScale,
-        })}
-        ref={ref}
-      />
+    <div id="tableau-wrap">
+      <div id="tableau-outer">
+        <div
+          className={cx('tableau', version, {
+            'tableau-scale': autoScale,
+          })}
+          ref={ref}
+        />
+      </div>
     </div>
   );
 };

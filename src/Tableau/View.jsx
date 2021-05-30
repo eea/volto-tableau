@@ -175,8 +175,9 @@ const Tableau = (props) => {
     /* eslint-disable-next-line */
   }, [JSON.stringify(extraFilters)]);
 
-  let tableauOuter;
+  let tableauOuter = document.querySelector('#tableau-outer')?.offsetWidth;
   let iframe = document.querySelector('.tableau-scale iframe');
+  //let outerWidth = document.querySelector('#tableau-outer');
 
   React.useEffect(() => {
     //initiate resizer fn if flag is set
@@ -184,7 +185,7 @@ const Tableau = (props) => {
       window.addEventListener('resize', scaleContent);
       if (iframe) {
         iframe.addEventListener('load', () => {
-          tableauOuter = document.querySelector('#tableau-outer')?.offsetWidth;
+          //tableauOuter = document.querySelector('#tableau-outer')?.offsetWidth;
           const vpWidth =
             document.querySelector('main.content-page')?.offsetWidth - 60;
           let scale;
@@ -264,7 +265,7 @@ const Tableau = (props) => {
 
   return (
     <div id="tableau-wrap">
-      <div id="tableau-outer" style={{ width: `${iframe?.offsetWidth}px` }}>
+      <div id="tableau-outer" style={{ width: `900px` }}>
         <div
           className={cx('tableau', version, {
             'tableau-scale': autoScale,

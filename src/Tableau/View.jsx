@@ -15,21 +15,22 @@ const Tableau = (props) => {
     canUpdateUrl = true,
     data = {},
     error = null,
+    extraFilters = {},
+    extraOptions = {},
     loaded = false,
     mode = 'view',
-    extraOptions = {},
-    extraFilters = {},
+    screen = {},
     setError = () => {},
     setLoaded = () => {},
     version = getLatestTableauVersion(),
   } = props;
   const {
-    hideTabs = false,
     autoScale = false,
+    filters = {},
+    hideTabs = false,
     hideToolbar = false,
     sheetname = '',
     toolbarPosition = 'Top',
-    filters = {},
   } = data;
   const defaultUrl = data.url;
   const url = props.url || defaultUrl;
@@ -134,6 +135,20 @@ const Tableau = (props) => {
     });
   };
 
+  const updateScale = () => {
+    const tableauWrapper = ref.current;
+    const tableau = tableauWrapper?.querySelector('iframe');
+    if (mounted.current && viz && tableauWrapper && tableau) {
+      const { sheetSize = {} } = viz.getVizSize() || {};
+      const vizWidth = sheetSize?.minSize?.width || 1;
+      const vizHeight = sheetSize?.minSize?.height || 0;
+      const scale = Math.min(ref.current.clientWidth / vizWidth, 1);
+      tableau.style.transform = `scale(${scale})`;
+      tableau.style.width = `${100 / scale}%`;
+      tableauWrapper.style.height = `${scale * vizHeight}px`;
+    }
+  };
+
   React.useEffect(() => {
     if (!mounted.current) {
       mounted.current = true;
@@ -157,6 +172,10 @@ const Tableau = (props) => {
     } else {
       disposeViz();
     }
+
+    return () => {
+      disposeViz();
+    };
     /* eslint-disable-next-line */
   }, [
     hideTabs,
@@ -175,77 +194,12 @@ const Tableau = (props) => {
     /* eslint-disable-next-line */
   }, [JSON.stringify(extraFilters)]);
 
-  let tableauOuter = document.querySelector('#tableau-outer')?.offsetWidth;
-  let iframe = document.querySelector('.tableau-scale iframe');
-  //let outerWidth = document.querySelector('#tableau-outer');
-
   React.useEffect(() => {
-    //initiate resizer fn if flag is set
     if (autoScale) {
-      window.addEventListener('resize', scaleContent);
-      if (iframe) {
-        iframe.addEventListener('load', () => {
-          //tableauOuter = document.querySelector('#tableau-outer')?.offsetWidth;
-          const vpWidth =
-            document.querySelector('main.content-page')?.offsetWidth - 60;
-          let scale;
-          if (vpWidth >= tableauOuter) {
-            document.querySelector(
-              '#tableau-outer',
-            ).style.cssText = `-webkit-transform: '';`;
-            document.querySelector(
-              '#tableau-wrap',
-            ).style.cssText = ` width: ''; height: '';`;
-            return;
-          }
-          scale = Math.min(vpWidth / tableauOuter);
-          document.querySelector(
-            '#tableau-outer',
-          ).style.cssText = `-webkit-transform: scale(${scale}); -webkit-transform-origin: top left;`;
-          document.querySelector('#tableau-wrap').style.cssText = `width: ${
-            tableauOuter * scale
-          };`;
-        });
-      }
+      updateScale();
     }
-
-    //window.addEventListener('load', scaleContent);
-
-    return () => {
-      window.removeEventListener('resize', scaleContent);
-    };
-
     /* eslint-disable-next-line */
-  }, [iframe]);
-
-  const scaleContent = () => {
-    const vpWidth =
-      document.querySelector('main.content-page')?.offsetWidth - 60;
-    let scale;
-    if (vpWidth >= tableauOuter) {
-      document.querySelector(
-        '#tableau-outer',
-      ).style.cssText = `-webkit-transform: '';`;
-      document.querySelector(
-        '#tableau-wrap',
-      ).style.cssText = ` width: ''; height: '';`;
-      return;
-    }
-    scale = Math.min(vpWidth / tableauOuter);
-    document.querySelector(
-      '#tableau-outer',
-    ).style.cssText = `-webkit-transform: scale(${scale}); -webkit-transform-origin: top left;`;
-    document.querySelector('#tableau-wrap').style.cssText = `width: ${
-      tableauOuter * scale
-    };`;
-    // const vpWidth =
-    //   document.querySelector('main.content-page')?.offsetWidth - 28;
-
-    // const scale = Math.min(vpWidth / tableauOuter);
-    // const iframe = document.querySelector('.tableau-scale iframe');
-    // if (iframe)
-    //   iframe.style.cssText += `transform: scale(${scale}); transform-origin: top left`;
-  };
+  }, [loaded, screen?.screenWidth]);
 
   // React.useEffect(() => {
   //   if (mounted.current && loaded && viz) {
@@ -281,6 +235,7 @@ export default compose(
   connect(
     (state, props) => ({
       tableau: state.tableau,
+      screen: state.screen,
     }),
     { setTableauApi },
   ),

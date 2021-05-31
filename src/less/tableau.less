@@ -19,22 +19,6 @@
     }
   }
 
-  .tableau-scale {
-    width: 100% !important;
-    padding: 0 !important;
-
-    iframe {
-      width: 1000px !important;
-      height: 4000px !important;
-      border: 0px !important;
-    }
-    @media screen and (-webkit-min-device-pixel-ratio: 0) {
-      iframe {
-        zoom: 1;
-      }
-    }
-  }
-
   h3.tableau-title {
     margin: @tableauTitleMargin;
     color: @tableauTitleColor;
@@ -45,13 +29,21 @@
     color: @tableauDescriptionColor;
   }
 
-  .tableau iframe {
-    width: @tableauIframeWidth;
-    min-width: @tableauMinWidth;
-    padding: @tableauIframePadding;
-    border: @tableauIframeBorder;
-    margin: @tableauIframeMargin;
-    border-radius: @tableauIframeBorderRadius;
+  .tableau {
+    width: 100%;
+
+    &:not(.tableau-scale) {
+      width: @tableauIframeWidth;
+      min-width: @tableauMinWidth;
+    }
+
+    iframe {
+      padding: @tableauIframePadding;
+      border: @tableauIframeBorder;
+      margin: @tableauIframeMargin;
+      border-radius: @tableauIframeBorderRadius;
+      transform-origin: top left;
+    }
   }
 }
 

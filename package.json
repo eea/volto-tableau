@@ -16,7 +16,11 @@
     "type": "git",
     "url": "git@github.com:eea/volto-tableau.git"
   },
+  "addons": [
+    "@eeacms/volto-resize-helper"
+  ],
   "dependencies": {
+    "@eeacms/volto-resize-helper": "^0.1.0",
     "tableau-api-js": "github:eea/tableau-api-js#1.1.0"
   },
   "devDependencies": {

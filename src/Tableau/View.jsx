@@ -146,7 +146,6 @@ const Tableau = (props) => {
       tableau.style.transform = `scale(${scale})`;
       tableau.style.width = `${100 / scale}%`;
       tableauWrapper.style.height = `${scale * vizHeight}px`;
-      console.log('HERE', tableauWrapper.clientWidth, vizWidth);
     }
   };
 

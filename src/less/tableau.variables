@@ -7,6 +7,7 @@
 @tableauErrorColor: #E9776D;
 
 @tableauIframeWidth: 100% !important;
+@tableauMinWidth: auto;
 @tableauIframePadding: 0;
 @tableauIframeMargin: 0 0 1rem 0;
 @tableauIframeBorder: none;

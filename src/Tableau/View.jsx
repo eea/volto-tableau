@@ -15,21 +15,22 @@ const Tableau = (props) => {
     canUpdateUrl = true,
     data = {},
     error = null,
+    extraFilters = {},
+    extraOptions = {},
     loaded = false,
     mode = 'view',
-    extraOptions = {},
-    extraFilters = {},
+    screen = {},
     setError = () => {},
     setLoaded = () => {},
     version = getLatestTableauVersion(),
   } = props;
   const {
-    hideTabs = false,
     autoScale = false,
+    filters = {},
+    hideTabs = false,
     hideToolbar = false,
     sheetname = '',
     toolbarPosition = 'Top',
-    filters = {},
   } = data;
   const defaultUrl = data.url;
   const url = props.url || defaultUrl;
@@ -134,6 +135,20 @@ const Tableau = (props) => {
     });
   };
 
+  const updateScale = () => {
+    const tableauWrapper = ref.current;
+    const tableau = tableauWrapper?.querySelector('iframe');
+    if (mounted.current && viz && tableauWrapper && tableau) {
+      const { sheetSize = {} } = viz.getVizSize() || {};
+      const vizWidth = sheetSize?.minSize?.width || 1;
+      const vizHeight = sheetSize?.minSize?.height || 0;
+      const scale = Math.min(tableauWrapper.clientWidth / vizWidth, 1);
+      tableau.style.transform = `scale(${scale})`;
+      tableau.style.width = `${100 / scale}%`;
+      tableauWrapper.style.height = `${scale * vizHeight}px`;
+    }
+  };
+
   React.useEffect(() => {
     if (!mounted.current) {
       mounted.current = true;
@@ -157,6 +172,10 @@ const Tableau = (props) => {
     } else {
       disposeViz();
     }
+
+    return () => {
+      disposeViz();
+    };
     /* eslint-disable-next-line */
   }, [
     hideTabs,
@@ -175,6 +194,13 @@ const Tableau = (props) => {
     /* eslint-disable-next-line */
   }, [JSON.stringify(extraFilters)]);
 
+  React.useEffect(() => {
+    if (autoScale) {
+      updateScale();
+    }
+    /* eslint-disable-next-line */
+  }, [loaded, screen?.screenWidth]);
+
   // React.useEffect(() => {
   //   if (mounted.current && loaded && viz) {
   //     const workbook = viz.getWorkbook();
@@ -192,12 +218,16 @@ const Tableau = (props) => {
   // }, [JSON.stringify(extraOptions)]);
 
   return (
-    <div
-      className={cx('tableau', version, {
-        'tableau-scale': autoScale,
-      })}
-      ref={ref}
-    />
+    <div id="tableau-wrap">
+      <div id="tableau-outer">
+        <div
+          className={cx('tableau', version, {
+            'tableau-scale': autoScale,
+          })}
+          ref={ref}
+        />
+      </div>
+    </div>
   );
 };
 
@@ -205,6 +235,7 @@ export default compose(
   connect(
     (state, props) => ({
       tableau: state.tableau,
+      screen: state.screen,
     }),
     { setTableauApi },
   ),

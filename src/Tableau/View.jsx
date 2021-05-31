@@ -142,10 +142,11 @@ const Tableau = (props) => {
       const { sheetSize = {} } = viz.getVizSize() || {};
       const vizWidth = sheetSize?.minSize?.width || 1;
       const vizHeight = sheetSize?.minSize?.height || 0;
-      const scale = Math.min(ref.current.clientWidth / vizWidth, 1);
+      const scale = Math.min(tableauWrapper.clientWidth / vizWidth, 1);
       tableau.style.transform = `scale(${scale})`;
       tableau.style.width = `${100 / scale}%`;
       tableauWrapper.style.height = `${scale * vizHeight}px`;
+      console.log('HERE', tableauWrapper.clientWidth, vizWidth);
     }
   };
 
@@ -219,7 +220,7 @@ const Tableau = (props) => {
 
   return (
     <div id="tableau-wrap">
-      <div id="tableau-outer" style={{ width: `900px` }}>
+      <div id="tableau-outer">
         <div
           className={cx('tableau', version, {
             'tableau-scale': autoScale,

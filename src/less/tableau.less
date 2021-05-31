@@ -33,8 +33,10 @@
     width: 100%;
 
     &:not(.tableau-scale) {
-      width: @tableauIframeWidth;
-      min-width: @tableauMinWidth;
+      iframe {
+        width: @tableauIframeWidth;
+        min-width: @tableauMinWidth;
+      }
     }
 
     iframe {

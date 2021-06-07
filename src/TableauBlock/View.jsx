@@ -33,6 +33,7 @@ const View = (props) => {
     urlParameters = [],
     title = null,
     description = null,
+    autoScale = false,
   } = data;
   const version =
     props.data.version ||
@@ -83,7 +84,7 @@ const View = (props) => {
         {...props}
         canUpdateUrl={!breakpointUrl}
         extraFilters={extraFilters}
-        extraOptions={{ device }}
+        extraOptions={{ device: autoScale ? 'desktop' : device }}
         error={error}
         loaded={loaded}
         setError={setError}

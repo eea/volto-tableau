@@ -199,7 +199,7 @@ const Tableau = (props) => {
       updateScale();
     }
     /* eslint-disable-next-line */
-  }, [loaded, screen?.screenWidth]);
+  }, [loaded, screen?.page?.width]);
 
   // React.useEffect(() => {
   //   if (mounted.current && loaded && viz) {

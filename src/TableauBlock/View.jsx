@@ -33,12 +33,13 @@ const View = (props) => {
     urlParameters = [],
     title = null,
     description = null,
+    autoScale = false,
   } = data;
   const version =
     props.data.version ||
     config.settings.tableauVersion ||
     getLatestTableauVersion();
-  const device = getDevice(config, screen.screenWidth || Infinity);
+  const device = getDevice(config, screen.width || Infinity);
   const breakpointUrl = breakpointUrls.filter(
     (breakpoint) => breakpoint.device === device,
   )[0]?.url;
@@ -83,7 +84,7 @@ const View = (props) => {
         {...props}
         canUpdateUrl={!breakpointUrl}
         extraFilters={extraFilters}
-        extraOptions={{ device }}
+        extraOptions={{ device: autoScale ? 'desktop' : device }}
         error={error}
         loaded={loaded}
         setError={setError}

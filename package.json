@@ -20,7 +20,7 @@
     "@eeacms/volto-resize-helper"
   ],
   "dependencies": {
-    "@eeacms/volto-resize-helper": "^0.2.1",
+    "@eeacms/volto-resize-helper": "^0.2.2",
     "tableau-api-js": "github:eea/tableau-api-js#1.1.0"
   },
   "devDependencies": {

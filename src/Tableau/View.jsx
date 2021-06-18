@@ -8,6 +8,7 @@ import { setTableauApi } from '@eeacms/volto-tableau/actions';
 import cx from 'classnames';
 
 const Tableau = (props) => {
+  const { children } = props;
   const ref = React.useRef(null);
   const mounted = React.useRef(false);
   const [viz, setViz] = React.useState(null);
@@ -226,6 +227,7 @@ const Tableau = (props) => {
           })}
           ref={ref}
         />
+        {children ? children({ viz }) : ''}
       </div>
     </div>
   );

@@ -21,7 +21,7 @@ const applyConfig = (config) => {
     id: 'tableau_block',
     title: 'Tableau',
     icon: sliderSVG,
-    group: 'common',
+    group: 'common_blocks',
     edit: TableauEdit,
     view: TableauView,
     restricted: false,

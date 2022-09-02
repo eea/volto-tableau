@@ -9,6 +9,7 @@ import cx from 'classnames';
 
 const Tableau = (props) => {
   const ref = React.useRef(null);
+  const filters = React.useRef(props.data.filters || {});
   const mounted = React.useRef(false);
   const [viz, setViz] = React.useState(null);
   const {
@@ -26,7 +27,6 @@ const Tableau = (props) => {
   } = props;
   const {
     autoScale = false,
-    filters = {},
     hideTabs = false,
     hideToolbar = false,
     sheetname = '',
@@ -37,17 +37,12 @@ const Tableau = (props) => {
   const tableau = props.tableau[version];
 
   const onFilterChange = (filter) => {
-    const newFilters = { ...filters };
+    const newFilters = { ...filters.current };
     const fieldName = filter.getFieldName();
-    const allSelected = filter.getIsAllSelected();
     const values = filter
       .getAppliedValues()
       .map((appliedValue) => appliedValue.value);
-    if (allSelected) {
-      delete newFilters[fieldName];
-    } else {
-      newFilters[fieldName] = values;
-    }
+    newFilters[fieldName] = values;
     if (JSON.stringify(newFilters) !== JSON.stringify(filters)) {
       props.onChangeBlock(props.block, {
         ...data,
@@ -55,6 +50,7 @@ const Tableau = (props) => {
           ...newFilters,
         },
       });
+      filters.current = { ...newFilters };
     }
   };
 
@@ -78,7 +74,7 @@ const Tableau = (props) => {
         hideToolbar,
         sheetname,
         toolbarPosition,
-        ...filters,
+        ...data.filters,
         ...extraFilters,
         ...extraOptions,
         onFirstInteractive: () => {

@@ -3,9 +3,30 @@ import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { toast } from 'react-toastify';
 import { Toast } from '@plone/volto/components';
-import { getLatestTableauVersion } from 'tableau-api-js';
 import { setTableauApi } from '@eeacms/volto-tableau/actions';
 import cx from 'classnames';
+
+const loadTableauScript = (callback, version) => {
+  const existingScript = document.getElementById(`tableauJS`);
+  //replace script loaded on each version change
+  if (existingScript) {
+    existingScript.setAttribute(
+      'src',
+      `https://public.tableau.com/javascripts/api/tableau-${version}.min.js`,
+    );
+  }
+  if (!existingScript) {
+    const script = document.createElement('script');
+    script.src = `https://public.tableau.com/javascripts/api/tableau-${version}.min.js`;
+    script.id = `tableauJS`;
+    document.body.appendChild(script);
+    script.onload = () => {
+      if (callback) callback();
+    };
+  }
+  //callback, if needed
+  if (existingScript && callback) callback();
+};
 
 const Tableau = (props) => {
   const ref = React.useRef(null);
@@ -23,7 +44,7 @@ const Tableau = (props) => {
     screen = {},
     setError = () => {},
     setLoaded = () => {},
-    version = getLatestTableauVersion(),
+    version = '2.8.0',
   } = props;
   const {
     autoScale = false,
@@ -34,7 +55,17 @@ const Tableau = (props) => {
   } = data;
   const defaultUrl = data.url;
   const url = props.url || defaultUrl;
-  const tableau = props.tableau[version];
+
+  const isMyScriptLoaded = (id) => {
+    var scripts = document.getElementsByTagName('script');
+    for (var i = scripts.length; i--; ) {
+      if (scripts[i].id == `tableauJS`) return true;
+    }
+    return false;
+  };
+
+  //replace this tableau
+  const tableau = isMyScriptLoaded(version) && __CLIENT__ ? window.tableau : '';
 
   const onFilterChange = (filter) => {
     const newFilters = { ...filters.current };
@@ -159,6 +190,11 @@ const Tableau = (props) => {
     if (__CLIENT__ && !props.tableau[version]) {
       props.setTableauApi(version, props.mode);
     }
+    if (__CLIENT__) {
+      loadTableauScript(() => {
+        console.log('Loaded tableau: ', version);
+      }, version);
+    }
     /* eslint-disable-next-line */
   }, [version]);
 
@@ -196,22 +232,6 @@ const Tableau = (props) => {
     }
     /* eslint-disable-next-line */
   }, [loaded, screen?.page?.width]);
-
-  // React.useEffect(() => {
-  //   if (mounted.current && loaded && viz) {
-  //     const workbook = viz.getWorkbook();
-  //     if (extraOptions.device === 'desktop') {
-  //       workbook.activateSheetAsync(0);
-  //     } else if (extraOptions.device === 'tablet') {
-  //       workbook.activateSheetAsync(1);
-  //     } else {
-  //       workbook.activateSheetAsync(2);
-  //     }
-  //     console.log('HERE', workbook.getPublishedSheetsInfo());
-  //     addExtraFilters(extraOptions);
-  //   }
-  //   /* eslint-disable-next-line */
-  // }, [JSON.stringify(extraOptions)]);
 
   return (
     <div id="tableau-wrap">

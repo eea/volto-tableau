@@ -59,6 +59,7 @@ const Tableau = (props) => {
   const isMyScriptLoaded = (id) => {
     var scripts = document.getElementsByTagName('script');
     for (var i = scripts.length; i--; ) {
+      // eslint-disable-next-line eqeqeq
       if (scripts[i].id == `tableauJS`) return true;
     }
     return false;
@@ -191,9 +192,7 @@ const Tableau = (props) => {
       props.setTableauApi(version, props.mode);
     }
     if (__CLIENT__) {
-      loadTableauScript(() => {
-        console.log('Loaded tableau: ', version);
-      }, version);
+      loadTableauScript(() => {}, version);
     }
     /* eslint-disable-next-line */
   }, [version]);

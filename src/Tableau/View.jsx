@@ -5,28 +5,7 @@ import { toast } from 'react-toastify';
 import { Toast } from '@plone/volto/components';
 import { setTableauApi } from '@eeacms/volto-tableau/actions';
 import cx from 'classnames';
-
-const loadTableauScript = (callback, version) => {
-  const existingScript = document.getElementById(`tableauJS`);
-  //replace script loaded on each version change
-  if (existingScript) {
-    existingScript.setAttribute(
-      'src',
-      `https://public.tableau.com/javascripts/api/tableau-${version}.min.js`,
-    );
-  }
-  if (!existingScript) {
-    const script = document.createElement('script');
-    script.src = `https://public.tableau.com/javascripts/api/tableau-${version}.min.js`;
-    script.id = `tableauJS`;
-    document.body.appendChild(script);
-    script.onload = () => {
-      if (callback) callback();
-    };
-  }
-  //callback, if needed
-  if (existingScript && callback) callback();
-};
+import { isMyScriptLoaded, loadTableauScript } from '../helpers';
 
 const Tableau = (props) => {
   const ref = React.useRef(null);
@@ -56,16 +35,7 @@ const Tableau = (props) => {
   const defaultUrl = data.url;
   const url = props.url || defaultUrl;
 
-  const isMyScriptLoaded = (id) => {
-    var scripts = document.getElementsByTagName('script');
-    for (var i = scripts.length; i--; ) {
-      // eslint-disable-next-line eqeqeq
-      if (scripts[i].id == `tableauJS`) return true;
-    }
-    return false;
-  };
-
-  //replace this tableau
+  //load tableau from script tag
   const tableau = isMyScriptLoaded(version) && __CLIENT__ ? window.tableau : '';
 
   const onFilterChange = (filter) => {

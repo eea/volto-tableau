@@ -12,6 +12,11 @@ const applyConfig = (config) => {
     tableau: tableauStore,
   };
 
+  config.settings.allowed_cors_destinations = [
+    ...(config.settings.allowed_cors_destinations || []),
+    'public.tableau.com',
+  ];
+
   config.settings.storeExtenders = [
     ...(config.settings.storeExtenders || []),
     tableauMiddleware,

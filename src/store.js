@@ -34,7 +34,6 @@ export default function tableau(state = initialState, action = {}) {
       loading[action.version] = false;
       loaded[action.version] = true;
       errors[action.version] = false;
-
       return {
         ...state,
         [action.version]: action.api,

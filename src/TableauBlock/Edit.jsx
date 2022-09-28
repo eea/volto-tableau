@@ -11,7 +11,6 @@ const Edit = (props) => {
   return (
     <>
       <View {...props} mode="edit" />
-
       <SidebarPortal selected={props.selected}>
         <InlineForm
           schema={schema}

@@ -1,3 +1,7 @@
+/* eslint-disable jsx-a11y/no-static-element-interactions */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
+/* eslint-disable jsx-a11y/anchor-is-valid */
+
 import React from 'react';
 import { UniversalLink, Icon } from '@plone/volto/components';
 

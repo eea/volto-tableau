@@ -11,7 +11,7 @@ const View = (props) => {
     if (vis_url) {
       props.getContent(vis_url, null);
     }
-  }, [vis_url]);
+  }, [vis_url, props]);
 
   return (
     <>

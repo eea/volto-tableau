@@ -3,6 +3,8 @@ import TableauEdit from './TableauBlock/Edit';
 import TableauView from './TableauBlock/View';
 import EmbedTableauView from './Blocks/EmbedEEATableauBlock/View';
 import EmbedTableauEdit from './Blocks/EmbedEEATableauBlock/Edit';
+import { VisualizationView } from './Views';
+import { VisualizationWidget } from './Widgets';
 
 import tableauStore from './store';
 
@@ -67,6 +69,9 @@ const applyConfig = (config) => {
       mobile: [767, 0],
     },
   };
+
+  config.views.contentTypesViews.tableau_visualization = VisualizationView;
+  config.widgets.id.tableau_visualization_data = VisualizationWidget;
 
   return config;
 };

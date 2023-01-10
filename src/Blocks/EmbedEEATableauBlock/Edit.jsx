@@ -8,7 +8,7 @@ import { connect } from 'react-redux';
 import { compose } from 'redux';
 
 const Edit = (props) => {
-  const { data, block, onChangeBlock } = props;
+  const { data, block, onChangeBlock, id } = props;
   const schema = React.useMemo(() => Schema(props), [props]);
 
   React.useEffect(() => {
@@ -20,9 +20,14 @@ const Edit = (props) => {
     }
   }, [block, data, onChangeBlock]);
 
+  React.useEffect(() => {
+    props.getContent(data.vis_url, null, id);
+    //    eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [data.vis_url]);
+
   return (
     <>
-      <View data={data} mode="edit" />
+      <View data={data} id={id} mode="edit" />
       <SidebarPortal selected={props.selected}>
         <BlockDataForm
           block={block}

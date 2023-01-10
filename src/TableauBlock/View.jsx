@@ -48,6 +48,11 @@ const View = (props) => {
   }, []);
 
   React.useEffect(() => {
+    if (props.setTableauError) props.setTableauError(error);
+    /* eslint-disable-next-line */
+  }, [error]);
+
+  React.useEffect(() => {
     const newExtraFilters = { ...extraFilters };
     urlParameters.forEach((element) => {
       if (element.field && typeof query[element.urlParam] !== 'undefined') {

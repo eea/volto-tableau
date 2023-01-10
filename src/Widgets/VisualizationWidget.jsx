@@ -1,5 +1,6 @@
 import React from 'react';
 import { Modal, Button, Grid } from 'semantic-ui-react';
+import '@eeacms/volto-tableau/less/tableau.less';
 import config from '@plone/volto/registry';
 
 import { FormFieldWrapper, InlineForm } from '@plone/volto/components';
@@ -15,8 +16,10 @@ const VisualizationWidget = (props) => {
   const value = React.useMemo(() => props.value, [props.value]);
 
   const [intValue, setIntValue] = React.useState(value);
+  const [tableauError, setTableauError] = React.useState('');
 
   const dataForm = { tableau_data: intValue };
+
   const handleApplyChanges = () => {
     onChange(id, intValue);
     setOpen(false);
@@ -29,6 +32,22 @@ const VisualizationWidget = (props) => {
 
   const handleChangeField = (val) => {
     setIntValue(val);
+  };
+
+  const TableauNotDisplayed = () => {
+    return (
+      <div className="tableau-block not_displayed_tableau">
+        <div className="tableau-info">
+          {!intValue.general.url ? (
+            <p className="tableau-error">URL required</p>
+          ) : tableauError ? (
+            <p className="tableau-error">{tableauError}</p>
+          ) : (
+            ''
+          )}
+        </div>
+      </div>
+    );
   };
 
   let schema = Schema(config);
@@ -88,8 +107,14 @@ const VisualizationWidget = (props) => {
                 />
               </Grid.Column>
               <Grid.Column mobile={12} tablet={12} computer={7}>
-                <div className="webmap-container">
+                {!intValue.general.url || tableauError ? (
+                  <TableauNotDisplayed />
+                ) : (
+                  ''
+                )}
+                <div className="tableau-container">
                   <TableauView
+                    setTableauError={setTableauError}
                     data={{
                       ...intValue.general,
                       ...intValue.options,
@@ -114,7 +139,10 @@ const VisualizationWidget = (props) => {
           </Modal.Actions>
         </Modal>
       )}
+      {!intValue.general.url || tableauError ? <TableauNotDisplayed /> : ''}
+
       <TableauView
+        setTableauError={setTableauError}
         data={{ ...value.general, ...value.options, ...value.extraOptions }}
       />
     </FormFieldWrapper>

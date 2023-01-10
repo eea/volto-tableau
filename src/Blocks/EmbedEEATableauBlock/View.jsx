@@ -1,6 +1,10 @@
 import React from 'react';
 import TableauView from '../../TableauBlock/View';
 import { Sources } from '../../Sources';
+import { getContent } from '@plone/volto/actions';
+
+import { connect } from 'react-redux';
+import { compose } from 'redux';
 
 const View = (props) => {
   const { data } = props || {};
@@ -11,7 +15,8 @@ const View = (props) => {
     if (vis_url) {
       props.getContent(vis_url, null);
     }
-  }, [vis_url, props]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [vis_url]);
 
   return (
     <>
@@ -22,4 +27,16 @@ const View = (props) => {
   );
 };
 
-export default View;
+export default compose(
+  connect(
+    (state, props) => ({
+      data_provenance:
+        state.content.subrequests?.[props.id]?.data?.data_provenance,
+      tableau_visualization:
+        state.content.subrequests?.[props.id]?.data?.tableau_visualization_data,
+    }),
+    {
+      getContent,
+    },
+  ),
+)(View);

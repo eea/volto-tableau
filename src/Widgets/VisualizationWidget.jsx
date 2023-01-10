@@ -38,7 +38,7 @@ const VisualizationWidget = (props) => {
     return (
       <div className="tableau-block not_displayed_tableau">
         <div className="tableau-info">
-          {!intValue.general.url ? (
+          {intValue && intValue.general && !intValue.general.url ? (
             <p className="tableau-error">URL required</p>
           ) : tableauError ? (
             <p className="tableau-error">{tableauError}</p>
@@ -107,7 +107,8 @@ const VisualizationWidget = (props) => {
                 />
               </Grid.Column>
               <Grid.Column mobile={12} tablet={12} computer={7}>
-                {!intValue.general.url || tableauError ? (
+                {(intValue && intValue.general && !intValue.general.url) ||
+                tableauError ? (
                   <TableauNotDisplayed />
                 ) : (
                   ''
@@ -116,9 +117,9 @@ const VisualizationWidget = (props) => {
                   <TableauView
                     setTableauError={setTableauError}
                     data={{
-                      ...intValue.general,
-                      ...intValue.options,
-                      ...intValue.extraOptions,
+                      ...intValue?.general,
+                      ...intValue?.options,
+                      ...intValue?.extraOptions,
                     }}
                   />
                 </div>
@@ -139,11 +140,16 @@ const VisualizationWidget = (props) => {
           </Modal.Actions>
         </Modal>
       )}
-      {!intValue.general.url || tableauError ? <TableauNotDisplayed /> : ''}
+      {(intValue && intValue.general && !intValue.general.url) ||
+      tableauError ? (
+        <TableauNotDisplayed />
+      ) : (
+        ''
+      )}
 
       <TableauView
         setTableauError={setTableauError}
-        data={{ ...value.general, ...value.options, ...value.extraOptions }}
+        data={{ ...value?.general, ...value?.options, ...value?.extraOptions }}
       />
     </FormFieldWrapper>
   );

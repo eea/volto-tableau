@@ -18,6 +18,10 @@ const View = (props) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [vis_url]);
 
+  console.log(
+    props.tableau_visualization,
+    'tableau_visualization data here <====',
+  );
   return (
     <>
       <TableauView {...props} />

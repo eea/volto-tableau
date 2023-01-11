@@ -19,25 +19,21 @@ const loadTableauScript = (callback, version) => {
   //callback, if needed
   if (existingScript && callback) callback();
 
-  //TODO: instead of replacing the tableau script  
-  //   <script type="importmap">
-  //   {
-  //     "imports": {
-  //       "tableau1": "https://example.com/shapes/tableau1.js",
-  //       "tableau2": "https://example.com/shapes/tableau2.js",
-  //       "tableau3": "https://example.com/shapes/tableau3.js",
-  //     }
-  //   }
-  // </script>
-  //try creating an importmap script with each different tableau version https://developer.mozilla.org/en-US/docs/Web/HTML/Element/script#importing_modules_with_importmap
+  const tableau = isMyScriptLoaded(version) && __CLIENT__ ? window.tableau : '';
+  console.log('loading the tableau script version:', version);
+  return tableau;
 };
 
-const isMyScriptLoaded = (id) => {
+const isMyScriptLoaded = (version) => {
   //check for loaded Tableau script in dom scripts
   var scripts = document.getElementsByTagName('script');
-  for (var i = scripts.length; i--;) {
+  for (var i = scripts.length; i--; ) {
     // eslint-disable-next-line eqeqeq
-    if (scripts[i].id == `tableauJS`) return true;
+    if (
+      scripts[i].src ===
+      `https://public.tableau.com/javascripts/api/tableau-${version}.min.js`
+    )
+      return true;
   }
   return false;
 };

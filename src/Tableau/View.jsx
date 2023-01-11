@@ -21,8 +21,8 @@ const Tableau = (props) => {
     loaded = false,
     mode = 'view',
     screen = {},
-    setError = () => { },
-    setLoaded = () => { },
+    setError = () => {},
+    setLoaded = () => {},
     version = '2.8.0',
   } = props;
   const {
@@ -44,11 +44,10 @@ const Tableau = (props) => {
       default:
         console.log(`Sorry, we don't support ${version} yet.`);
     }
-  }
-
+  };
 
   //load tableau from script tag
-  const tableau = isMyScriptLoaded(version) && __CLIENT__ ? window.tableau : '';
+  const tableau = loadTableauScript(() => {}, version);
   //TODO: if using an importmap then there would be tableau1, tableau2, etc and ^^ would need a switch for each version. This way, the scripts needed are there, loaded dinamicaly
 
   const onFilterChange = (filter) => {
@@ -175,7 +174,7 @@ const Tableau = (props) => {
       props.setTableauApi(version, props.mode);
     }
     if (__CLIENT__) {
-      loadTableauScript(() => { }, version);
+      loadTableauScript(() => {}, version);
     }
     /* eslint-disable-next-line */
   }, [version]);

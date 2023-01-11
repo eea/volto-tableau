@@ -13,7 +13,7 @@ const View = (props) => {
 
   React.useEffect(() => {
     if (vis_url) {
-      props.getContent(vis_url, null);
+      props.getContent(vis_url, null, props.id);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [vis_url]);

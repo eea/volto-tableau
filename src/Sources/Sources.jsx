@@ -27,16 +27,17 @@ const SourcesWidget = ({ data }) => {
       </a>
       {expand && (
         <ul>
-          {data.map((param, i) => (
-            <li key={i} className="embed-source-param">
-              <UniversalLink
-                className="embed-sources-param-title"
-                href={param.source_link}
-              >
-                {param.source}
-              </UniversalLink>
-            </li>
-          ))}
+          {data &&
+            data.map((param, i) => (
+              <li key={i} className="embed-source-param">
+                <UniversalLink
+                  className="embed-sources-param-title"
+                  href={param.source_link}
+                >
+                  {param.source}
+                </UniversalLink>
+              </li>
+            ))}
         </ul>
       )}
     </div>

@@ -20,14 +20,9 @@ const Edit = (props) => {
     }
   }, [block, data, onChangeBlock]);
 
-  React.useEffect(() => {
-    props.getContent(data.vis_url, null, id);
-    //  eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [data.vis_url]);
-
   return (
     <>
-      <View data={data} id={id} mode="edit" />
+      <View data={data} id={id} />
       <SidebarPortal selected={props.selected}>
         <BlockDataForm
           block={block}

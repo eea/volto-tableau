@@ -1,5 +1,6 @@
 import React from 'react';
-import TableauView from '../../TableauBlock/View';
+import ConnectedTableau from '../../ConnectedTableau/ConnectedTableau';
+
 import { Sources } from '../../Sources';
 import { getContent } from '@plone/volto/actions';
 
@@ -18,13 +19,9 @@ const View = (props) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [vis_url]);
 
-  console.log(
-    props.tableau_visualization,
-    'tableau_visualization data here <====',
-  );
   return (
     <>
-      <TableauView {...props} />
+      <ConnectedTableau {...props.tableau_visualization} id={props.id} />
       {with_sources &&
         (props.mode !== 'edit' ? <Sources data={data.tableauSources} /> : '')}
     </>

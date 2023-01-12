@@ -1,7 +1,6 @@
 import React from 'react';
 import ConnectedTableau from '../../ConnectedTableau/ConnectedTableau';
 
-import { Sources } from '../../Sources';
 import { getContent } from '@plone/volto/actions';
 
 import { connect } from 'react-redux';
@@ -10,7 +9,7 @@ import { compose } from 'redux';
 const View = (props) => {
   const { data } = props || {};
   const { vis_url = '' } = data;
-  const with_sources = data?.with_sources ?? false;
+  const show_sources = data?.show_sources ?? false;
 
   React.useEffect(() => {
     if (vis_url) {
@@ -24,12 +23,14 @@ const View = (props) => {
       {data?.vis_url ? (
         <>
           <ConnectedTableau {...props.tableau_visualization} id={props.id} />
-          {with_sources &&
+          {show_sources &&
           data.tableauSources &&
           props.tableau_visualization ? (
-            <Sources data={data.tableauSources} />
-          ) : (
+            ''
+          ) : show_sources ? (
             <div>Data provenance is not set in the visualization</div>
+          ) : (
+            ''
           )}
         </>
       ) : (

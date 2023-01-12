@@ -1,5 +1,5 @@
 const loadTableauScript = (callback, version) => {
-  const existingScript = document.getElementById(`tableauJS`);
+  const existingScript = __CLIENT__ && document.getElementById(`tableauJS`);
   //replace script loaded on each version change
   if (existingScript) {
     existingScript.setAttribute(
@@ -7,7 +7,7 @@ const loadTableauScript = (callback, version) => {
       `https://public.tableau.com/javascripts/api/tableau-${version}.min.js`,
     );
   }
-  if (!existingScript) {
+  if (!existingScript && __CLIENT__) {
     const script = document.createElement('script');
     script.src = `https://public.tableau.com/javascripts/api/tableau-${version}.min.js`;
     script.id = `tableauJS`;

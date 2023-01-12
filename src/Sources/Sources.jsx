@@ -12,7 +12,6 @@ import './style.css';
 
 const SourcesWidget = ({ data }) => {
   const [expand, setExpand] = React.useState(true);
-
   return (
     <div>
       <a className="embed-sources-header" onClick={() => setExpand(!expand)}>

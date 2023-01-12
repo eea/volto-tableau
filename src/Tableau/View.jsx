@@ -206,12 +206,18 @@ const Tableau = (props) => {
   return (
     <div id="tableau-wrap">
       <div id="tableau-outer">
-        {loaded ? (
-          ''
+        {data && Object.keys(data).length > 0 ? (
+          <>
+            {loaded ? (
+              ''
+            ) : (
+              <div className="tableau-loader">
+                <span>Loading Tableau v{version}</span>
+              </div>
+            )}
+          </>
         ) : (
-          <div className="tableau-loader">
-            <span>Loading Tableau v{version}</span>
-          </div>
+          <div>No data present in that visualization.</div>
         )}
         <div
           className={cx('tableau', version, {

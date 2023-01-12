@@ -21,9 +21,20 @@ const View = (props) => {
 
   return (
     <>
-      <ConnectedTableau {...props.tableau_visualization} id={props.id} />
-      {with_sources &&
-        (props.mode !== 'edit' ? <Sources data={data.tableauSources} /> : '')}
+      {data?.vis_url ? (
+        <>
+          <ConnectedTableau {...props.tableau_visualization} id={props.id} />
+          {with_sources &&
+          data.tableauSources &&
+          props.tableau_visualization ? (
+            <Sources data={data.tableauSources} />
+          ) : (
+            <div>Data provenance is not set in the visualization</div>
+          )}
+        </>
+      ) : (
+        <div>Please select a visualization from block editor.</div>
+      )}
     </>
   );
 };

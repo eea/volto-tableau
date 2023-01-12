@@ -5,7 +5,7 @@ import { toast } from 'react-toastify';
 import { Toast } from '@plone/volto/components';
 import { setTableauApi } from '@eeacms/volto-tableau/actions';
 import cx from 'classnames';
-import { isMyScriptLoaded, loadTableauScript } from '../helpers';
+import { loadTableauScript } from '../helpers';
 
 const Tableau = (props) => {
   const ref = React.useRef(null);
@@ -36,7 +36,7 @@ const Tableau = (props) => {
   const url = props.url || defaultUrl;
 
   //load tableau from script tag
-  const tableau = isMyScriptLoaded(version) && __CLIENT__ ? window.tableau : '';
+  const tableau = loadTableauScript(() => {}, version);
 
   const onFilterChange = (filter) => {
     const newFilters = { ...filters.current };
@@ -186,6 +186,7 @@ const Tableau = (props) => {
     tableau,
     toolbarPosition,
     url,
+    version,
   ]);
 
   React.useEffect(() => {
@@ -205,6 +206,13 @@ const Tableau = (props) => {
   return (
     <div id="tableau-wrap">
       <div id="tableau-outer">
+        {loaded ? (
+          ''
+        ) : (
+          <div className="tableau-loader">
+            <span>Loading Tableau v{version}</span>
+          </div>
+        )}
         <div
           className={cx('tableau', version, {
             'tableau-scale': autoScale,

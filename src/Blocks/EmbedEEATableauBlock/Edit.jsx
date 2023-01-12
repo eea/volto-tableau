@@ -8,7 +8,7 @@ import { connect } from 'react-redux';
 import { compose } from 'redux';
 
 const Edit = (props) => {
-  const { data, block, onChangeBlock } = props;
+  const { data, block, onChangeBlock, id } = props;
   const schema = React.useMemo(() => Schema(props), [props]);
 
   React.useEffect(() => {
@@ -22,7 +22,7 @@ const Edit = (props) => {
 
   return (
     <>
-      <View data={data} mode="edit" />
+      <View data={data} id={id} />
       <SidebarPortal selected={props.selected}>
         <BlockDataForm
           block={block}

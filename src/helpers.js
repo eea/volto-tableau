@@ -20,7 +20,6 @@ const loadTableauScript = (callback, version) => {
   if (existingScript && callback) callback();
 
   const tableau = isMyScriptLoaded(version) && __CLIENT__ ? window.tableau : '';
-  console.log('loading the tableau script version:', version);
   return tableau;
 };
 

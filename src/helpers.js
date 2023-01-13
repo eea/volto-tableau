@@ -25,14 +25,16 @@ const loadTableauScript = (callback, version) => {
 
 const isMyScriptLoaded = (version) => {
   //check for loaded Tableau script in dom scripts
-  var scripts = document.getElementsByTagName('script');
-  for (var i = scripts.length; i--; ) {
-    // eslint-disable-next-line eqeqeq
-    if (
-      scripts[i].src ===
-      `https://public.tableau.com/javascripts/api/tableau-${version}.min.js`
-    )
-      return true;
+  var scripts = __CLIENT__ && document.getElementsByTagName('script');
+  if (scripts) {
+    for (var i = scripts.length; i--; ) {
+      // eslint-disable-next-line eqeqeq
+      if (
+        scripts[i].src ===
+        `https://public.tableau.com/javascripts/api/tableau-${version}.min.js`
+      )
+        return true;
+    }
   }
   return false;
 };

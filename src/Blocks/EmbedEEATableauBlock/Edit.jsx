@@ -45,8 +45,7 @@ export default compose(
   connect(
     (state, props) => ({
       block_data: state.content.data,
-      data_provenance:
-        state.content.subrequests?.[props.id]?.data?.data_provenance,
+      data_provenance: state.content.subrequests?.[props.id]?.data_provenance,
     }),
     {
       getContent,

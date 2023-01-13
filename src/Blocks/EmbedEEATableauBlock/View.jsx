@@ -1,5 +1,6 @@
 import React from 'react';
 import ConnectedTableau from '../../ConnectedTableau/ConnectedTableau';
+import { Sources } from '../../Sources';
 
 import { getContent } from '@plone/volto/actions';
 
@@ -24,9 +25,10 @@ const View = (props) => {
         <>
           <ConnectedTableau {...props.tableau_visualization} id={props.id} />
           {show_sources &&
-          data.tableauSources &&
+          props.data_provenance &&
+          props.data_provenance.data?.tableau_visualization_data.general?.url &&
           props.tableau_visualization ? (
-            ''
+            <Sources sources={props.data_provenance} />
           ) : show_sources ? (
             <div>Data provenance is not set in the visualization</div>
           ) : (
@@ -43,8 +45,7 @@ const View = (props) => {
 export default compose(
   connect(
     (state, props) => ({
-      data_provenance:
-        state.content.subrequests?.[props.id]?.data?.data_provenance,
+      data_provenance: state.content.subrequests?.[props.id],
       tableau_visualization:
         state.content.subrequests?.[props.id]?.data?.tableau_visualization_data,
     }),

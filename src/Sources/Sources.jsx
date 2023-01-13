@@ -21,18 +21,25 @@ const SourcesWidget = ({ sources }) => {
             title={expand ? 'Collapse' : 'Expand'}
             size="17px"
           />
-          Source:
+          Sources:
         </h3>
       </a>
       {expand && (
-        <li className="embed-source-param">
-          <UniversalLink
-            className="embed-sources-param-title"
-            href={sources?.data?.tableau_visualization_data?.general?.url}
-          >
-            {sources?.data?.tableau_visualization_data?.general?.url}
-          </UniversalLink>
-        </li>
+        <ul>
+          {sources &&
+            sources.data &&
+            sources.data.map((param, i) => (
+              <li key={i} className="embed-source-param">
+                <UniversalLink
+                  className="embed-sources-param-title"
+                  href={param.link}
+                >
+                  {param.title}
+                </UniversalLink>
+                , {param.organisation}
+              </li>
+            ))}
+        </ul>
       )}
     </div>
   );

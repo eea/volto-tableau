@@ -40,3 +40,14 @@ const isMyScriptLoaded = (version) => {
 };
 
 export { loadTableauScript, isMyScriptLoaded };
+
+//script url for each version. In case you might need to add them in the load balancer
+// https://public.tableau.com/javascripts/api/tableau-2.8.0.min.js
+// https://public.tableau.com/javascripts/api/tableau-2.7.0.min.js
+// https://public.tableau.com/javascripts/api/tableau-2.6.0.min.js
+// https://public.tableau.com/javascripts/api/tableau-2.5.0.min.js
+// https://public.tableau.com/javascripts/api/tableau-2.4.0.min.js
+// https://public.tableau.com/javascripts/api/tableau-2.3.0.min.js
+// https://public.tableau.com/javascripts/api/tableau-2.2.2.min.js
+// https://public.tableau.com/javascripts/api/tableau-2.1.2.min.js
+// https://public.tableau.com/javascripts/api/tableau-2.0.3.min.js

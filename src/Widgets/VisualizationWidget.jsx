@@ -53,6 +53,14 @@ const VisualizationWidget = (props) => {
   let schema = Schema(config);
 
   React.useEffect(() => {
+    if (!intValue?.general || !intValue?.general?.version) {
+      setIntValue({
+        ...intValue,
+        general: {
+          version: '2.8.0',
+        },
+      });
+    }
     if (!intValue?.options) {
       setIntValue({
         ...intValue,
@@ -111,18 +119,17 @@ const VisualizationWidget = (props) => {
                 tableauError ? (
                   <TableauNotDisplayed />
                 ) : (
-                  ''
+                  <div className="tableau-container">
+                    <TableauView
+                      setTableauError={setTableauError}
+                      data={{
+                        ...intValue?.general,
+                        ...intValue?.options,
+                        ...intValue?.extraOptions,
+                      }}
+                    />
+                  </div>
                 )}
-                <div className="tableau-container">
-                  <TableauView
-                    setTableauError={setTableauError}
-                    data={{
-                      ...intValue?.general,
-                      ...intValue?.options,
-                      ...intValue?.extraOptions,
-                    }}
-                  />
-                </div>
               </Grid.Column>
             </Grid>
           </Modal.Content>
@@ -144,15 +151,17 @@ const VisualizationWidget = (props) => {
       tableauError ? (
         <TableauNotDisplayed />
       ) : (
-        ''
+        <TableauView
+          setTableauError={setTableauError}
+          data={{
+            ...value?.general,
+            ...value?.options,
+            ...value?.extraOptions,
+          }}
+        />
       )}
-
-      <TableauView
-        setTableauError={setTableauError}
-        data={{ ...value?.general, ...value?.options, ...value?.extraOptions }}
-      />
     </FormFieldWrapper>
   );
 };
 
-export default VisualizationWidget;
+export default React.memo(VisualizationWidget);

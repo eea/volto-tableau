@@ -1,6 +1,10 @@
 import React from 'react';
 import ConnectedTableau from '../../ConnectedTableau/ConnectedTableau';
 import { Sources } from '../../Sources';
+import { PrivacyProtection } from '@eeacms/volto-embed';
+
+import { StyleWrapperView } from '@eeacms/volto-block-style/StyleWrapper';
+import cx from 'classnames';
 
 import { getContent } from '@plone/volto/actions';
 
@@ -8,7 +12,8 @@ import { connect } from 'react-redux';
 import { compose } from 'redux';
 
 const View = (props) => {
-  const { data, data_provenance, tableau_visualization } = props || {};
+  const { data_provenance, tableau_visualization } = props || {};
+  const data = React.useMemo(() => props.data || {}, [props.data]);
   const { vis_url = '' } = data;
   const show_sources = data?.show_sources ?? false;
 
@@ -20,25 +25,52 @@ const View = (props) => {
   }, [vis_url]);
 
   return (
-    <>
-      {data?.vis_url ? (
-        <>
-          <ConnectedTableau {...props.tableau_visualization} id={props.id} />
-          {show_sources &&
-          data_provenance &&
-          data_provenance?.data?.data_provenance &&
-          tableau_visualization ? (
-            <Sources sources={data_provenance.data.data_provenance} />
-          ) : show_sources ? (
-            <div>Data provenance is not set in the visualization</div>
-          ) : (
-            ''
-          )}
-        </>
-      ) : (
-        <div>Please select a visualization from block editor.</div>
-      )}
-    </>
+    <StyleWrapperView
+      {...props}
+      data={data}
+      styleData={{
+        ...data.styles,
+        customClass: cx(data.styles?.customClass || '', 'embed-container'),
+      }}
+    >
+      <PrivacyProtection data={data} {...props}>
+        {data?.vis_url ? (
+          <>
+            <div className="tableau-block">
+              {props.mode === 'edit' ? (
+                <div className="tableau-info">
+                  <h3 className="tableau-version">
+                    == Tableau{' '}
+                    {tableau_visualization?.general?.version || '2.8.0'} loaded
+                    ==
+                  </h3>
+                </div>
+              ) : (
+                ''
+              )}
+              <ConnectedTableau
+                {...props.tableau_visualization}
+                id={props.id}
+                {...props}
+              />
+            </div>
+
+            {show_sources &&
+            data_provenance &&
+            data_provenance?.data?.data_provenance &&
+            tableau_visualization ? (
+              <Sources sources={data_provenance.data.data_provenance} />
+            ) : show_sources ? (
+              <div>Data provenance is not set in the visualization</div>
+            ) : (
+              ''
+            )}
+          </>
+        ) : (
+          <div>Please select a visualization from block editor.</div>
+        )}
+      </PrivacyProtection>
+    </StyleWrapperView>
   );
 };
 
@@ -53,4 +85,4 @@ export default compose(
       getContent,
     },
   ),
-)(View);
+)(React.memo(View));

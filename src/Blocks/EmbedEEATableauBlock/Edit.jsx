@@ -4,11 +4,16 @@ import { SidebarPortal } from '@plone/volto/components';
 import { getContent } from '@plone/volto/actions';
 import View from './View';
 import Schema from './schema';
+
+import { BlockStyleWrapperEdit } from '@eeacms/volto-block-style/BlockStyleWrapper';
+import cx from 'classnames';
+
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 
 const Edit = (props) => {
-  const { data, block, onChangeBlock, id } = props;
+  const { block, onChangeBlock, id } = props;
+  const data = React.useMemo(() => props.data || {}, [props.data]);
   const schema = React.useMemo(() => Schema(props), [props]);
 
   React.useEffect(() => {
@@ -21,8 +26,21 @@ const Edit = (props) => {
   }, [block, data, onChangeBlock]);
 
   return (
-    <>
-      <View data={data} id={id} />
+    <BlockStyleWrapperEdit
+      {...props}
+      role="presentation"
+      data={{
+        ...(props.data || {}),
+        styles: {
+          ...(props.data?.styles || {}),
+          customClass: cx(
+            props.data?.styles?.customClass || '',
+            'custom-embed-class',
+          ),
+        },
+      }}
+    >
+      <View {...props} data={data} id={id} mode="edit" />
       <SidebarPortal selected={props.selected}>
         <BlockDataForm
           block={block}
@@ -37,7 +55,7 @@ const Edit = (props) => {
           formData={data}
         />
       </SidebarPortal>
-    </>
+    </BlockStyleWrapperEdit>
   );
 };
 
@@ -51,4 +69,4 @@ export default compose(
       getContent,
     },
   ),
-)(Edit);
+)(React.memo(Edit));

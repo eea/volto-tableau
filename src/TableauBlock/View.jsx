@@ -69,7 +69,7 @@ const View = (props) => {
     <div className="tableau-block">
       {props.mode === 'edit' ? (
         <div className="tableau-info">
-          <h3 className="tableau-version">== Tableau {version} ==</h3>
+          <h3 className="tableau-version">== Tableau {version} loaded ==</h3>
           {!props.data.url ? <p className="tableau-error">URL required</p> : ''}
           {error ? <p className="tableau-error">{error}</p> : ''}
         </div>

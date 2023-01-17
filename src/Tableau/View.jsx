@@ -212,7 +212,11 @@ const Tableau = (props) => {
               ''
             ) : (
               <div className="tableau-loader">
-                <span>Loading Tableau v{version}</span>
+                <span>
+                  {mode === 'edit'
+                    ? 'Loading...'
+                    : `Loading Tableau v${version}`}
+                </span>
               </div>
             )}
           </>

@@ -14,6 +14,7 @@ const ConnectedTableau = (props) => {
         data={{ ...props?.general, ...props?.options, ...props?.extraOptions }}
         url={props?.general?.url}
         version={props?.general?.version}
+        {...props}
       />
     </div>
   );

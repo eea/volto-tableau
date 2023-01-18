@@ -34,13 +34,14 @@ const View = (props) => {
     description = null,
     autoScale = false,
   } = data;
-  const version =
-    props.data.version || config.settings.tableauVersion || '2.8.0';
+  const version = props.data.version || config.settings.tableauVersion;
   const device = getDevice(config, screen.page?.width || Infinity);
   const breakpointUrl = breakpointUrls.filter(
     (breakpoint) => breakpoint.device === device,
   )[0]?.url;
   const url = breakpointUrl || data.url;
+
+  const displayCondition = url && version;
 
   React.useEffect(() => {
     setMounted(true);
@@ -67,33 +68,39 @@ const View = (props) => {
 
   return mounted ? (
     <div className="tableau-block">
-      {props.mode === 'edit' ? (
-        <div className="tableau-info">
+      <div className="tableau-info">
+        {displayCondition && props.mode === 'edit' ? (
           <h3 className="tableau-version">== Tableau {version} loaded ==</h3>
-          {!props.data.url ? <p className="tableau-error">URL required</p> : ''}
-          {error ? <p className="tableau-error">{error}</p> : ''}
-        </div>
-      ) : (
-        ''
-      )}
+        ) : null}
+        {!url ? <p className="tableau-error">URL required</p> : ''}
+        {url && !version ? (
+          <p className="tableau-error">Version required</p>
+        ) : (
+          ''
+        )}
+        {error ? <p className="tableau-error">{error}</p> : ''}
+      </div>
+
       {loaded && title ? <h3 className="tableau-title">{title}</h3> : ''}
       {loaded && description ? (
         <p className="tableau-description">{description}</p>
       ) : (
         ''
       )}
-      <Tableau
-        {...props}
-        canUpdateUrl={!breakpointUrl}
-        extraFilters={extraFilters}
-        extraOptions={{ device: autoScale ? 'desktop' : device }}
-        error={error}
-        loaded={loaded}
-        setError={setError}
-        setLoaded={setLoaded}
-        version={version}
-        url={url}
-      />
+      {displayCondition ? (
+        <Tableau
+          {...props}
+          canUpdateUrl={!breakpointUrl}
+          extraFilters={extraFilters}
+          extraOptions={{ device: autoScale ? 'desktop' : device }}
+          error={error}
+          loaded={loaded}
+          setError={setError}
+          setLoaded={setLoaded}
+          version={version}
+          url={url}
+        />
+      ) : null}
     </div>
   ) : (
     ''

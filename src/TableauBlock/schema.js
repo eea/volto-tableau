@@ -82,7 +82,7 @@ export default (config) => ({
           '2.0.3',
         ].map((version) => [version, `tableau-${version}`]),
       ],
-      default: config.settings.tableauVersion || '2.8.0',
+      default: config.settings.tableauVersion,
     },
     url: {
       title: 'Url',

@@ -5,6 +5,7 @@ import EmbedTableauView from './Blocks/EmbedEEATableauBlock/View';
 import EmbedTableauEdit from './Blocks/EmbedEEATableauBlock/Edit';
 import { VisualizationView } from './Views';
 import { VisualizationWidget } from './Widgets';
+import UrlParamsWidget from './CustomWidgets/UrlParamsWidget';
 
 import tableauStore from './store';
 
@@ -72,6 +73,7 @@ const applyConfig = (config) => {
 
   config.views.contentTypesViews.tableau_visualization = VisualizationView;
   config.widgets.id.tableau_visualization_data = VisualizationWidget;
+  config.widgets.widget.url_params_widget = UrlParamsWidget;
 
   return config;
 };

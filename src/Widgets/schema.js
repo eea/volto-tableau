@@ -27,7 +27,7 @@ const generalSchema = (config) => {
             '2.0.3',
           ].map((version) => [version, `tableau-${version}`]),
         ],
-        default: config.settings.tableauVersion || '2.8.0',
+        default: config.settings.tableauVersion,
       },
       url: {
         title: 'Url',
@@ -92,7 +92,11 @@ const optionsSchema = {
 const urlParametersSchema = {
   title: 'Parameter',
   fieldsets: [
-    { id: 'default', title: 'Default', fields: ['field', 'urlParam'] },
+    {
+      id: 'default',
+      title: 'Default',
+      fields: ['field', 'urlParam'],
+    },
   ],
   properties: {
     field: {
@@ -139,7 +143,7 @@ const extraOptionsSchema = (config) => {
       {
         id: 'default',
         title: 'Extra Options Data',
-        fields: ['urlParameters', 'breakpointUrls'],
+        fields: ['urlParameters', 'availableFields', 'breakpointUrls'],
       },
     ],
 
@@ -149,6 +153,10 @@ const extraOptionsSchema = (config) => {
         widget: 'object_list',
         schema: urlParametersSchema,
         description: 'Set a list of url parameters to filter the tableau',
+      },
+      availableFields: {
+        title: 'Available Fields:',
+        widget: 'url_params_widget',
       },
       breakpointUrls: {
         title: 'Breakpoint urls',

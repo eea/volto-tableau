@@ -36,34 +36,41 @@ const View = (props) => {
       <PrivacyProtection data={data} {...props}>
         {data?.vis_url ? (
           <>
-            <div className="tableau-block">
-              {props.mode === 'edit' ? (
-                <div className="tableau-info">
-                  <h3 className="tableau-version">
-                    == Tableau{' '}
-                    {tableau_visualization?.general?.version || '2.8.0'} loaded
-                    ==
-                  </h3>
+            {tableau_visualization?.general?.url &&
+            tableau_visualization?.general?.version ? (
+              <>
+                <div className="tableau-block">
+                  {props.mode === 'edit' ? (
+                    <div className="tableau-info">
+                      <h3 className="tableau-version">
+                        == Tableau {tableau_visualization?.general?.version}{' '}
+                        loaded ==
+                      </h3>
+                    </div>
+                  ) : (
+                    ''
+                  )}
+                  <ConnectedTableau
+                    {...props.tableau_visualization}
+                    id={props.id}
+                    {...props}
+                  />
                 </div>
-              ) : (
-                ''
-              )}
-              <ConnectedTableau
-                {...props.tableau_visualization}
-                id={props.id}
-                {...props}
-              />
-            </div>
-
-            {show_sources &&
-            data_provenance &&
-            data_provenance?.data?.data_provenance &&
-            tableau_visualization ? (
-              <Sources sources={data_provenance.data.data_provenance} />
-            ) : show_sources ? (
-              <div>Data provenance is not set in the visualization</div>
+                {show_sources &&
+                data_provenance &&
+                data_provenance?.data?.data_provenance &&
+                tableau_visualization ? (
+                  <Sources sources={data_provenance.data.data_provenance} />
+                ) : show_sources ? (
+                  <div>Data provenance is not set in the visualization</div>
+                ) : (
+                  ''
+                )}
+              </>
+            ) : !tableau_visualization?.general?.url ? (
+              <div>Url is not set in the visualization</div>
             ) : (
-              ''
+              <div>Version is not set in the visualization</div>
             )}
           </>
         ) : (

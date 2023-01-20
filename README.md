@@ -16,6 +16,10 @@
 
 [Volto](https://github.com/plone/volto) add-on
 
+## Tableau
+
+Registers a VisualizationView component for a content type named 'tableau_visualization'.
+
 ## Features
 
 Demo GIF
@@ -155,6 +159,23 @@ Generic command, does not automatically add the `beta` to version, but you can s
 
 > Do not keep Pull Requests from develop to master branches open when you are doing beta releases from the develop branch. As long as a PR to master is open, an automatic script will run on every commit and will update both the version and the changelog to a production-ready state - ( MAJOR.MINOR.PATCH mandatory format for version).
 
+## Enable Sources
+
+https://github.com/eea/eea.coremetadata EEA Core Metadata addon is needed. 
+
+Sources (Data provenance) should be set on the visualization. To enable this, "EEA Core Metadata" should be checked as behavior on the visualization content-type.
+
+      controlpanel/dexterity-types/tableau_visualization
+
+After this, sources can be added from the visualization edit interface. "EEA core metadata" tab => "Add source"
+
+
+## Add a Tableau Visualization
+
+1. Add the corresponding content-type. Project should also contain https://github.com/eea/eea.api.dataconnector which hosts the content-type. 
+2. Fill in the mandatory fields
+3. "Tableau Widget" section => "Open Tableau Editor"
+4. Provide the necessary settings to create the visualization
 
 ## How to contribute
 

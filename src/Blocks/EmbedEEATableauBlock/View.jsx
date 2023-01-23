@@ -16,6 +16,7 @@ const View = (props) => {
   const data = React.useMemo(() => props.data || {}, [props.data]);
   const { vis_url = '' } = data;
   const show_sources = data?.show_sources ?? false;
+  const version = '2.8.0';
 
   React.useEffect(() => {
     if (vis_url) {
@@ -36,15 +37,13 @@ const View = (props) => {
       <PrivacyProtection data={data} {...props}>
         {data?.vis_url ? (
           <>
-            {tableau_visualization?.general?.url &&
-            tableau_visualization?.general?.version ? (
+            {tableau_visualization?.general?.url ? (
               <>
                 <div className="tableau-block">
                   {props.mode === 'edit' ? (
                     <div className="tableau-info">
                       <h3 className="tableau-version">
-                        == Tableau {tableau_visualization?.general?.version}{' '}
-                        loaded ==
+                        == Tableau {version} loaded ==
                       </h3>
                     </div>
                   ) : (
@@ -69,9 +68,7 @@ const View = (props) => {
               </>
             ) : !tableau_visualization?.general?.url ? (
               <div>Url is not set in the visualization</div>
-            ) : (
-              <div>Version is not set in the visualization</div>
-            )}
+            ) : null}
           </>
         ) : (
           <div>Please select a visualization from block editor.</div>

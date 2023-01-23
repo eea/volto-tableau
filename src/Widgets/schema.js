@@ -1,41 +1,21 @@
-const generalSchema = (config) => {
-  return {
-    title: 'General',
+const generalSchema = {
+  title: 'General',
 
-    fieldsets: [
-      {
-        id: 'general',
-        title: 'General',
-        fields: ['version', 'url'],
-      },
-    ],
-
-    properties: {
-      version: {
-        title: 'Version',
-        type: 'array',
-        choices: [
-          ...[
-            '2.8.0',
-            '2.7.0',
-            '2.6.0',
-            '2.5.0',
-            '2.4.0',
-            '2.3.0',
-            '2.2.2',
-            '2.1.2',
-            '2.0.3',
-          ].map((version) => [version, `tableau-${version}`]),
-        ],
-        default: config.settings.tableauVersion,
-      },
-      url: {
-        title: 'Url',
-        type: 'textarea',
-      },
+  fieldsets: [
+    {
+      id: 'general',
+      title: 'General',
+      fields: ['url'],
     },
-    required: ['url', 'version'],
-  };
+  ],
+
+  properties: {
+    url: {
+      title: 'Url',
+      type: 'textarea',
+    },
+  },
+  required: ['url'],
 };
 
 const optionsSchema = {
@@ -186,7 +166,7 @@ export default (config) => {
         schemas: [
           {
             id: 'general',
-            schema: generalSchema(config),
+            schema: generalSchema,
           },
           {
             id: 'options',

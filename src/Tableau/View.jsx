@@ -23,7 +23,7 @@ const Tableau = (props) => {
     screen = {},
     setError = () => {},
     setLoaded = () => {},
-    version = '',
+    version = '2.8.0',
   } = props;
   const {
     autoScale = false,

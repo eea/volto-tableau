@@ -28,17 +28,19 @@ const SourcesWidget = ({ sources }) => {
         <ul>
           {sources &&
             sources.data &&
-            sources.data.map((param, i) => (
-              <li key={i} className="embed-source-param">
-                <UniversalLink
-                  className="embed-sources-param-title"
-                  href={param.link}
-                >
-                  {param.title}
-                </UniversalLink>
-                , {param.organisation}
-              </li>
-            ))}
+            sources.data.map((param, i) =>
+              param.link ? (
+                <li key={i} className="embed-source-param">
+                  <UniversalLink
+                    className="embed-sources-param-title"
+                    href={param.link}
+                  >
+                    {param.title}
+                  </UniversalLink>
+                  , {param.organisation}
+                </li>
+              ) : null,
+            )}
         </ul>
       )}
     </div>

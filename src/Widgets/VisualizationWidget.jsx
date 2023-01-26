@@ -53,14 +53,6 @@ const VisualizationWidget = (props) => {
   let schema = Schema(config);
 
   React.useEffect(() => {
-    // if (!intValue?.general) {
-    //   setIntValue({
-    //     ...intValue,
-    //     general: {
-    //       url: intValue?.general?.url,
-    //     },
-    //   });
-    // }
     if (!intValue?.options) {
       setIntValue({
         ...intValue,

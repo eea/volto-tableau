@@ -39,7 +39,6 @@ const View = (props) => {
     (breakpoint) => breakpoint.device === device,
   )[0]?.url;
   const url = breakpointUrl || data.url;
-  const version = '2.8.0';
 
   React.useEffect(() => {
     setMounted(true);
@@ -67,8 +66,8 @@ const View = (props) => {
   return mounted ? (
     <div className="tableau-block">
       <div className="tableau-info">
-        {url && props.mode === 'edit' ? (
-          <h3 className="tableau-version">== Tableau {version} loaded ==</h3>
+        {loaded && url && props.mode === 'edit' ? (
+          <h3 className="tableau-version">== Tableau ==</h3>
         ) : null}
         {!url ? <p className="tableau-error">URL required</p> : ''}
         {error ? <p className="tableau-error">{error}</p> : ''}
@@ -90,7 +89,6 @@ const View = (props) => {
           loaded={loaded}
           setError={setError}
           setLoaded={setLoaded}
-          version={version}
           url={url}
         />
       ) : null}

@@ -16,7 +16,6 @@ const View = (props) => {
   const data = React.useMemo(() => props.data || {}, [props.data]);
   const { vis_url = '' } = data;
   const show_sources = data?.show_sources ?? false;
-  const version = '2.8.0';
 
   React.useEffect(() => {
     if (vis_url) {
@@ -39,22 +38,12 @@ const View = (props) => {
           <>
             {tableau_visualization?.general?.url ? (
               <>
-                <div className="tableau-block">
-                  {props.mode === 'edit' ? (
-                    <div className="tableau-info">
-                      <h3 className="tableau-version">
-                        == Tableau {version} loaded ==
-                      </h3>
-                    </div>
-                  ) : (
-                    ''
-                  )}
-                  <ConnectedTableau
-                    {...props.tableau_visualization}
-                    id={props.id}
-                    {...props}
-                  />
-                </div>
+                <ConnectedTableau
+                  {...props.tableau_visualization}
+                  id={props.id}
+                  {...props}
+                />
+
                 {show_sources &&
                 data_provenance &&
                 data_provenance?.data?.data_provenance &&

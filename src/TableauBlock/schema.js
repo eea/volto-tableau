@@ -46,7 +46,7 @@ export default (config) => ({
     {
       id: 'default',
       title: 'Default',
-      fields: ['version', 'url', 'title', 'description'],
+      fields: ['url', 'title', 'description'],
     },
     {
       id: 'options',
@@ -66,24 +66,6 @@ export default (config) => ({
     },
   ],
   properties: {
-    version: {
-      title: 'Version',
-      type: 'array',
-      choices: [
-        ...[
-          '2.8.0',
-          '2.7.0',
-          '2.6.0',
-          '2.5.0',
-          '2.4.0',
-          '2.3.0',
-          '2.2.2',
-          '2.1.2',
-          '2.0.3',
-        ].map((version) => [version, `tableau-${version}`]),
-      ],
-      default: config.settings.tableauVersion,
-    },
     url: {
       title: 'Url',
       widget: 'textarea',
@@ -138,5 +120,5 @@ export default (config) => ({
       description: 'Set different vizualization for specific breakpoint',
     },
   },
-  required: ['version', 'url'],
+  required: ['url'],
 });

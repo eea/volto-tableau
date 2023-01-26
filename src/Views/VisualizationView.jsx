@@ -12,8 +12,6 @@ const VisualizationView = (props) => {
         <div className="tableau-info">
           {!tableau_visualization_data.general?.url ? (
             <p className="tableau-error">URL required</p>
-          ) : !tableau_visualization_data.general?.version ? (
-            <p className="tableau-error">Version required</p>
           ) : tableauError ? (
             <p className="tableau-error">{tableauError}</p>
           ) : (
@@ -25,9 +23,7 @@ const VisualizationView = (props) => {
   };
   return (
     <div>
-      {!tableau_visualization_data?.general?.url ||
-      !tableau_visualization_data?.general?.version ||
-      tableauError ? (
+      {!tableau_visualization_data?.general?.url || tableauError ? (
         <TableauNotDisplayed />
       ) : (
         <TableauView

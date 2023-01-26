@@ -36,26 +36,14 @@ const View = (props) => {
       <PrivacyProtection data={data} {...props}>
         {data?.vis_url ? (
           <>
-            {tableau_visualization?.general?.url &&
-            tableau_visualization?.general?.version ? (
+            {tableau_visualization?.general?.url ? (
               <>
-                <div className="tableau-block">
-                  {props.mode === 'edit' ? (
-                    <div className="tableau-info">
-                      <h3 className="tableau-version">
-                        == Tableau {tableau_visualization?.general?.version}{' '}
-                        loaded ==
-                      </h3>
-                    </div>
-                  ) : (
-                    ''
-                  )}
-                  <ConnectedTableau
-                    {...props.tableau_visualization}
-                    id={props.id}
-                    {...props}
-                  />
-                </div>
+                <ConnectedTableau
+                  {...props.tableau_visualization}
+                  id={props.id}
+                  {...props}
+                />
+
                 {show_sources &&
                 data_provenance &&
                 data_provenance?.data?.data_provenance &&
@@ -69,9 +57,7 @@ const View = (props) => {
               </>
             ) : !tableau_visualization?.general?.url ? (
               <div>Url is not set in the visualization</div>
-            ) : (
-              <div>Version is not set in the visualization</div>
-            )}
+            ) : null}
           </>
         ) : (
           <div>Please select a visualization from block editor.</div>

@@ -6,6 +6,9 @@ import { Toast } from '@plone/volto/components';
 import { setTableauApi } from '@eeacms/volto-tableau/actions';
 import cx from 'classnames';
 import { loadTableauScript } from '../helpers';
+import TableauDownload from '../DownloadExtras/TableauDownload';
+import TableauShare from '../DownloadExtras/TableauShare';
+import '../DownloadExtras/style.less';
 
 const Tableau = (props) => {
   const ref = React.useRef(null);
@@ -23,7 +26,7 @@ const Tableau = (props) => {
     screen = {},
     setError = () => {},
     setLoaded = () => {},
-    version = '',
+    version = '2.8.0',
   } = props;
   const {
     autoScale = false,
@@ -212,23 +215,29 @@ const Tableau = (props) => {
               ''
             ) : (
               <div className="tableau-loader">
-                <span>
-                  {mode === 'edit'
-                    ? 'Loading...'
-                    : `Loading Tableau v${version}`}
-                </span>
+                <span>Loading...</span>
               </div>
             )}
           </>
         ) : (
           <div>No data present in that visualization.</div>
         )}
-        <div
-          className={cx('tableau', version, {
-            'tableau-scale': autoScale,
-          })}
-          ref={ref}
-        />
+        <div className="dashboard-wrapper">
+          <div className="tableau-block">
+            {viz ? (
+              <div className="tableau-icons">
+                <TableauDownload {...props} viz={viz} />
+                <TableauShare {...props} viz={viz} data={{ url: url }} />
+              </div>
+            ) : null}
+            <div
+              className={cx('tableau', version, {
+                'tableau-scale': autoScale,
+              })}
+              ref={ref}
+            />
+          </div>
+        </div>
       </div>
     </div>
   );

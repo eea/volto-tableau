@@ -40,8 +40,6 @@ const VisualizationWidget = (props) => {
         <div className="tableau-info">
           {intValue && intValue.general && !intValue.general.url ? (
             <p className="tableau-error">URL required</p>
-          ) : intValue && intValue.general && !intValue.general.version ? (
-            <p className="tableau-error">Version required</p>
           ) : tableauError ? (
             <p className="tableau-error">{tableauError}</p>
           ) : (
@@ -55,15 +53,6 @@ const VisualizationWidget = (props) => {
   let schema = Schema(config);
 
   React.useEffect(() => {
-    if (!intValue?.general || !intValue?.general?.version) {
-      setIntValue({
-        ...intValue,
-        general: {
-          url: intValue?.general?.url,
-          version: '',
-        },
-      });
-    }
     if (!intValue?.options) {
       setIntValue({
         ...intValue,
@@ -118,9 +107,7 @@ const VisualizationWidget = (props) => {
                 />
               </Grid.Column>
               <Grid.Column mobile={12} tablet={12} computer={7}>
-                {(intValue &&
-                  intValue.general &&
-                  (!intValue.general.url || !intValue.general.version)) ||
+                {(intValue && intValue.general && !intValue.general.url) ||
                 tableauError ? (
                   <TableauNotDisplayed />
                 ) : (
@@ -152,9 +139,7 @@ const VisualizationWidget = (props) => {
           </Modal.Actions>
         </Modal>
       )}
-      {(intValue &&
-        intValue.general &&
-        (!intValue.general.url || !intValue.general.version)) ||
+      {(intValue && intValue.general && !intValue.general.url) ||
       tableauError ? (
         <TableauNotDisplayed />
       ) : (

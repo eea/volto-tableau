@@ -6,6 +6,13 @@ const ConnectedTableau = (props) => {
   const [loaded, setLoaded] = React.useState(null);
   return (
     <div className="tableau-block">
+      {loaded && props.mode === 'edit' ? (
+        <div className="tableau-info">
+          <h3 className="tableau-version">== Tableau ==</h3>
+        </div>
+      ) : (
+        ''
+      )}
       <Tableau
         error={error}
         loaded={loaded}
@@ -13,7 +20,6 @@ const ConnectedTableau = (props) => {
         setLoaded={setLoaded}
         data={{ ...props?.general, ...props?.options, ...props?.extraOptions }}
         url={props?.general?.url}
-        version={props?.general?.version}
         {...props}
       />
     </div>

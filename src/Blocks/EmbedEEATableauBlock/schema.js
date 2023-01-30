@@ -40,7 +40,7 @@ const ProtectionSchema = () => ({
   required: [],
 });
 
-const Schema = (props) => {
+const Schema = () => {
   return {
     title: 'Embed EEA Tableau',
     fieldsets: [

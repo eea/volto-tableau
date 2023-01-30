@@ -40,10 +40,8 @@ const VisualizationWidget = (props) => {
         <div className="tableau-info">
           {intValue && intValue.general && !intValue.general.url ? (
             <p className="tableau-error">URL required</p>
-          ) : tableauError ? (
-            <p className="tableau-error">{tableauError}</p>
           ) : (
-            ''
+            tableauError && <p className="tableau-error">{tableauError}</p>
           )}
         </div>
       </div>
@@ -100,8 +98,8 @@ const VisualizationWidget = (props) => {
                 <InlineForm
                   block={block}
                   schema={schema}
-                  onChangeField={(id, value) => {
-                    handleChangeField(value);
+                  onChangeField={(_id, _value) => {
+                    handleChangeField(_value);
                   }}
                   formData={dataForm}
                 />

@@ -9,6 +9,7 @@ import { loadTableauScript } from '../helpers';
 import TableauDownload from '../DownloadExtras/TableauDownload';
 import TableauShare from '../DownloadExtras/TableauShare';
 import '../DownloadExtras/style.less';
+import noop from 'lodash/noop';
 
 const Tableau = (props) => {
   const ref = React.useRef(null);
@@ -24,8 +25,8 @@ const Tableau = (props) => {
     loaded = false,
     mode = 'view',
     screen = {},
-    setError = () => {},
-    setLoaded = () => {},
+    setError = noop,
+    setLoaded = noop,
     version = '2.8.0',
   } = props;
   const {
@@ -39,7 +40,7 @@ const Tableau = (props) => {
   const url = props.url || defaultUrl;
 
   //load tableau from script tag
-  const tableau = loadTableauScript(() => {}, version);
+  const tableau = loadTableauScript(noop, version);
 
   const onFilterChange = (filter) => {
     const newFilters = { ...filters.current };
@@ -116,18 +117,18 @@ const Tableau = (props) => {
     }
   };
 
-  const addExtraFilters = (extraFilters) => {
+  const addExtraFilters = (_extraFilters) => {
     const worksheets = viz.getWorkbook().getActiveSheet().getWorksheets() || [];
 
     worksheets.forEach((worksheet) => {
       if (worksheet.getSheetType() === tableau.DashboardObjectType.WORKSHEET) {
-        Object.keys(extraFilters).forEach((filter) => {
-          if (!extraFilters[filter]) {
+        Object.keys(_extraFilters).forEach((filter) => {
+          if (!_extraFilters[filter]) {
             worksheet.clearFilterAsync(filter);
           } else {
             worksheet.applyFilterAsync(
               filter,
-              extraFilters[filter],
+              _extraFilters[filter],
               tableau.FilterUpdateType.REPLACE,
             );
           }
@@ -138,14 +139,14 @@ const Tableau = (props) => {
 
   const updateScale = () => {
     const tableauWrapper = ref.current;
-    const tableau = tableauWrapper?.querySelector('iframe');
+    const _tableau = tableauWrapper?.querySelector('iframe');
     if (mounted.current && viz && tableauWrapper && tableau) {
       const { sheetSize = {} } = viz.getVizSize() || {};
       const vizWidth = sheetSize?.minSize?.width || 1;
       const vizHeight = sheetSize?.minSize?.height || 0;
       const scale = Math.min(tableauWrapper.clientWidth / vizWidth, 1);
-      tableau.style.transform = `scale(${scale})`;
-      tableau.style.width = `${100 / scale}%`;
+      _tableau.style.transform = `scale(${scale})`;
+      _tableau.style.width = `${100 / scale}%`;
       tableauWrapper.style.height = `${scale * vizHeight}px`;
     }
   };
@@ -165,7 +166,7 @@ const Tableau = (props) => {
       props.setTableauApi(version, props.mode);
     }
     if (__CLIENT__) {
-      loadTableauScript(() => {}, version);
+      loadTableauScript(noop, version);
     }
     /* eslint-disable-next-line */
   }, [version]);
@@ -211,9 +212,7 @@ const Tableau = (props) => {
       <div id="tableau-outer">
         {data && Object.keys(data).length > 0 ? (
           <>
-            {loaded ? (
-              ''
-            ) : (
+            {!loaded && (
               <div className="tableau-loader">
                 <span>Loading...</span>
               </div>
@@ -224,12 +223,12 @@ const Tableau = (props) => {
         )}
         <div className="dashboard-wrapper">
           <div className="tableau-block">
-            {viz ? (
+            {viz && (
               <div className="tableau-icons">
                 <TableauDownload {...props} viz={viz} />
                 <TableauShare {...props} viz={viz} data={{ url: url }} />
               </div>
-            ) : null}
+            )}
             <div
               className={cx('tableau', version, {
                 'tableau-scale': autoScale,
@@ -245,7 +244,7 @@ const Tableau = (props) => {
 
 export default compose(
   connect(
-    (state, props) => ({
+    (state) => ({
       tableau: state.tableau,
       screen: state.screen,
     }),

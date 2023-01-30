@@ -10,7 +10,7 @@ import downKeySVG from '@plone/volto/icons/down-key.svg';
 
 import './style.css';
 
-const SourcesWidget = ({ sources }) => {
+const Sources = ({ sources }) => {
   const [expand, setExpand] = React.useState(true);
   return (
     <div>
@@ -47,4 +47,4 @@ const SourcesWidget = ({ sources }) => {
   );
 };
 
-export default SourcesWidget;
+export default Sources;

@@ -49,15 +49,15 @@ const View = (props) => {
                 data_provenance?.data?.data_provenance &&
                 tableau_visualization ? (
                   <Sources sources={data_provenance.data.data_provenance} />
-                ) : show_sources ? (
-                  <div>Data provenance is not set in the visualization</div>
                 ) : (
-                  ''
+                  show_sources && (
+                    <div>Data provenance is not set in the visualization</div>
+                  )
                 )}
               </>
-            ) : !tableau_visualization?.general?.url ? (
+            ) : (
               <div>Url is not set in the visualization</div>
-            ) : null}
+            )}
           </>
         ) : (
           <div>Please select a visualization from block editor.</div>

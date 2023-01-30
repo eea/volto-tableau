@@ -7,8 +7,8 @@ import config from '@plone/volto/registry';
 import qs from 'querystring';
 import '@eeacms/volto-tableau/less/tableau.less';
 
-const getDevice = (config, width) => {
-  const breakpoints = config.blocks.blocksConfig.tableau_block.breakpoints;
+const getDevice = (_config, width) => {
+  const breakpoints = _config.blocks.blocksConfig.tableau_block.breakpoints;
   let device = 'default';
   Object.keys(breakpoints).forEach((breakpoint) => {
     if (
@@ -63,23 +63,23 @@ const View = (props) => {
     /* eslint-disable-next-line */
   }, [JSON.stringify(query), JSON.stringify(urlParameters)]);
 
-  return mounted ? (
+  if (!mounted) return '';
+
+  return (
     <div className="tableau-block">
       <div className="tableau-info">
-        {loaded && url && props.mode === 'edit' ? (
+        {loaded && url && props.mode === 'edit' && (
           <h3 className="tableau-version">== Tableau ==</h3>
-        ) : null}
-        {!url ? <p className="tableau-error">URL required</p> : ''}
-        {error ? <p className="tableau-error">{error}</p> : ''}
+        )}
+        {!url && <p className="tableau-error">URL required</p>}
+        {error && <p className="tableau-error">{error}</p>}
       </div>
 
-      {loaded && title ? <h3 className="tableau-title">{title}</h3> : ''}
-      {loaded && description ? (
+      {loaded && title && <h3 className="tableau-title">{title}</h3>}
+      {loaded && description && (
         <p className="tableau-description">{description}</p>
-      ) : (
-        ''
       )}
-      {url ? (
+      {url && (
         <Tableau
           {...props}
           canUpdateUrl={!breakpointUrl}
@@ -91,15 +91,13 @@ const View = (props) => {
           setLoaded={setLoaded}
           url={url}
         />
-      ) : null}
+      )}
     </div>
-  ) : (
-    ''
   );
 };
 
 export default compose(
-  connect((state, props) => ({
+  connect((state) => ({
     query: {
       ...(qs.parse(state.router.location?.search?.replace('?', '')) || {}),
       ...(state.discodata_query?.search || {}),

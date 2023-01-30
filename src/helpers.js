@@ -19,15 +19,14 @@ const loadTableauScript = (callback, version) => {
   //callback, if needed
   if (existingScript && callback) callback();
 
-  const tableau = isMyScriptLoaded(version) && __CLIENT__ ? window.tableau : '';
-  return tableau;
+  return isMyScriptLoaded(version) && __CLIENT__ ? window.tableau : '';
 };
 
 const isMyScriptLoaded = (version) => {
   //check for loaded Tableau script in dom scripts
-  var scripts = __CLIENT__ && document.getElementsByTagName('script');
+  const scripts = __CLIENT__ && document.getElementsByTagName('script');
   if (scripts) {
-    for (var i = scripts.length; i--; ) {
+    for (let i = scripts.length; i--; ) {
       // eslint-disable-next-line eqeqeq
       if (
         scripts[i].src ===

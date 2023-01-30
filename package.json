@@ -22,9 +22,9 @@
     "@eeacms/volto-block-style"
   ],
   "dependencies": {
-    "@eeacms/volto-resize-helper": "^0.2.4",
+    "@eeacms/volto-block-style": "4.1.0",
     "@eeacms/volto-embed": "5.0.0",
-    "@eeacms/volto-block-style": "4.1.0"
+    "@eeacms/volto-resize-helper": "^0.2.4"
   },
   "devDependencies": {
     "@cypress/code-coverage": "^3.9.5",

@@ -46,10 +46,10 @@ const Edit = (props) => {
           block={block}
           title={schema.title}
           schema={schema}
-          onChangeField={(id, value) => {
+          onChangeField={(_id, value) => {
             props.onChangeBlock(block, {
               ...data,
-              [id]: value,
+              [_id]: value,
             });
           }}
           formData={data}

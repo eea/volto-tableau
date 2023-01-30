@@ -12,10 +12,8 @@ const VisualizationView = (props) => {
         <div className="tableau-info">
           {!tableau_visualization_data.general?.url ? (
             <p className="tableau-error">URL required</p>
-          ) : tableauError ? (
-            <p className="tableau-error">{tableauError}</p>
           ) : (
-            ''
+            tableauError && <p className="tableau-error">{tableauError}</p>
           )}
         </div>
       </div>

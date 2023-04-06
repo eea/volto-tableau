@@ -18,13 +18,11 @@
   },
   "addons": [
     "@eeacms/volto-resize-helper",
-    "@eeacms/volto-embed",
-    "@eeacms/volto-block-style"
+    "@eeacms/volto-embed"
   ],
   "dependencies": {
-    "@eeacms/volto-resize-helper": "^0.2.4",
     "@eeacms/volto-embed": "5.0.0",
-    "@eeacms/volto-block-style": "4.1.0"
+    "@eeacms/volto-resize-helper": "^0.2.4"
   },
   "devDependencies": {
     "@cypress/code-coverage": "^3.9.5",

@@ -3,9 +3,6 @@ import ConnectedTableau from '../../ConnectedTableau/ConnectedTableau';
 import { Sources } from '../../Sources';
 import { PrivacyProtection } from '@eeacms/volto-embed';
 
-import { StyleWrapperView } from '@eeacms/volto-block-style/StyleWrapper';
-import cx from 'classnames';
-
 import { getContent } from '@plone/volto/actions';
 
 import { connect } from 'react-redux';
@@ -25,14 +22,7 @@ const View = (props) => {
   }, [vis_url]);
 
   return (
-    <StyleWrapperView
-      {...props}
-      data={data}
-      styleData={{
-        ...data.styles,
-        customClass: cx(data.styles?.customClass || '', 'embed-container'),
-      }}
-    >
+    <div className="embed-container">
       <PrivacyProtection data={data} {...props}>
         {data?.vis_url ? (
           <>
@@ -63,7 +53,7 @@ const View = (props) => {
           <div>Please select a visualization from block editor.</div>
         )}
       </PrivacyProtection>
-    </StyleWrapperView>
+    </div>
   );
 };
 

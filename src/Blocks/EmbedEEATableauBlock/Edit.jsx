@@ -5,9 +5,6 @@ import { getContent } from '@plone/volto/actions';
 import View from './View';
 import Schema from './schema';
 
-import { BlockStyleWrapperEdit } from '@eeacms/volto-block-style/BlockStyleWrapper';
-import cx from 'classnames';
-
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 
@@ -26,20 +23,7 @@ const Edit = (props) => {
   }, [block, data, onChangeBlock]);
 
   return (
-    <BlockStyleWrapperEdit
-      {...props}
-      role="presentation"
-      data={{
-        ...(props.data || {}),
-        styles: {
-          ...(props.data?.styles || {}),
-          customClass: cx(
-            props.data?.styles?.customClass || '',
-            'custom-embed-class',
-          ),
-        },
-      }}
-    >
+    <React.Fragment>
       <View {...props} data={data} id={id} mode="edit" />
       <SidebarPortal selected={props.selected}>
         <BlockDataForm
@@ -55,7 +39,7 @@ const Edit = (props) => {
           formData={data}
         />
       </SidebarPortal>
-    </BlockStyleWrapperEdit>
+    </React.Fragment>
   );
 };
 

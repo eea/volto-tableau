@@ -1,5 +1,5 @@
 import React from 'react';
-import TableauView from '../TableauBlock/View';
+import TableauView from '@eeacms/volto-tableau/Blocks/TableauBlock/View';
 
 const VisualizationView = (props) => {
   const [tableauError, setTableauError] = React.useState('');
@@ -13,7 +13,7 @@ const VisualizationView = (props) => {
           {!tableau_visualization_data.general?.url ? (
             <p className="tableau-error">URL required</p>
           ) : (
-            tableauError && <p className="tableau-error">{tableauError}</p>
+            !!tableauError && <p className="tableau-error">{tableauError}</p>
           )}
         </div>
       </div>

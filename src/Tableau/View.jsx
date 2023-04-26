@@ -117,18 +117,18 @@ const Tableau = (props) => {
     }
   };
 
-  const addExtraFilters = (_extraFilters) => {
+  const addExtraFilters = (extraFilters) => {
     const worksheets = viz.getWorkbook().getActiveSheet().getWorksheets() || [];
 
     worksheets.forEach((worksheet) => {
       if (worksheet.getSheetType() === tableau.DashboardObjectType.WORKSHEET) {
-        Object.keys(_extraFilters).forEach((filter) => {
-          if (!_extraFilters[filter]) {
+        Object.keys(extraFilters).forEach((filter) => {
+          if (!extraFilters[filter]) {
             worksheet.clearFilterAsync(filter);
           } else {
             worksheet.applyFilterAsync(
               filter,
-              _extraFilters[filter],
+              extraFilters[filter],
               tableau.FilterUpdateType.REPLACE,
             );
           }
@@ -139,14 +139,14 @@ const Tableau = (props) => {
 
   const updateScale = () => {
     const tableauWrapper = ref.current;
-    const _tableau = tableauWrapper?.querySelector('iframe');
+    const tableau = tableauWrapper?.querySelector('iframe');
     if (mounted.current && viz && tableauWrapper && tableau) {
       const { sheetSize = {} } = viz.getVizSize() || {};
       const vizWidth = sheetSize?.minSize?.width || 1;
       const vizHeight = sheetSize?.minSize?.height || 0;
       const scale = Math.min(tableauWrapper.clientWidth / vizWidth, 1);
-      _tableau.style.transform = `scale(${scale})`;
-      _tableau.style.width = `${100 / scale}%`;
+      tableau.style.transform = `scale(${scale})`;
+      tableau.style.width = `${100 / scale}%`;
       tableauWrapper.style.height = `${scale * vizHeight}px`;
     }
   };
@@ -223,7 +223,7 @@ const Tableau = (props) => {
         )}
         <div className="dashboard-wrapper">
           <div className="tableau-block">
-            {viz && (
+            {!!viz && (
               <div className="tableau-icons">
                 <TableauDownload {...props} viz={viz} />
                 <TableauShare {...props} viz={viz} data={{ url: url }} />

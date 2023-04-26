@@ -7,8 +7,8 @@ import config from '@plone/volto/registry';
 import qs from 'querystring';
 import '@eeacms/volto-tableau/less/tableau.less';
 
-const getDevice = (_config, width) => {
-  const breakpoints = _config.blocks.blocksConfig.tableau_block.breakpoints;
+const getDevice = (config, width) => {
+  const breakpoints = config.blocks.blocksConfig.tableau_block.breakpoints;
   let device = 'default';
   Object.keys(breakpoints).forEach((breakpoint) => {
     if (

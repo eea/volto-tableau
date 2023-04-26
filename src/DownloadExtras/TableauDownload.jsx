@@ -48,11 +48,11 @@ const TableauDownload = (props) => {
     setIsSheetSelectorExcelVisible(true);
   };
 
-  const handleSheetSelectionCsvChange = (_e, data) => {
+  const handleSheetSelectionCsvChange = (_, data) => {
     viz.showExportCrossTabDialog(data.value);
   };
 
-  const handleSheetSelectionExcelChange = (_e, data) => {
+  const handleSheetSelectionExcelChange = (_, data) => {
     viz.exportCrossTabToExcel(data.value);
   };
 

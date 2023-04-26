@@ -5,7 +5,7 @@ import config from '@plone/volto/registry';
 
 import { FormFieldWrapper, InlineForm } from '@plone/volto/components';
 
-import TableauView from '../TableauBlock/View';
+import TableauView from '@eeacms/volto-tableau/Blocks/TableauBlock/View';
 import Schema from './schema';
 
 const VisualizationWidget = (props) => {
@@ -41,7 +41,7 @@ const VisualizationWidget = (props) => {
           {intValue && intValue.general && !intValue.general.url ? (
             <p className="tableau-error">URL required</p>
           ) : (
-            tableauError && <p className="tableau-error">{tableauError}</p>
+            !!tableauError && <p className="tableau-error">{tableauError}</p>
           )}
         </div>
       </div>
@@ -98,8 +98,8 @@ const VisualizationWidget = (props) => {
                 <InlineForm
                   block={block}
                   schema={schema}
-                  onChangeField={(_id, _value) => {
-                    handleChangeField(_value);
+                  onChangeField={(_, newValue) => {
+                    handleChangeField(newValue);
                   }}
                   formData={dataForm}
                 />

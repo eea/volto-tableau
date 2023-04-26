@@ -24,9 +24,15 @@ const View = (props) => {
   return (
     <div className="embed-container">
       <PrivacyProtection data={data} {...props}>
-        {data?.vis_url ? (
+        {!data?.vis_url && (
+          <div>Please select a visualization from block editor.</div>
+        )}
+        {!!data?.vis_url && (
           <>
-            {tableau_visualization?.general?.url ? (
+            {!tableau_visualization?.general?.url && (
+              <div>Url is not set in the visualization</div>
+            )}
+            {!!tableau_visualization?.general?.url && (
               <>
                 <ConnectedTableau
                   {...props.tableau_visualization}
@@ -45,12 +51,8 @@ const View = (props) => {
                   )
                 )}
               </>
-            ) : (
-              <div>Url is not set in the visualization</div>
             )}
           </>
-        ) : (
-          <div>Please select a visualization from block editor.</div>
         )}
       </PrivacyProtection>
     </div>

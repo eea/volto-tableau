@@ -18,7 +18,7 @@ const UrlParamsWidget = () => {
     <div className="availableFieldsContainer">
       <p className="availableFieldsTitle">Available Fields:</p>
       {fields.map((field) => (
-        <p className="availableFields">
+        <p key={field} className="availableFields">
           <strong>{field}</strong>
         </p>
       ))}

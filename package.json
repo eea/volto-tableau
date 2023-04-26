@@ -22,9 +22,9 @@
     "@eeacms/volto-object-widget"
   ],
   "dependencies": {
-    "@eeacms/volto-embed": "5.0.0",
-    "@eeacms/volto-resize-helper": "^0.2.4",
-    "@eeacms/volto-object-widget": "*"
+    "@eeacms/volto-embed": "*",
+    "@eeacms/volto-object-widget": "*",
+    "@eeacms/volto-resize-helper": "*"
   },
   "devDependencies": {
     "@cypress/code-coverage": "^3.9.5",

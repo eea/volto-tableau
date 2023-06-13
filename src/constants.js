@@ -1,1 +1,0 @@
-export const SET_TABLEAU_API = 'SET_TABLEAU_API';

@@ -1,14 +1,7 @@
-@tableauTitleColor: #4296b2;
-@tableauTitleMargin: 0 0 1rem 0;
+@tableauWrapperBackground : #f5f5f5;
+@tableauWrapperPadding    : 1rem 1rem 0 1rem;
 
-@tableauDescriptionColor: #000;
-@tableauDescriptionMargin: 0 0 1rem 0;
-
-@tableauErrorColor: #E9776D;
-
-@tableauIframeWidth: 100% !important;
-@tableauMinWidth: auto;
-@tableauIframePadding: 0;
-@tableauIframeMargin: 0 0 1rem 0;
-@tableauIframeBorder: none;
-@tableauIframeBorderRadius: 0;
+@tableauIframePadding       : 0;
+@tableauIframeMargin        : 0 auto 1rem auto;
+@tableauIframeBorder        : none;
+@tableauIframeBorderRadius  : 0;

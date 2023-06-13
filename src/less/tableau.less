@@ -6,65 +6,40 @@
 
 .loadAddonVariables();
 
-.tableau-block {
+@keyframes spin {
+  0% {
+    background-position: 0 0;
+  }
+
+  100% {
+    background-position: 50px 50px;
+  }
+}
+
+.tableau-wrapper {
+  overflow: auto;
+  padding: @tableauWrapperPadding;
+  background-color: @tableauWrapperBackground;
+
+  .tableau-debug {
+    margin: 0 auto 1rem auto;
+
+    .tableau-version .version {
+      color: @secondaryColor;
+    }
+  }
+
   .tableau-info {
-    h3.tableau-version {
-      display: flex;
-      height: 75px;
-      align-items: center;
-      justify-content: center;
-      background-color: #f4f4f1;
-      color: @tableauTitleColor;
-    }
-
-    p.tableau-error {
-      color: @tableauErrorColor;
-      font-weight: bold;
-    }
-  }
-
-  h3.tableau-title {
-    margin: @tableauTitleMargin;
-    color: @tableauTitleColor;
-  }
-
-  p.tableau-description {
-    margin: @tableauDescriptionMargin;
-    color: @tableauDescriptionColor;
+    margin: 0 auto 1rem auto;
   }
 
   .tableau {
-    width: 100%;
-
-    &:not(.tableau-scale) {
-      iframe {
-        width: @tableauIframeWidth;
-        min-width: @tableauMinWidth;
-      }
-    }
-
     iframe {
       padding: @tableauIframePadding;
       border: @tableauIframeBorder;
       margin: @tableauIframeMargin;
       border-radius: @tableauIframeBorderRadius;
       transform-origin: top left;
-    }
-  }
-}
-
-.not_displayed_tableau {
-  width: 100%;
-  min-width: 633px;
-  height: 100%;
-  min-height: 200px;
-  background-color: #ebebeb;
-}
-
-.tableau-block {
-  .tableau-info {
-    p.tableau-error {
-      padding: 10px;
     }
   }
 
@@ -75,53 +50,137 @@
     height: 100%;
     align-items: center;
     justify-content: center;
-    margin: auto;
-    animation: anim 1s linear infinite;
+    margin: 0 auto 1rem auto;
+    animation: spin 1s linear infinite;
     background-image: linear-gradient(
       -45deg,
-      #5ac5f1 25%,
-      #96bbde 25%,
-      #96bbde 50%,
-      #5ac5f1 50%,
-      #5ac5f1 75%,
-      #96bbde 75%
+      @primaryColor 25%,
+      @secondaryColor 25%,
+      @secondaryColor 50%,
+      @primaryColor 50%,
+      @primaryColor 75%,
+      @secondaryColor 75%
     );
     background-size: 100px 100px;
     border-radius: 5px;
+
+    span {
+      margin: 6px auto;
+      color: white;
+      font-weight: bold;
+      text-align: center;
+    }
   }
 }
 
-.tableau-loader span {
-  margin: 6px auto;
-  color: white;
+// ========= Sources ==========
+
+.tableau-wrapper .tableau-info {
+  display: flex;
+  align-items: center;
+
+  > * {
+    padding: 0 0.5rem;
+    border-collapse: collapse;
+  }
+
+  > *:first-child {
+    padding-left: 0;
+  }
+
+  > *:last-child {
+    padding-right: 0;
+  }
+
+  > *:not(:last-child) {
+    border-right: 2px solid @textColor;
+  }
+}
+
+.embed-sources-header {
+  cursor: pointer;
+}
+
+.tableau-download-button,
+.tableau-share-button,
+.tableau-sources-button {
+  display: inline-flex;
+  align-items: center;
+  padding-bottom: 3px;
+  border: none;
+  background-color: transparent;
+  color: @textColor;
+  cursor: pointer;
   font-weight: bold;
-  text-align: center;
-}
 
-@keyframes anim {
-  0% {
-    background-position: 0 0;
+  .icon {
+    margin-left: 0.5rem;
   }
 
-  100% {
-    background-position: 50px 50px;
+  &:hover {
+    color: @secondaryColor;
+  }
+
+  &.expanded {
+    padding-bottom: 0;
+    border-bottom: 3px solid @secondaryColor;
+    color: @secondaryColor;
   }
 }
 
-.availableFieldsContainer {
-  padding: 0 5px 5px 0;
-  border-bottom: 1px solid #d9d9d9;
+#tableau-sources-popup,
+#tableau-download-popup {
+  .ui.popup {
+    min-width: 600px;
+    background-color: #f9f9f9;
+    box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+
+    &::before {
+      background-color: #f9f9f9;
+    }
+
+    .sources-list > li,
+    .sources-list > li > * {
+      color: @textColor;
+    }
+
+    a:hover {
+      color: @secondaryColor;
+    }
+  }
+
+  .sources-list {
+    margin: 0;
+    list-style: decimal inside;
+    padding-inline-start: 0;
+  }
+
+  @media screen and (max-width: @largestMobileScreen) {
+    .ui.popup {
+      min-width: 300px;
+    }
+  }
 }
 
-.availableFieldsTitle {
-  color: darkgray;
-  font-size: 13px;
-  font-weight: bold;
+#tableau-download-popup {
+  .ui.popup {
+    min-width: 460px;
+    text-align: center;
+  }
 }
 
-.availableFields {
-  padding: 0 5px;
-  font-size: 12px;
+@media print {
+  .tableau-download-container,
+  .tableau-sources-container,
+  .tableau-share-container,
+  #tableau-sources-popup {
+    display: none;
+  }
+}
+
+#tableau-editor-modal {
+  width: 90vw !important;
+  height: calc(80vh - 10em) !important;
 }
 
 .loadAddonVariables();

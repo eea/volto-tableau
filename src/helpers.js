@@ -1,47 +1,28 @@
-const loadTableauScript = (callback, version) => {
-  const existingScript = __CLIENT__ && document.getElementById(`tableauJS`);
-  //replace script loaded on each version change
-  if (existingScript) {
-    existingScript.setAttribute(
-      'src',
-      `https://public.tableau.com/javascripts/api/tableau-${version}.min.js`,
-    );
+export const loadTableauScript = (callback, version) => {
+  if (!__CLIENT__) return;
+  const source = `https://public.tableau.com/javascripts/api/tableau-${version}.min.js`;
+  const existingScript = document.getElementById(`tableauJS-${version}`);
+  const existingScriptSource =
+    existingScript && existingScript.getAttribute('src');
+  // Replace script loaded on each version change
+  if (existingScript && existingScriptSource !== source) {
+    existingScript.setAttribute('src', source);
   }
-  if (!existingScript && __CLIENT__) {
+  if (!existingScript) {
     const script = document.createElement('script');
-    script.src = `https://public.tableau.com/javascripts/api/tableau-${version}.min.js`;
-    script.id = `tableauJS`;
+    script.src = source;
+    script.id = `tableauJS-${version}`;
     document.body.appendChild(script);
     script.onload = () => {
+      window[`tableau_${version}`] = window.tableau;
       if (callback) callback();
     };
   }
-  //callback, if needed
+  // Trigger callback
   if (existingScript && callback) callback();
-
-  const tableau = isMyScriptLoaded(version) && __CLIENT__ ? window.tableau : '';
-  return tableau;
 };
 
-const isMyScriptLoaded = (version) => {
-  //check for loaded Tableau script in dom scripts
-  var scripts = __CLIENT__ && document.getElementsByTagName('script');
-  if (scripts) {
-    for (var i = scripts.length; i--; ) {
-      // eslint-disable-next-line eqeqeq
-      if (
-        scripts[i].src ===
-        `https://public.tableau.com/javascripts/api/tableau-${version}.min.js`
-      )
-        return true;
-    }
-  }
-  return false;
-};
-
-export { loadTableauScript, isMyScriptLoaded };
-
-//script url for each version. In case you might need to add them in the load balancer
+// Script url for each version. In case you might need to add them in the load balancer
 // https://public.tableau.com/javascripts/api/tableau-2.8.0.min.js
 // https://public.tableau.com/javascripts/api/tableau-2.7.0.min.js
 // https://public.tableau.com/javascripts/api/tableau-2.6.0.min.js

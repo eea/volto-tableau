@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { withRouter } from 'react-router';
-import Tableau from '@eeacms/volto-tableau/Tableau/View';
+import Tableau from '@eeacms/volto-tableau/Tableau/Tableau';
 import config from '@plone/volto/registry';
 import qs from 'querystring';
 import '@eeacms/volto-tableau/less/tableau.less';
@@ -22,9 +22,11 @@ const getDevice = (config, width) => {
 };
 
 const View = (props) => {
-  const [error, setError] = React.useState(null);
-  const [loaded, setLoaded] = React.useState(null);
-  const [mounted, setMounted] = React.useState(false);
+  const [vizState, setVizState] = React.useState({
+    loaded: false,
+    loading: false,
+    error: null,
+  });
   const [extraFilters, setExtraFilters] = React.useState({});
   const { data = {}, query = {}, screen = {} } = props;
   const {
@@ -33,22 +35,16 @@ const View = (props) => {
     title = null,
     description = null,
     autoScale = false,
+    with_sources = true,
+    with_download = true,
+    with_share = true,
+    sources,
   } = data;
   const device = getDevice(config, screen.page?.width || Infinity);
   const breakpointUrl = breakpointUrls.filter(
     (breakpoint) => breakpoint.device === device,
   )[0]?.url;
   const url = breakpointUrl || data.url;
-
-  React.useEffect(() => {
-    setMounted(true);
-    /* eslint-disable-next-line */
-  }, []);
-
-  React.useEffect(() => {
-    if (props.setTableauError) props.setTableauError(error);
-    /* eslint-disable-next-line */
-  }, [error]);
 
   React.useEffect(() => {
     const newExtraFilters = { ...extraFilters };
@@ -63,38 +59,31 @@ const View = (props) => {
     /* eslint-disable-next-line */
   }, [JSON.stringify(query), JSON.stringify(urlParameters)]);
 
-  return mounted ? (
+  return (
     <div className="tableau-block">
-      <div className="tableau-info">
-        {loaded && url && props.mode === 'edit' ? (
-          <h3 className="tableau-version">== Tableau ==</h3>
-        ) : null}
-        {!url ? <p className="tableau-error">URL required</p> : ''}
-        {error ? <p className="tableau-error">{error}</p> : ''}
-      </div>
-
-      {loaded && title ? <h3 className="tableau-title">{title}</h3> : ''}
-      {loaded && description ? (
+      {vizState.loaded && title ? (
+        <h3 className="tableau-title">{title}</h3>
+      ) : (
+        ''
+      )}
+      {vizState.loaded && description ? (
         <p className="tableau-description">{description}</p>
       ) : (
         ''
       )}
-      {url ? (
-        <Tableau
-          {...props}
-          canUpdateUrl={!breakpointUrl}
-          extraFilters={extraFilters}
-          extraOptions={{ device: autoScale ? 'desktop' : device }}
-          error={error}
-          loaded={loaded}
-          setError={setError}
-          setLoaded={setLoaded}
-          url={url}
-        />
-      ) : null}
+      <Tableau
+        {...props}
+        canUpdateUrl={!breakpointUrl}
+        extraFilters={extraFilters}
+        extraOptions={{ device: autoScale ? 'desktop' : device }}
+        url={url}
+        with_sources={with_sources}
+        with_download={with_download}
+        with_share={with_share}
+        sources={sources}
+        setVizState={setVizState}
+      />
     </div>
-  ) : (
-    ''
   );
 };
 

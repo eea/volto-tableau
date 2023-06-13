@@ -1,18 +1,18 @@
 import React from 'react';
+import BlockDataForm from '@plone/volto/components/manage/Form/BlockDataForm';
 import { SidebarPortal } from '@plone/volto/components';
-import InlineForm from '@plone/volto/components/manage/Form/InlineForm';
-import config from '@plone/volto/registry';
-import getSchema from './schema';
 import View from './View';
+import getSchema from './schema';
 
 const Edit = (props) => {
-  const [schema] = React.useState(getSchema(config));
+  const schema = React.useMemo(() => getSchema(props), [props]);
 
   return (
-    <>
+    <React.Fragment>
       <View {...props} mode="edit" />
       <SidebarPortal selected={props.selected}>
-        <InlineForm
+        <BlockDataForm
+          block={props.block}
           schema={schema}
           title={schema.title}
           onChangeField={(id, value) => {
@@ -24,7 +24,7 @@ const Edit = (props) => {
           formData={props.data}
         />
       </SidebarPortal>
-    </>
+    </React.Fragment>
   );
 };
 

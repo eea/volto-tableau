@@ -40,13 +40,42 @@ const breakpointUrlSchema = (config) => {
   };
 };
 
+const sourceSchema = {
+  title: 'Source',
+  fieldsets: [
+    {
+      id: 'default',
+      title: 'Default',
+      fields: ['title', 'organisation', 'link'],
+    },
+  ],
+  properties: {
+    title: {
+      title: 'Title',
+    },
+    organisation: {
+      title: 'Organization',
+    },
+    link: {
+      title: 'Link',
+      widget: 'url',
+    },
+  },
+  required: [],
+};
+
 export default (config) => ({
   title: 'Tableau',
   fieldsets: [
     {
       id: 'default',
       title: 'Default',
-      fields: ['url', 'title', 'description'],
+      fields: ['url', 'title', 'description', 'with_download', 'with_share'],
+    },
+    {
+      id: 'sources',
+      title: 'Sources',
+      fields: ['with_sources', 'sources'],
     },
     {
       id: 'options',
@@ -78,6 +107,26 @@ export default (config) => ({
       title: 'Description',
       widget: 'textarea',
     },
+    with_download: {
+      title: 'Show download button',
+      type: 'boolean',
+      defaultValue: true,
+    },
+    with_share: {
+      title: 'Show share button',
+      type: 'boolean',
+      defaultValue: true,
+    },
+    with_sources: {
+      title: 'Show sources',
+      type: 'boolean',
+      defaultValue: true,
+    },
+    sources: {
+      title: 'Sources',
+      widget: 'object_list',
+      schema: sourceSchema,
+    },
     sheetname: {
       title: 'Sheetname',
       type: 'text',
@@ -100,7 +149,6 @@ export default (config) => ({
     },
     toolbarPosition: {
       title: 'Toolbar position',
-      type: 'array',
       choices: [
         ['Top', 'Top'],
         ['Bottom', 'Bottom'],

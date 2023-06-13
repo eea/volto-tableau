@@ -1,4 +1,4 @@
-const ProtectionSchema = () => ({
+const getProtectionSchema = () => ({
   title: 'Data Protection',
 
   fieldsets: [
@@ -40,33 +40,49 @@ const ProtectionSchema = () => ({
   required: [],
 });
 
-const Schema = (props) => {
+export default () => {
   return {
-    title: 'Embed EEA Tableau',
+    title: 'Embed EEA Tableau visualization',
     fieldsets: [
       {
         id: 'default',
         title: 'Default',
-        fields: ['vis_url', 'show_sources', 'dataprotection'],
+        fields: [
+          'tableau_vis_url',
+          'with_sources',
+          'with_download',
+          'with_share',
+        ],
+      },
+      {
+        id: 'privacy',
+        title: 'Privacy',
+        fields: ['dataprotection'],
       },
     ],
     properties: {
-      vis_url: {
-        widget: 'object_by_path',
-        title: 'Visualization',
+      tableau_vis_url: {
+        title: 'Tableau visualization',
+        widget: 'url',
       },
-      show_sources: {
-        title: 'Toggle sources',
+      with_download: {
+        title: 'Show download button',
+        type: 'boolean',
+      },
+      with_share: {
+        title: 'Show share button',
+        type: 'boolean',
+      },
+      with_sources: {
+        title: 'Show sources',
         type: 'boolean',
       },
       dataprotection: {
         widget: 'object',
-        schema: ProtectionSchema(),
+        schema: getProtectionSchema(),
       },
     },
 
-    required: ['vis_url'],
+    required: ['tableau_vis_url'],
   };
 };
-
-export default Schema;

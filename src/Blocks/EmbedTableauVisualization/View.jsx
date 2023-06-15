@@ -10,6 +10,7 @@ import { compose } from 'redux';
 
 const View = (props) => {
   const data = props.data;
+  const { with_sources = true, with_download = true, with_share = true } = data;
   const { data_provenance, tableau_visualization } =
     props.tableau_visualization_data || {};
   const tableau_vis_url = flattenToAppURL(data.tableau_vis_url || '');
@@ -28,7 +29,7 @@ const View = (props) => {
         data={{ ...data, url: tableau_visualization?.url }}
       >
         {!tableau_vis_url && (
-          <div>Please select a visualization from block editor.</div>
+          <div>Please select a tableau visualization from block editor.</div>
         )}
         {!!tableau_vis_url && (
           <>
@@ -37,10 +38,12 @@ const View = (props) => {
             )}
             {!!tableau_visualization?.url && (
               <Tableau
-                data={tableau_visualization}
-                with_sources={true}
-                with_download={true}
-                with_share={true}
+                data={{
+                  ...tableau_visualization,
+                  with_sources,
+                  with_download,
+                  with_share,
+                }}
                 sources={data_provenance.data || []}
               />
             )}

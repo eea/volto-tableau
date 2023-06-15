@@ -6,11 +6,20 @@ import getSchema from './schema';
 import View from './View';
 
 const Edit = (props) => {
-  const [schema] = React.useState(getSchema(config));
+  const viz = React.useRef();
+  const [vizState, setVizState] = React.useState({
+    loaded: false,
+    loading: false,
+    error: null,
+  });
+
+  const schema = React.useMemo(() => getSchema(config, viz.current, vizState), [
+    vizState,
+  ]);
 
   return (
     <>
-      <View {...props} mode="edit" />
+      <View {...props} mode="edit" setVizState={setVizState} ref={viz} />
       <SidebarPortal selected={props.selected}>
         <BlockDataForm
           block={props.block}

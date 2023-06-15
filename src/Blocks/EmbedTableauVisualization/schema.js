@@ -68,14 +68,17 @@ export default () => {
       with_download: {
         title: 'Show download button',
         type: 'boolean',
+        defaultValue: true,
       },
       with_share: {
         title: 'Show share button',
         type: 'boolean',
+        defaultValue: true,
       },
       with_sources: {
         title: 'Show sources',
         type: 'boolean',
+        defaultValue: true,
       },
       dataprotection: {
         widget: 'object',

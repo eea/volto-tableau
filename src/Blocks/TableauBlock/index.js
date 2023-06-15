@@ -20,9 +20,9 @@ export default (config) => {
       view: [],
     },
     breakpoints: {
-      desktop: [Infinity, 982],
-      tablet: [981, 768],
-      mobile: [767, 0],
+      desktop: [Infinity, 992],
+      tablet: [991, 768],
+      phone: [767, 0],
     },
   };
 

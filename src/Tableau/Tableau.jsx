@@ -1,57 +1,89 @@
-import React, { useState, useRef } from 'react';
+import React, {
+  useEffect,
+  useImperativeHandle,
+  useState,
+  useRef,
+  useMemo,
+  useCallback,
+  forwardRef,
+} from 'react';
 import { connect } from 'react-redux';
 import { toast } from 'react-toastify';
 import isEqual from 'lodash/isEqual';
-import { Toast } from '@plone/volto/components';
+import isUndefined from 'lodash/isUndefined';
 import cx from 'classnames';
+import { Button } from 'semantic-ui-react';
+import { Toast, Icon } from '@plone/volto/components';
 import { useTableau } from '@eeacms/volto-tableau/hooks';
+import JsonCodeSnippet from '@eeacms/volto-tableau/Utils/JsonCodeSnippet/JsonCodeSnippet';
 import Sources from '@eeacms/volto-tableau/Utils/Sources/Sources';
 import Download from '@eeacms/volto-tableau/Utils/Download/Download';
 import Share from '@eeacms/volto-tableau/Utils/Share/Share';
+import { getSheetnames, getActiveSheetname, getDevice } from './helpers';
 
-const TableauDebug = ({ mode, vizState, url, version, sheetSize }) => {
+import resetSVG from '@plone/volto/icons/reset.svg';
+
+const TableauDebug = ({ mode, data, vizState, url, version, clearData }) => {
   const { loaded, error } = vizState;
+  const { filters = {}, parameters = {} } = data;
 
   const showTableauInfo = mode === 'edit' && (!url || (loaded && url) || error);
 
-  return showTableauInfo ? (
-    <div
-      className="tableau-debug"
-      style={{ ...(sheetSize.width ? { width: sheetSize.width } : {}) }}
-    >
-      {!url ? <p className="tableau-error">URL required</p> : ''}
-      {vizState.loaded && url ? (
+  if (!showTableauInfo) return null;
+
+  return (
+    <div className="tableau-debug">
+      {!url && !vizState.error && <p className="tableau-error">URL required</p>}
+      {vizState.error && <p className="tableau-error">{vizState.error}</p>}
+      {vizState.loaded && url && (
         <h3 className="tableau-version">
           Tableau <span className="version">{version}</span>
         </h3>
-      ) : null}
-      {vizState.error ? <p className="tableau-error">{vizState.error}</p> : ''}
+      )}
+
+      {vizState.loaded && url && (
+        <>
+          <p>
+            Apply filters / parameters inside of tableau to set default static
+            filters / parameters.
+          </p>
+          <p className="important-note">
+            Click{' '}
+            <button className="clear-filter-button" onClick={clearData}>
+              here
+            </button>{' '}
+            to reset applied filters / parameters.
+          </p>
+          <code className="json-snippet">
+            <JsonCodeSnippet obj={{ filters, parameters }} />
+          </code>
+        </>
+      )}
     </div>
-  ) : null;
+  );
 };
 
-const Tableau = (props) => {
-  const filters = useRef(props.data.filters || {});
+const Tableau = forwardRef((props, ref) => {
   const vizEl = useRef(null);
   const viz = useRef();
   const vizState = useRef({});
+  const dataRef = useRef(props.data || {});
+  const [initiateViz, setInitiateViz] = useState(false);
   const [loaded, setLoaded] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [sheetSize, setSheetSize] = useState({});
   const {
-    canUpdateUrl = true,
+    block,
     data = {},
+    breakpoints = {},
     extraFilters = {},
     extraOptions = {},
     mode = 'view',
     screen = {},
-    version = '2.9.1',
-    with_sources,
-    with_download,
-    with_share,
+    version = '2.8.0',
     sources,
-    // noSizeUpdate = false,
+    setVizState,
+    onChangeBlock,
   } = props;
   const {
     autoScale = false,
@@ -59,39 +91,121 @@ const Tableau = (props) => {
     hideToolbar = false,
     sheetname = '',
     toolbarPosition = 'Top',
+    breakpointUrls = [],
+    with_sources,
+    with_download,
+    with_share,
   } = data;
-  const defaultUrl = data.url;
-  const url = props.url || defaultUrl;
+
+  const device = useMemo(
+    () => getDevice(breakpoints, screen.page?.width || Infinity),
+    [breakpoints, screen],
+  );
+
+  const breakpointUrl = useMemo(
+    () =>
+      breakpointUrls.filter((breakpoint) => breakpoint.device === device)[0]
+        ?.url,
+    [breakpointUrls, device],
+  );
+
+  const url = breakpointUrl || data.url;
 
   // Load tableau from script tag
   const tableau = useTableau(version);
 
   const onFilterChange = (filter) => {
-    const newFilters = { ...filters.current };
+    let value;
+    const filters = dataRef.current.filters;
+    const newFilters = { ...filters };
     const fieldName = filter.getFieldName();
-    const values = filter
-      .getAppliedValues()
-      .map((appliedValue) => appliedValue.value);
-    newFilters[fieldName] = values;
+    const filterType = filter.getFilterType();
+    switch (filterType) {
+      // https://community.tableau.com/s/idea/0874T000000HA8hQAG/detail
+      // Only categorical filters are allowed
+      case tableau.FilterType.CATEGORICAL:
+        const isAllSelected = filter.getIsAllSelected();
+        if (!isAllSelected) {
+          value = filter
+            .getAppliedValues()
+            .map((appliedValue) => appliedValue.value);
+        }
+        break;
+      case tableau.FilterType.QUANTITATIVE:
+        break;
+      case tableau.FilterType.HIERARCHICAL:
+        break;
+      case tableau.FilterType.RELATIVE_DATE:
+        break;
+      default:
+        break;
+    }
+    if (isUndefined(value) && !isUndefined(newFilters[fieldName])) {
+      delete newFilters[fieldName];
+    } else if (!isUndefined(value)) {
+      newFilters[fieldName] = value;
+    }
     if (!isEqual(newFilters, filters)) {
-      props.onChangeBlock(props.block, {
-        ...data,
+      onChangeBlock(block, {
+        ...dataRef.current,
         filters: {
           ...newFilters,
         },
       });
-      filters.current = { ...newFilters };
     }
   };
 
-  const onVizStateUpdate = (loaded, loading, error) => {
+  const onParameterChange = (parameter) => {
+    const parameters = dataRef.current.parameters;
+    const newParameters = { ...parameters };
+    const fieldName = parameter.getName();
+    const value = parameter.getCurrentValue()?.value;
+    if (isUndefined(value) && !isUndefined(newParameters[fieldName])) {
+      delete newParameters[fieldName];
+    } else {
+      newParameters[fieldName] = [value];
+    }
+    if (!isEqual(newParameters, parameters)) {
+      onChangeBlock(block, {
+        ...dataRef.current,
+        parameters: {
+          ...newParameters,
+        },
+      });
+    }
+  };
+
+  const onVizStateUpdate = useCallback((loaded, loading, error) => {
     vizState.current = { ...vizState.current, loaded, loading, error };
     setLoaded(loaded);
     setLoading(loading);
     setError(error);
-    if (props.setVizState) {
-      props.setVizState({ loaded, loading, error });
+    if (setVizState) {
+      setVizState({ loaded, loading, error });
     }
+    /* eslint-disable-next-line */
+  }, []);
+
+  const activateDefaultSheet = useCallback(() => {
+    if (!vizState.current.loaded || !viz.current) return;
+    const workbook = viz.current.getWorkbook();
+    const sheetnames = getSheetnames(viz.current);
+    const activeSheetName = getActiveSheetname(viz.current);
+    if (sheetnames.includes(sheetname) && sheetname !== activeSheetName) {
+      workbook.activateSheetAsync(sheetname).then(() => {
+        onVizStateUpdate(true, false, null);
+      });
+    } else {
+      onVizStateUpdate(true, false, null);
+    }
+  }, [onVizStateUpdate, sheetname]);
+
+  const clearData = () => {
+    onChangeBlock(block, {
+      ...data,
+      filters: {},
+      parameters: {},
+    });
   };
 
   const disposeViz = () => {
@@ -103,28 +217,34 @@ const Tableau = (props) => {
   };
 
   const initViz = () => {
-    disposeViz();
     try {
       onVizStateUpdate(false, true, vizState.current.error);
-      setSheetSize({});
-      viz.current = new tableau.Viz(vizEl.current, url || defaultUrl, {
+      viz.current = new tableau.Viz(vizEl.current, url, {
         hideTabs,
         hideToolbar,
-        sheetname,
         toolbarPosition,
+        device: !!breakpointUrl ? device : 'desktop',
         ...data.filters,
+        ...data.parameters,
         ...extraFilters,
         ...extraOptions,
         onFirstInteractive: () => {
-          onVizStateUpdate(true, false, null);
-          if (viz.current && mode === 'edit') {
-            const workbook = viz.current.getWorkbook();
+          onVizStateUpdate(true, true, null);
+          setInitiateViz(false);
+          activateDefaultSheet();
+          if (viz.current && mode === 'edit' && !breakpointUrl) {
+            const sheetnames = getSheetnames(viz.current);
+            const activeSheetname = getActiveSheetname(viz.current);
+            const vizUrl = viz.current.getUrl();
             const newData = {
-              url: canUpdateUrl ? viz.current.getUrl() : defaultUrl,
-              sheetname: workbook.getActiveSheet().getName(),
+              ...data,
             };
+            newData.url = vizUrl;
+            if (!sheetname || !sheetnames.includes(sheetname)) {
+              newData.sheetname = activeSheetname;
+            }
             if (newData.url !== url || newData.sheetname !== sheetname) {
-              props.onChangeBlock(props.block, {
+              onChangeBlock(block, {
                 ...data,
                 ...newData,
               });
@@ -132,6 +252,8 @@ const Tableau = (props) => {
                 <Toast success title={'Tableau data updated'} content={null} />,
               );
             }
+          }
+          if (viz.current && mode === 'edit') {
             // Filter change event
             viz.current.addEventListener(
               tableau.TableauEventName.FILTER_CHANGE,
@@ -141,17 +263,21 @@ const Tableau = (props) => {
                 });
               },
             );
+            // Parameter change event
+            viz.current.addEventListener(
+              tableau.TableauEventName.PARAMETER_VALUE_CHANGE,
+              (event) => {
+                event.getParameterAsync().then((parameter) => {
+                  onParameterChange(parameter);
+                });
+              },
+            );
           }
         },
-        // onFirstVizSizeKnown: (e) => {
-        //   if (!noSizeUpdate) {
-        //     setSheetSize(e.$2.sheetSize.maxSize);
-        //   }
-        // },
       });
     } catch (e) {
-      onVizStateUpdate(false, false, e._message);
-      setSheetSize({});
+      onVizStateUpdate(false, false, e.get_message());
+      setInitiateViz(false);
     }
   };
 
@@ -177,87 +303,128 @@ const Tableau = (props) => {
   };
 
   const updateScale = () => {
-    const tableauEl = vizEl.current;
-    const tableau = tableauEl.querySelector('iframe');
+    const tableauEl = vizEl.current.querySelector('iframe');
     const { sheetSize = {} } = viz.current.getVizSize() || {};
     const vizWidth = sheetSize?.minSize?.width || 1;
-    const vizHeight = sheetSize?.minSize?.height || 0;
-    const scale = Math.min(tableauEl.clientWidth / vizWidth, 1);
-    tableau.style.transform = `scale(${scale})`;
-    tableau.style.width = `${100 / scale}%`;
-    tableauEl.style.height = `${scale * vizHeight}px`;
+    const scale = Math.min(vizEl.current.clientWidth / vizWidth, 1);
+    tableauEl.style.transform = `scale(${scale})`;
+    window.requestAnimationFrame(() => {
+      if (vizEl.current) {
+        vizEl.current.style.height = `${scale * tableauEl.clientHeight}px`;
+      }
+    });
   };
 
-  React.useEffect(() => {
-    if (tableau && url) {
-      initViz();
+  // Update refs
+  useEffect(() => {
+    dataRef.current = data;
+  }, [data]);
+
+  useEffect(() => {
+    if (!tableau) return;
+    if (url) {
+      disposeViz();
+      setInitiateViz(true);
     } else {
       disposeViz();
     }
-
-    return () => {
-      disposeViz();
-    };
     /* eslint-disable-next-line */
-  }, [
-    hideTabs,
-    hideToolbar,
-    autoScale,
-    sheetname,
-    tableau,
-    toolbarPosition,
-    url,
-  ]);
+  }, [tableau, url, hideTabs, hideToolbar, toolbarPosition]);
 
-  React.useEffect(() => {
+  useEffect(() => {
+    if (initiateViz && !loaded && !loading) {
+      initViz();
+    }
+    /* eslint-disable-next-line */
+  }, [loaded, loading, initiateViz]);
+
+  useEffect(() => {
     if (vizState.current.loaded && viz.current) {
       addExtraFilters(extraFilters);
     }
     /* eslint-disable-next-line */
   }, [JSON.stringify(extraFilters)]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (vizState.current.loaded && viz.current && autoScale) {
       updateScale();
     }
     /* eslint-disable-next-line */
   }, [loaded, screen?.page?.width]);
 
+  useEffect(() => {
+    if (vizState.current.loaded && viz.current) {
+      onVizStateUpdate(true, true, null);
+      activateDefaultSheet();
+    }
+    /* eslint-disable-next-line */
+  }, [sheetname]);
+
+  useImperativeHandle(
+    ref,
+    () => {
+      if (loaded) {
+        return viz.current;
+      }
+      if (loading) {
+        return null;
+      }
+      return;
+    },
+    [loaded, loading],
+  );
+
   return (
     <div className="tableau-wrapper">
       {loading && (
-        <div
-          className="tableau-loader"
-          style={{ ...(sheetSize.width ? { width: sheetSize.width } : {}) }}
-        >
+        <div className="tableau-loader">
           <span>Loading...</span>
         </div>
       )}
+      {!loading && mode === 'edit' && (
+        <Button
+          className="reload-tableau"
+          icon
+          secondary
+          compact
+          onClick={() => {
+            if (tableau && url) {
+              disposeViz();
+              setInitiateViz(true);
+            }
+          }}
+        >
+          <Icon name={resetSVG} size="24px" />
+        </Button>
+      )}
       <TableauDebug
         mode={props.mode}
+        data={data}
         vizState={{ loaded, loading, error }}
         url={url}
         version={version}
-        sheetSize={sheetSize}
+        clearData={clearData}
       />
       <div
         className={cx('tableau', `tableau-${version}`, {
-          'tableau-scale': autoScale,
+          'tableau-autoscale': autoScale,
         })}
         ref={vizEl}
       />
-      <div
-        className="tableau-info"
-        style={{ ...(sheetSize.width ? { width: sheetSize.width } : {}) }}
-      >
+      <div className="tableau-info">
         {with_sources && loaded && <Sources sources={sources} />}
         {with_download && loaded && <Download viz={viz.current} />}
         {with_share && loaded && <Share viz={viz.current} />}
       </div>
     </div>
   );
-};
+});
 
-export default connect((state) => ({
-  screen: state.screen,
-}))(Tableau);
+export default connect(
+  (state) => ({
+    screen: state.screen,
+  }),
+  null,
+  null,
+  { forwardRef: true },
+)(Tableau);

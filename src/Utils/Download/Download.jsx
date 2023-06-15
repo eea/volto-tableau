@@ -30,7 +30,7 @@ const Download = ({ viz }) => {
       ref={popupRef}
     >
       <Button
-        color="primary"
+        className="primary"
         onClick={() => {
           viz.showExportImageDialog();
           popupRef.current.triggerRef.current.click();
@@ -39,7 +39,7 @@ const Download = ({ viz }) => {
         Image
       </Button>
       <Button
-        color="primary"
+        className="primary"
         onClick={() => {
           viz.showExportPDFDialog();
           popupRef.current.triggerRef.current.click();
@@ -48,7 +48,7 @@ const Download = ({ viz }) => {
         PDF
       </Button>
       <Button
-        color="primary"
+        className="primary"
         onClick={() => {
           viz.showExportCrossTabDialog();
           popupRef.current.triggerRef.current.click();
@@ -57,7 +57,7 @@ const Download = ({ viz }) => {
         CSV
       </Button>
       <Button
-        color="primary"
+        className="primary"
         onClick={() => {
           viz.exportCrossTabToExcel();
           popupRef.current.triggerRef.current.click();

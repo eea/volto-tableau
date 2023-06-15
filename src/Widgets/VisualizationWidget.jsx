@@ -8,9 +8,28 @@ import getSchema from './schema';
 import '@eeacms/volto-tableau/less/tableau.less';
 
 const VisualizationWidget = (props) => {
+  const viz = React.useRef();
+  const [vizState, setVizState] = React.useState({
+    loaded: false,
+    loading: false,
+    error: null,
+  });
   const [open, setOpen] = React.useState(false);
-  const [schema] = React.useState(getSchema(config));
   const [value, setValue] = React.useState(props.value);
+
+  const schema = React.useMemo(() => getSchema(config, viz.current, vizState), [
+    vizState,
+  ]);
+
+  const extraOptions = React.useMemo(() => {
+    const options = {};
+    (value.staticParameters || []).forEach((parameter) => {
+      if (parameter.field) {
+        options[parameter.field] = parameter.value;
+      }
+    });
+    return options;
+  }, [value]);
 
   const handleApplyChanges = () => {
     props.onChange(props.id, value);
@@ -52,12 +71,18 @@ const VisualizationWidget = (props) => {
               className="tableau-visualization-column"
             >
               <Tableau
+                ref={viz}
                 data={value}
+                mode="edit"
+                breakpoints={
+                  config.blocks.blocksConfig.embed_tableau_visualization
+                    .breakpoints
+                }
+                extraOptions={extraOptions}
+                setVizState={setVizState}
                 onChangeBlock={(_, newValue) => {
                   setValue(newValue);
                 }}
-                mode="edit"
-                noSizeUpdate
               />
             </Grid.Column>
           </Grid>
@@ -87,7 +112,16 @@ const VisualizationWidget = (props) => {
           Open Tableau Editor
         </Button>
       </div>
-      <Tableau data={props.value} noSizeUpdate />
+      <Tableau
+        data={{
+          ...props.value,
+          autoScale: true,
+        }}
+        breakpoints={
+          config.blocks.blocksConfig.embed_tableau_visualization.breakpoints
+        }
+        extraOptions={extraOptions}
+      />
     </FormFieldWrapper>
   );
 };

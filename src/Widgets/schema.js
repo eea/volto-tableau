@@ -1,3 +1,8 @@
+import {
+  getSheetnamesChoices,
+  canChangeVizData,
+} from '@eeacms/volto-tableau/Tableau/helpers';
+
 const urlParametersSchema = {
   title: 'Parameter',
   fieldsets: [
@@ -16,6 +21,22 @@ const urlParametersSchema = {
   required: [],
 };
 
+const staticParameters = {
+  title: 'Parameter',
+  fieldsets: [{ id: 'default', title: 'Default', fields: ['field', 'value'] }],
+  properties: {
+    field: {
+      title: 'Tableau fieldname',
+      type: 'text',
+    },
+    value: {
+      title: 'Value',
+      type: 'text',
+    },
+  },
+  required: [],
+};
+
 const breakpointUrlSchema = (config) => {
   const breakpoints = config.blocks.blocksConfig.tableau_block.breakpoints;
 
@@ -25,7 +46,6 @@ const breakpointUrlSchema = (config) => {
     properties: {
       device: {
         title: 'Device',
-        type: 'array',
         choices: Object.keys(breakpoints).map((breakpoint) => [
           breakpoint,
           breakpoint,
@@ -40,76 +60,98 @@ const breakpointUrlSchema = (config) => {
   };
 };
 
-export default (config) => ({
-  title: 'Tableau',
-  fieldsets: [
-    {
-      id: 'default',
-      title: 'Default',
-      fields: ['url'],
+export default (config, viz, vizState) => {
+  const isDisabled = !canChangeVizData(viz, vizState);
+
+  return {
+    title: 'Tableau',
+    fieldsets: [
+      {
+        id: 'default',
+        title: 'Default',
+        fields: ['url'],
+      },
+      {
+        id: 'options',
+        title: 'Options',
+        fields: [
+          'sheetname',
+          'hideTabs',
+          'hideToolbar',
+          'autoScale',
+          'toolbarPosition',
+        ],
+      },
+      {
+        id: 'extra_options',
+        title: 'Extra options',
+        fields: ['urlParameters', 'staticParameters', 'breakpointUrls'],
+      },
+    ],
+    properties: {
+      url: {
+        title: 'Url',
+        widget: 'textarea',
+        isDisabled,
+      },
+      sheetname: {
+        title: 'Sheetname',
+        choices: getSheetnamesChoices(viz),
+        isDisabled,
+      },
+      hideTabs: {
+        title: 'Hide tabs',
+        type: 'boolean',
+        isDisabled,
+      },
+      hideToolbar: {
+        title: 'Hide toolbar',
+        type: 'boolean',
+        isDisabled,
+      },
+      autoScale: {
+        title: 'Auto scale',
+        type: 'boolean',
+        description: 'Scale down tableau according to width',
+        isDisabled,
+      },
+      toolbarPosition: {
+        title: 'Toolbar position',
+        choices: [
+          ['Top', 'Top'],
+          ['Bottom', 'Bottom'],
+        ],
+        default: 'Top',
+        isDisabled,
+      },
+      urlParameters: {
+        title: 'URL parameters',
+        widget: 'object_list',
+        schema: urlParametersSchema,
+        description: 'Set a list of url parameters to filter the tableau',
+        isDisabled,
+      },
+      staticParameters: {
+        title: 'Static parameters',
+        widget: 'object_list',
+        schema: staticParameters,
+        description: (
+          <>
+            Set a list of static parameters.
+            <br />
+            <b>NOTE: You need to trigger a refresh for this to take effect</b>
+          </>
+        ),
+        isDisabled,
+      },
+      breakpointUrls: {
+        title: 'Breakpoint urls',
+        widget: 'object_list',
+        schema: breakpointUrlSchema(config),
+        description: 'Set different vizualization for specific breakpoint',
+        isDisabled,
+      },
     },
-    {
-      id: 'options',
-      title: 'Options',
-      fields: [
-        'sheetname',
-        'hideTabs',
-        'hideToolbar',
-        'autoScale',
-        'toolbarPosition',
-      ],
-    },
-    {
-      id: 'extra_options',
-      title: 'Extra options',
-      fields: ['urlParameters', 'breakpointUrls'],
-    },
-  ],
-  properties: {
-    url: {
-      title: 'Url',
-      widget: 'textarea',
-    },
-    sheetname: {
-      title: 'Sheetname',
-      type: 'text',
-    },
-    hideTabs: {
-      title: 'Hide tabs',
-      type: 'boolean',
-      default: false,
-    },
-    hideToolbar: {
-      title: 'Hide toolbar',
-      type: 'boolean',
-      default: false,
-    },
-    autoScale: {
-      title: 'Auto scale',
-      type: 'boolean',
-      default: false,
-      description: 'Scale down tableau according to width',
-    },
-    toolbarPosition: {
-      title: 'Toolbar position',
-      choices: [
-        ['Top', 'Top'],
-        ['Bottom', 'Bottom'],
-      ],
-      default: 'Top',
-    },
-    urlParameters: {
-      title: 'URL parameters',
-      widget: 'object_list',
-      schema: urlParametersSchema,
-      description: 'Set a list of url parameters to filter the tableau',
-    },
-    breakpointUrls: {
-      title: 'Breakpoint urls',
-      widget: 'object_list',
-      schema: breakpointUrlSchema(config),
-      description: 'Set different vizualization for specific breakpoint',
-    },
-  },
-  required: ['url'],
-});
+    required: ['url'],
+  };
+};

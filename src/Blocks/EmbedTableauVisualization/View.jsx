@@ -8,6 +8,8 @@ import { getContent } from '@plone/volto/actions';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 
+import { getVisualization } from '@eeacms/volto-tableau/actions';
+
 const View = (props) => {
   const data = props.data;
   const { with_sources = true, with_download = true, with_share = true } = data;
@@ -18,9 +20,12 @@ const View = (props) => {
   React.useEffect(() => {
     if (tableau_vis_url) {
       props.getContent(tableau_vis_url, null, props.id);
+      props.getVisualization(tableau_vis_url);
     }
     // eslint-disable-next-line
   }, [tableau_vis_url]);
+
+  console.log('state data', props.state_data?.tableau_visualizations);
 
   return (
     <div className="embed-container">
@@ -44,7 +49,7 @@ const View = (props) => {
                   with_download,
                   with_share,
                 }}
-                sources={data_provenance.data || []}
+                sources={data_provenance?.data || []}
               />
             )}
           </>
@@ -57,10 +62,12 @@ const View = (props) => {
 export default compose(
   connect(
     (state, props) => ({
+      state_data: state,
       tableau_visualization_data: state.content.subrequests?.[props.id]?.data,
     }),
     {
       getContent,
+      getVisualization,
     },
   ),
 )(React.memo(View));

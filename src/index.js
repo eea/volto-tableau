@@ -1,6 +1,6 @@
 import installBlocks from './Blocks';
 import { VisualizationView } from './Views';
-import { VisualizationWidget } from './Widgets';
+import { VisualizationWidget, VisualizationViewWidget } from './Widgets';
 
 const applyConfig = (config) => {
   config.settings.allowed_cors_destinations = [
@@ -12,6 +12,7 @@ const applyConfig = (config) => {
 
   config.views.contentTypesViews.tableau_visualization = VisualizationView;
   config.widgets.id.tableau_visualization = VisualizationWidget;
+  config.widgets.views.id.tableau_visualization = VisualizationViewWidget;
 
   return [installBlocks].reduce((acc, apply) => apply(acc), config);
 };

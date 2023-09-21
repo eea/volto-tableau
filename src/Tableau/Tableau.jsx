@@ -16,9 +16,9 @@ import { Button } from 'semantic-ui-react';
 import { Toast, Icon } from '@plone/volto/components';
 import { useTableau } from '@eeacms/volto-tableau/hooks';
 import JsonCodeSnippet from '@eeacms/volto-tableau/Utils/JsonCodeSnippet/JsonCodeSnippet';
-import Sources from '@eeacms/volto-tableau/Utils/Sources/Sources';
+import FigureNote from '@eeacms/volto-tableau/Utils/FigureNote/FigureNote';
+import MoreInfoLink from '@eeacms/volto-tableau/Utils/MoreInfoLink/MoreInfoLink';
 import Download from '@eeacms/volto-tableau/Utils/Download/Download';
-import Share from '@eeacms/volto-tableau/Utils/Share/Share';
 import { getSheetnames, getActiveSheetname, getDevice } from './helpers';
 
 import resetSVG from '@plone/volto/icons/reset.svg';
@@ -81,7 +81,6 @@ const Tableau = forwardRef((props, ref) => {
     mode = 'view',
     screen = {},
     version = '2.8.0',
-    sources,
     setVizState,
     onChangeBlock,
   } = props;
@@ -92,9 +91,10 @@ const Tableau = forwardRef((props, ref) => {
     sheetname = '',
     toolbarPosition = 'Top',
     breakpointUrls = [],
-    with_sources,
+    tableau_vis_url,
+    with_note,
+    with_more_info,
     with_download,
-    with_share,
   } = data;
 
   const device = useMemo(
@@ -411,10 +411,16 @@ const Tableau = forwardRef((props, ref) => {
         })}
         ref={vizEl}
       />
-      <div className="tableau-info">
-        {with_sources && loaded && <Sources sources={sources} />}
-        {with_download && loaded && <Download viz={viz.current} />}
-        {with_share && loaded && <Share viz={viz.current} />}
+      <div className="visualization-info-container">
+        <div className="visualization-info">
+          {with_note && loaded && <FigureNote note={'Example note'} />}
+          {with_more_info && loaded && (
+            <MoreInfoLink contentTypeLink={tableau_vis_url} />
+          )}
+        </div>
+        <div className="visualization-info">
+          {with_download && loaded && <Download viz={viz.current} />}
+        </div>
       </div>
     </div>
   );

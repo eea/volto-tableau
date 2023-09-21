@@ -29,10 +29,6 @@
     }
   }
 
-  .tableau-info {
-    margin: 0 auto;
-  }
-
   .tableau {
     margin-bottom: 1rem;
 
@@ -118,7 +114,12 @@
 
 // ========= Sources ==========
 
-.tableau-wrapper .tableau-info {
+.tableau-wrapper .visualization-info-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.visualization-info {
   display: flex;
   align-items: center;
 
@@ -133,6 +134,10 @@
 
   > *:last-child {
     padding-right: 0;
+    margin-right: 0;
+    &.tableau-download-container {
+      margin-left: auto;
+    }
   }
 
   > *:not(:last-child) {
@@ -144,9 +149,9 @@
   cursor: pointer;
 }
 
-.tableau-download-button,
-.tableau-share-button,
-.tableau-sources-button {
+.tableau-note-button,
+.tableau-more-info-button,
+.tableau-download-button {
   display: inline-flex;
   align-items: center;
   padding-bottom: 3px;
@@ -171,7 +176,7 @@
   }
 }
 
-#tableau-sources-popup,
+#tableau-note-popup,
 #tableau-download-popup {
   .ui.popup {
     min-width: 600px;
@@ -182,20 +187,9 @@
       background-color: #f9f9f9;
     }
 
-    .sources-list > li,
-    .sources-list > li > * {
-      color: @textColor;
-    }
-
     a:hover {
       color: @secondaryColor;
     }
-  }
-
-  .sources-list {
-    margin: 0;
-    list-style: decimal inside;
-    padding-inline-start: 0;
   }
 
   @media screen and (max-width: @largestMobileScreen) {
@@ -214,9 +208,9 @@
 
 @media print {
   .tableau-download-container,
-  .tableau-sources-container,
+  .tableau-note-container,
   .tableau-share-container,
-  #tableau-sources-popup {
+  #tableau-note-popup {
     display: none;
   }
 }
@@ -224,6 +218,10 @@
 #tableau-editor-modal {
   width: 90vw !important;
   height: calc(80vh - 10em) !important;
+}
+
+.tableau-more-info {
+  padding: 1px 0 0 3px;
 }
 
 .loadAddonVariables();

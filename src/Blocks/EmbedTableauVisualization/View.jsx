@@ -10,9 +10,12 @@ import { compose } from 'redux';
 
 const View = (props) => {
   const data = props.data;
-  const { with_sources = true, with_download = true, with_share = true } = data;
-  const { data_provenance, tableau_visualization } =
-    props.tableau_visualization_data || {};
+  const {
+    with_note = true,
+    with_more_info = true,
+    with_download = true,
+  } = data;
+  const { tableau_visualization } = props.tableau_visualization_data || {};
   const tableau_vis_url = flattenToAppURL(data.tableau_vis_url || '');
 
   React.useEffect(() => {
@@ -40,11 +43,11 @@ const View = (props) => {
               <Tableau
                 data={{
                   ...tableau_visualization,
-                  with_sources,
+                  with_note,
+                  with_more_info,
                   with_download,
-                  with_share,
+                  tableau_vis_url,
                 }}
-                sources={data_provenance.data || []}
               />
             )}
           </>

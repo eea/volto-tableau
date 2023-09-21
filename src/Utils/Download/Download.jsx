@@ -14,7 +14,7 @@ const Download = ({ viz }) => {
       trigger={
         <div className="tableau-download-container">
           <button className={cx('tableau-download-button', { expanded })}>
-            <span>Download data</span>
+            <span>Download</span>
             <Icon name={downloadSVG} size="24px" />
           </button>
         </div>

@@ -80,6 +80,7 @@ const Tableau = forwardRef((props, ref) => {
     extraOptions = {},
     mode = 'view',
     screen = {},
+    figureNote,
     version = '2.8.0',
     setVizState,
     onChangeBlock,
@@ -413,7 +414,7 @@ const Tableau = forwardRef((props, ref) => {
       />
       <div className="visualization-info-container">
         <div className="visualization-info">
-          {with_note && loaded && <FigureNote note={'Example note'} />}
+          {with_note && loaded && <FigureNote note={figureNote} />}
           {with_more_info && loaded && (
             <MoreInfoLink contentTypeLink={tableau_vis_url} />
           )}

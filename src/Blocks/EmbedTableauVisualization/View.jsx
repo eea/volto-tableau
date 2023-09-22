@@ -15,7 +15,8 @@ const View = (props) => {
     with_more_info = true,
     with_download = true,
   } = data;
-  const { tableau_visualization } = props.tableau_visualization_data || {};
+  const { figureNote, tableau_visualization } =
+    props.tableau_visualization_data || {};
   const tableau_vis_url = flattenToAppURL(data.tableau_vis_url || '');
 
   React.useEffect(() => {
@@ -48,6 +49,7 @@ const View = (props) => {
                   with_download,
                   tableau_vis_url,
                 }}
+                figureNote={figureNote || ''}
               />
             )}
           </>

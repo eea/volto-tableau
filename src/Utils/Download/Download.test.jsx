@@ -7,7 +7,7 @@ import Download from './Download';
 window.URL.createObjectURL = jest.fn(() => 'test');
 
 jest.mock('@plone/volto/components', () => ({
-  Icon: ({ children }) => <img>{children}</img>,
+  Icon: ({ children }) => <img alt="incon">{children}</img>,
 }));
 
 describe('Download', () => {

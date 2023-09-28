@@ -6,8 +6,15 @@ import FigureNote from './FigureNote';
 
 window.URL.createObjectURL = jest.fn(() => 'test');
 
+const slateEditor = require('@plone/volto-slate/editor/render');
+slateEditor.serializeNodes = jest.fn();
+
+jest.mock('@plone/volto-slate/editor/render', () => ({
+  serializeNodesToText: ({ note = [] }) => note,
+}));
+
 describe('FigureNote', () => {
-  const note = 'Example note';
+  const note = [];
 
   it('should render the component', () => {
     const { container } = render(<FigureNote note={note} />);

@@ -13,7 +13,7 @@ const MoreInfoLink = ({ contentTypeLink }) => {
   return (
     <Link href={contentTypeLink}>
       <button className={cx('tableau-more-info-button')}>
-        More info <span className="tableau-more-info">{'>'}</span>
+        More info {'>'}
       </button>
     </Link>
   );

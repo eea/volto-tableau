@@ -181,7 +181,6 @@
 #tableau-note-popup,
 #tableau-download-popup {
   .ui.popup {
-    min-width: 600px;
     background-color: #f9f9f9;
     box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
 
@@ -192,6 +191,12 @@
     a:hover {
       color: @secondaryColor;
     }
+  }
+}
+
+#tableau-download-popup {
+  .ui.popup {
+    min-width: 600px;
   }
 
   @media screen and (max-width: @largestMobileScreen) {
@@ -220,10 +225,6 @@
 #tableau-editor-modal {
   width: 90vw !important;
   height: calc(80vh - 10em) !important;
-}
-
-.tableau-more-info {
-  padding: 1px 0 0 3px;
 }
 
 .loadAddonVariables();

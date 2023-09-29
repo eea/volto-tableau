@@ -20,33 +20,16 @@
 
 Registers a VisualizationView component for a content type named 'tableau_visualization'.
 
-## Features
-
-Demo GIF
-
 ## Getting started
 
 ### Try volto-tableau with Docker
 
-1. Get the latest Docker images
+      git clone https://github.com/eea/volto-tableau.git
+      cd volto-tableau
+      make
+      make start
 
-   ```
-   docker pull plone
-   docker pull plone/volto
-   ```
-
-1. Start Plone backend
-   ```
-   docker run -d --name plone -p 8080:8080 -e SITE=Plone -e PROFILES="profile-plone.restapi:blocks" plone
-   ```
-
-1. Start Volto frontend
-
-   ```
-   docker run -it --rm -p 3000:3000 --link plone -e ADDONS="@eeacms/volto-tableau" plone/volto
-   ```
-
-1. Go to http://localhost:3000
+Go to http://localhost:3000
 
 ### Add volto-tableau to your Volto project
 
@@ -66,7 +49,7 @@ Demo GIF
    ],
 
    "dependencies": {
-       "@eeacms/volto-tableau": "github:eea/volto-tableau#1.1.0"
+       "@eeacms/volto-tableau": "*"
    }
    ```
 
@@ -74,7 +57,7 @@ Demo GIF
 
    ```
    npm install -g yo @plone/generator-volto
-   yo @plone/volto my-volto-project --addon @eeacms/volto-tableau
+   yo @plone/volto my-volto-project --canary --addon @eeacms/volto-tableau
    cd my-volto-project
    ```
 

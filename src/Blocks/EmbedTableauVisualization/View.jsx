@@ -12,10 +12,11 @@ const View = (props) => {
   const data = props.data;
   const {
     with_note = true,
+    with_sources = true,
     with_more_info = true,
     with_download = true,
   } = data;
-  const { figure_note = [], tableau_visualization } =
+  const { figure_note = [], data_provenance = {}, tableau_visualization } =
     props.tableau_visualization_data || {};
 
   const tableau_vis_url = flattenToAppURL(data.tableau_vis_url || '');
@@ -46,11 +47,13 @@ const View = (props) => {
                 data={{
                   ...tableau_visualization,
                   with_note,
+                  with_sources,
                   with_more_info,
                   with_download,
                   tableau_vis_url,
                 }}
                 figure_note={figure_note}
+                sources={data_provenance.data || []}
               />
             )}
           </>

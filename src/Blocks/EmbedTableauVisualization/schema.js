@@ -50,6 +50,7 @@ export default () => {
         fields: [
           'tableau_vis_url',
           'with_note',
+          'with_sources',
           'with_more_info',
           'with_download',
         ],
@@ -67,6 +68,11 @@ export default () => {
       },
       with_note: {
         title: 'Show note',
+        type: 'boolean',
+        defaultValue: true,
+      },
+      with_sources: {
+        title: 'Show sources',
         type: 'boolean',
         defaultValue: true,
       },

@@ -17,6 +17,7 @@ import { Toast, Icon } from '@plone/volto/components';
 import { useTableau } from '@eeacms/volto-tableau/hooks';
 import JsonCodeSnippet from '@eeacms/volto-tableau/Utils/JsonCodeSnippet/JsonCodeSnippet';
 import FigureNote from '@eeacms/volto-tableau/Utils/FigureNote/FigureNote';
+import Sources from '@eeacms/volto-tableau/Utils/Sources/Sources';
 import MoreInfoLink from '@eeacms/volto-tableau/Utils/MoreInfoLink/MoreInfoLink';
 import Download from '@eeacms/volto-tableau/Utils/Download/Download';
 import { getSheetnames, getActiveSheetname, getDevice } from './helpers';
@@ -81,6 +82,7 @@ const Tableau = forwardRef((props, ref) => {
     mode = 'view',
     screen = {},
     figure_note = [],
+    sources,
     version = '2.8.0',
     setVizState,
     onChangeBlock,
@@ -94,6 +96,7 @@ const Tableau = forwardRef((props, ref) => {
     breakpointUrls = [],
     tableau_vis_url,
     with_note,
+    with_sources,
     with_more_info,
     with_download,
   } = data;
@@ -415,6 +418,7 @@ const Tableau = forwardRef((props, ref) => {
       <div className="visualization-info-container">
         <div className="visualization-info">
           {with_note && loaded && <FigureNote note={figure_note} />}
+          {with_sources && loaded && <Sources sources={sources} />}
           {with_more_info && loaded && (
             <MoreInfoLink contentTypeLink={tableau_vis_url} />
           )}

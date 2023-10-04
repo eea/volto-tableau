@@ -8,9 +8,9 @@ import {
 import { isArray } from 'lodash';
 
 export const serializeText = (note) => {
-  if (!serializeNodesToText(note))
+  if (!note || !serializeNodesToText(note))
     return <p>There are no notes set for this visualization</p>;
-  return isArray(note) ? serializeNodes(note) : note;
+  return note && isArray(note) ? serializeNodes(note) : note;
 };
 
 const FigureNote = ({ note = [] }) => {

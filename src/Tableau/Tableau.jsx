@@ -417,7 +417,7 @@ const Tableau = forwardRef((props, ref) => {
       />
       <div className="visualization-info-container">
         <div className="visualization-info">
-          {with_note && loaded && <FigureNote note={figure_note} />}
+          {with_note && loaded && <FigureNote note={figure_note || []} />}
           {with_sources && loaded && <Sources sources={sources} />}
           {with_more_info && loaded && (
             <MoreInfoLink contentTypeLink={tableau_vis_url} />

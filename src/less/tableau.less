@@ -180,8 +180,7 @@
 }
 
 #tableau-note-popup,
-#tableau-sources-popup,
-#tableau-download-popup {
+#tableau-sources-popup {
   .ui.popup {
     background-color: #f9f9f9;
     box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
@@ -208,21 +207,51 @@
 }
 
 #tableau-download-popup {
-  .ui.popup {
-    min-width: 600px;
+  ul.no-bullets {
+    padding: 0;
+    margin: 0;
+    list-style-type: none;
   }
 
-  @media screen and (max-width: @largestMobileScreen) {
-    .ui.popup {
-      min-width: 300px;
+  .visualization-wrapper {
+    position: relative;
+
+    .visualization-info {
+      display: flex;
+      align-items: center;
+
+      > * {
+        padding: 0 0.5rem;
+        border-collapse: collapse;
+      }
+
+      > *:first-child {
+        padding-left: 0;
+      }
+
+      > *:last-child {
+        padding-right: 0;
+        margin-right: 0;
+
+        &.tableau-download-container {
+          margin-left: auto;
+        }
+      }
+
+      > *:not(:last-child) {
+        border-right: 2px solid @textColor;
+      }
     }
   }
-}
 
-#tableau-download-popup {
-  .ui.popup {
-    min-width: 460px;
-    text-align: center;
+  .tableau-download-button.tableau-format-download {
+    padding: 0;
+    color: #679ad6;
+    font-weight: normal;
+
+    &:hover {
+      color: #164b7f;
+    }
   }
 }
 

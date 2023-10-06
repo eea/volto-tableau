@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Popup } from 'semantic-ui-react';
+import { Popup } from 'semantic-ui-react';
 import cx from 'classnames';
 import { Icon } from '@plone/volto/components';
 import downloadSVG from '@eeacms/volto-tableau/icons/download.svg';
@@ -29,42 +29,73 @@ const Download = ({ viz }) => {
       }}
       ref={popupRef}
     >
-      <Button
-        className="primary"
-        onClick={() => {
-          viz.showExportImageDialog();
-          popupRef.current.triggerRef.current.click();
-        }}
-      >
-        Image
-      </Button>
-      <Button
-        className="primary"
-        onClick={() => {
-          viz.showExportPDFDialog();
-          popupRef.current.triggerRef.current.click();
-        }}
-      >
-        PDF
-      </Button>
-      <Button
-        className="primary"
-        onClick={() => {
-          viz.showExportCrossTabDialog();
-          popupRef.current.triggerRef.current.click();
-        }}
-      >
-        CSV
-      </Button>
-      <Button
-        className="primary"
-        onClick={() => {
-          viz.exportCrossTabToExcel();
-          popupRef.current.triggerRef.current.click();
-        }}
-      >
-        Excel
-      </Button>
+      <ul className="no-bullets">
+        <li>
+          Data formats
+          <div className="visualization-wrapper">
+            <div className="visualization-info">
+              <div>
+                <button
+                  className="tableau-download-button tableau-format-download"
+                  onClick={() => {
+                    viz.showExportCrossTabDialog();
+                    popupRef.current.triggerRef.current.click();
+                  }}
+                >
+                  <span>CSV</span>
+                </button>
+              </div>
+              <div>
+                <button
+                  className="tableau-download-button tableau-format-download"
+                  onClick={() => {
+                    viz.exportCrossTabToExcel();
+                    popupRef.current.triggerRef.current.click();
+                  }}
+                >
+                  <span>Excel</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </li>
+        <li>
+          Image formats
+          <div className="visualization-wrapper">
+            <div className="visualization-info">
+              <div>
+                <button
+                  className="tableau-download-button tableau-format-download"
+                  onClick={() => {
+                    viz.showExportImageDialog();
+                    popupRef.current.triggerRef.current.click();
+                  }}
+                >
+                  <span>PNG</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </li>
+        <li>
+          Other formats
+          <div className="visualization-wrapper">
+            <div className="visualization-info">
+              <div>
+                <button
+                  className="tableau-download-button tableau-format-download"
+                  onClick={() => {
+                    viz.showExportPDFDialog();
+                    popupRef.current.triggerRef.current.click();
+                  }}
+                >
+                  <span>PDF</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </li>
+      </ul>
     </Popup>
   );
 };

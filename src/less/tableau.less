@@ -19,7 +19,6 @@
 .tableau-wrapper {
   padding: @tableauWrapperPadding;
   margin: @tableauWrapperMargin;
-  background-color: @tableauWrapperBackground;
 
   .tableau-debug {
     margin: 0 auto 1rem auto;
@@ -182,11 +181,19 @@
 #tableau-note-popup,
 #tableau-sources-popup {
   .ui.popup {
-    background-color: #f9f9f9;
+    min-width: 600px;
+  }
+}
+
+#tableau-note-popup,
+#tableau-sources-popup,
+#tableau-download-popup {
+  .ui.popup {
+    background-color: @grey-1;
     box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
 
     &::before {
-      background-color: #f9f9f9;
+      background-color: @grey-1;
     }
 
     .sources-list > li,
@@ -197,11 +204,17 @@
     a:hover {
       color: @secondaryColor;
     }
+  }
 
-    .sources-list {
-      margin: 0;
-      list-style: decimal inside;
-      padding-inline-start: 0;
+  .sources-list {
+    margin: 0;
+    list-style: decimal inside;
+    padding-inline-start: 0;
+  }
+
+  @media screen and (max-width: @largestMobileScreen) {
+    .ui.popup {
+      min-width: 300px;
     }
   }
 }

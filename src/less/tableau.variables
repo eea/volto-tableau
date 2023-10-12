@@ -6,3 +6,5 @@
 @tableauIframeMargin        : 0 auto 1rem auto;
 @tableauIframeBorder        : none;
 @tableauIframeBorderRadius  : 0;
+
+@grey-1: #f9f9f9;

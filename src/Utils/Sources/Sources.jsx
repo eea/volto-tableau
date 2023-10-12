@@ -14,11 +14,12 @@ const Source = ({ source }) => {
   return (
     <>
       <Link className="embed-sources-param-title" href={source.link}>
-        {source.title},{' '}
-        <span className="embed-sources-param-description">
-          {source.organisation}
-        </span>
+        {source.title}
       </Link>
+      ,
+      <span className="embed-sources-param-description">
+        {source.organisation}
+      </span>
     </>
   );
 };

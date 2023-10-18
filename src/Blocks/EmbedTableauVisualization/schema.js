@@ -53,6 +53,7 @@ export default () => {
           'with_sources',
           'with_more_info',
           'with_download',
+          'with_share',
         ],
       },
       {
@@ -83,6 +84,11 @@ export default () => {
       },
       with_download: {
         title: 'Show download button',
+        type: 'boolean',
+        defaultValue: true,
+      },
+      with_share: {
+        title: 'Show share button',
         type: 'boolean',
         defaultValue: true,
       },

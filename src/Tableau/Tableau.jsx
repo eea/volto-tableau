@@ -20,6 +20,7 @@ import FigureNote from '@eeacms/volto-tableau/Utils/FigureNote/FigureNote';
 import Sources from '@eeacms/volto-tableau/Utils/Sources/Sources';
 import MoreInfoLink from '@eeacms/volto-tableau/Utils/MoreInfoLink/MoreInfoLink';
 import Download from '@eeacms/volto-tableau/Utils/Download/Download';
+import Share from '@eeacms/volto-tableau/Utils/Share/Share';
 import { getSheetnames, getActiveSheetname, getDevice } from './helpers';
 
 import resetSVG from '@plone/volto/icons/reset.svg';
@@ -99,6 +100,7 @@ const Tableau = forwardRef((props, ref) => {
     with_sources,
     with_more_info,
     with_download,
+    with_share,
   } = data;
 
   const device = useMemo(
@@ -425,6 +427,7 @@ const Tableau = forwardRef((props, ref) => {
         </div>
         <div className="visualization-info">
           {with_download && loaded && <Download viz={viz.current} />}
+          {with_share && loaded && <Share contentTypeLink={tableau_vis_url} />}
         </div>
       </div>
     </div>

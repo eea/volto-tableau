@@ -15,6 +15,7 @@ const View = (props) => {
     with_sources = true,
     with_more_info = true,
     with_download = true,
+    with_share = true,
   } = data;
   const { figure_note = [], data_provenance = {}, tableau_visualization } =
     props.tableau_visualization_data || {};
@@ -50,6 +51,7 @@ const View = (props) => {
                   with_sources,
                   with_more_info,
                   with_download,
+                  with_share,
                   tableau_vis_url,
                 }}
                 figure_note={figure_note}

@@ -1,8 +1,6 @@
 import React from 'react';
 import { Popup } from 'semantic-ui-react';
 import cx from 'classnames';
-import { Icon } from '@plone/volto/components';
-import downloadSVG from '@eeacms/volto-tableau/icons/download.svg';
 
 const Download = ({ viz }) => {
   const [expanded, setExpanded] = React.useState(false);
@@ -14,8 +12,7 @@ const Download = ({ viz }) => {
       trigger={
         <div className="tableau-download-container">
           <button className={cx('tableau-download-button', { expanded })}>
-            <span>Download</span>
-            <Icon name={downloadSVG} size="24px" />
+            Download <i class="ri-download-fill"></i>
           </button>
         </div>
       }

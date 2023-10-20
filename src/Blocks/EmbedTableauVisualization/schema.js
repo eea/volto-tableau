@@ -49,7 +49,9 @@ export default () => {
         title: 'Default',
         fields: [
           'tableau_vis_url',
+          'with_note',
           'with_sources',
+          'with_more_info',
           'with_download',
           'with_share',
         ],
@@ -65,6 +67,21 @@ export default () => {
         title: 'Tableau visualization',
         widget: 'url',
       },
+      with_note: {
+        title: 'Show note',
+        type: 'boolean',
+        defaultValue: true,
+      },
+      with_sources: {
+        title: 'Show sources',
+        type: 'boolean',
+        defaultValue: true,
+      },
+      with_more_info: {
+        title: 'Show more info',
+        type: 'boolean',
+        defaultValue: true,
+      },
       with_download: {
         title: 'Show download button',
         type: 'boolean',
@@ -72,11 +89,6 @@ export default () => {
       },
       with_share: {
         title: 'Show share button',
-        type: 'boolean',
-        defaultValue: true,
-      },
-      with_sources: {
-        title: 'Show sources',
         type: 'boolean',
         defaultValue: true,
       },

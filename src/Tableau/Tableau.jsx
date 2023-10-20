@@ -16,7 +16,9 @@ import { Button } from 'semantic-ui-react';
 import { Toast, Icon } from '@plone/volto/components';
 import { useTableau } from '@eeacms/volto-tableau/hooks';
 import JsonCodeSnippet from '@eeacms/volto-tableau/Utils/JsonCodeSnippet/JsonCodeSnippet';
+import FigureNote from '@eeacms/volto-tableau/Utils/FigureNote/FigureNote';
 import Sources from '@eeacms/volto-tableau/Utils/Sources/Sources';
+import MoreInfoLink from '@eeacms/volto-tableau/Utils/MoreInfoLink/MoreInfoLink';
 import Download from '@eeacms/volto-tableau/Utils/Download/Download';
 import Share from '@eeacms/volto-tableau/Utils/Share/Share';
 import { getSheetnames, getActiveSheetname, getDevice } from './helpers';
@@ -80,8 +82,9 @@ const Tableau = forwardRef((props, ref) => {
     extraOptions = {},
     mode = 'view',
     screen = {},
-    version = '2.8.0',
+    figure_note = [],
     sources,
+    version = '2.8.0',
     setVizState,
     onChangeBlock,
   } = props;
@@ -92,7 +95,10 @@ const Tableau = forwardRef((props, ref) => {
     sheetname = '',
     toolbarPosition = 'Top',
     breakpointUrls = [],
+    tableau_vis_url,
+    with_note,
     with_sources,
+    with_more_info,
     with_download,
     with_share,
   } = data;
@@ -411,10 +417,18 @@ const Tableau = forwardRef((props, ref) => {
         })}
         ref={vizEl}
       />
-      <div className="tableau-info">
-        {with_sources && loaded && <Sources sources={sources} />}
-        {with_download && loaded && <Download viz={viz.current} />}
-        {with_share && loaded && <Share viz={viz.current} />}
+      <div className="visualization-info-container">
+        <div className="visualization-info">
+          {with_note && loaded && <FigureNote note={figure_note || []} />}
+          {with_sources && loaded && <Sources sources={sources} />}
+          {with_more_info && loaded && (
+            <MoreInfoLink contentTypeLink={tableau_vis_url} />
+          )}
+        </div>
+        <div className="visualization-info">
+          {with_download && loaded && <Download viz={viz.current} />}
+          {with_share && loaded && <Share contentTypeLink={tableau_vis_url} />}
+        </div>
       </div>
     </div>
   );

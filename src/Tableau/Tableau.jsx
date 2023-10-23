@@ -101,8 +101,8 @@ const Tableau = forwardRef((props, ref) => {
     with_more_info,
     with_download,
     with_share,
+    tableau_height = '700',
   } = data;
-
   const device = useMemo(
     () => getDevice(breakpoints, screen.page?.width || Infinity),
     [breakpoints, screen],
@@ -412,6 +412,7 @@ const Tableau = forwardRef((props, ref) => {
         clearData={clearData}
       />
       <div
+        style={{ height: tableau_height + 'px' }}
         className={cx('tableau', `tableau-${version}`, {
           'tableau-autoscale': autoScale,
         })}

@@ -54,6 +54,7 @@ export default () => {
           'with_more_info',
           'with_download',
           'with_share',
+          'tableau_height',
         ],
       },
       {
@@ -91,6 +92,11 @@ export default () => {
         title: 'Show share button',
         type: 'boolean',
         defaultValue: true,
+      },
+      tableau_height: {
+        title: 'Height',
+        type: 'text',
+        defaultValue: '700',
       },
       dataprotection: {
         widget: 'object',

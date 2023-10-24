@@ -7,7 +7,7 @@ import Tableau from '@eeacms/volto-tableau/Tableau/Tableau';
 
 const VisualizationView = (props) => {
   const { content = {} } = props;
-  const { tableau_visualization = {}, data_provenance = {} } = content;
+  const { tableau_visualization = {} } = content;
 
   return (
     <Container id="page-document">
@@ -17,11 +17,8 @@ const VisualizationView = (props) => {
         <Tableau
           data={{
             ...tableau_visualization,
-            with_sources: true,
             with_download: true,
-            with_share: true,
           }}
-          sources={data_provenance.data || []}
           breakpoints={
             config.blocks.blocksConfig.embed_tableau_visualization.breakpoints
           }

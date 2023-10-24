@@ -49,9 +49,12 @@ export default () => {
         title: 'Default',
         fields: [
           'tableau_vis_url',
+          'with_note',
           'with_sources',
+          'with_more_info',
           'with_download',
           'with_share',
+          'tableau_height',
         ],
       },
       {
@@ -65,6 +68,21 @@ export default () => {
         title: 'Tableau visualization',
         widget: 'url',
       },
+      with_note: {
+        title: 'Show note',
+        type: 'boolean',
+        defaultValue: true,
+      },
+      with_sources: {
+        title: 'Show sources',
+        type: 'boolean',
+        defaultValue: true,
+      },
+      with_more_info: {
+        title: 'Show more info',
+        type: 'boolean',
+        defaultValue: true,
+      },
       with_download: {
         title: 'Show download button',
         type: 'boolean',
@@ -75,10 +93,10 @@ export default () => {
         type: 'boolean',
         defaultValue: true,
       },
-      with_sources: {
-        title: 'Show sources',
-        type: 'boolean',
-        defaultValue: true,
+      tableau_height: {
+        title: 'Height',
+        type: 'text',
+        defaultValue: '700',
       },
       dataprotection: {
         widget: 'object',

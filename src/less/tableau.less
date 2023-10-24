@@ -19,7 +19,6 @@
 .tableau-wrapper {
   padding: @tableauWrapperPadding;
   margin: @tableauWrapperMargin;
-  background-color: @tableauWrapperBackground;
 
   .tableau-debug {
     margin: 0 auto 1rem auto;
@@ -27,10 +26,6 @@
     .tableau-version .version {
       color: @secondaryColor;
     }
-  }
-
-  .tableau-info {
-    margin: 0 auto;
   }
 
   .tableau {
@@ -118,25 +113,47 @@
 
 // ========= Sources ==========
 
-.tableau-wrapper .tableau-info {
+.tableau-wrapper .visualization-info-container {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
-
-  > * {
-    padding: 0 0.5rem;
-    border-collapse: collapse;
-  }
+  justify-content: space-between;
+  gap: 1.2rem;
 
   > *:first-child {
-    padding-left: 0;
+    margin-left: auto;
+
+    > *:not(:last-child) {
+      border-right: 1px solid @textColor;
+    }
   }
 
   > *:last-child {
-    padding-right: 0;
+    justify-content: flex-end;
   }
 
-  > *:not(:last-child) {
-    border-right: 2px solid @textColor;
+  .visualization-info {
+    display: flex;
+    flex-grow: 0.5;
+    align-items: center;
+
+    > * {
+      padding: 0 0.5rem;
+      border-collapse: collapse;
+    }
+
+    > *:first-child {
+      padding-left: 0;
+    }
+
+    > *:last-child {
+      padding-right: 0;
+      margin-right: 0;
+
+      &.tableau-download-container {
+        margin-left: auto;
+      }
+    }
   }
 }
 
@@ -144,9 +161,52 @@
   cursor: pointer;
 }
 
+#tableau-share-popup {
+  .ui.popup {
+    padding-right: 15px;
+    padding-left: 0;
+  }
+
+  .tableau-share-popup-text {
+    margin-left: 7px;
+  }
+}
+
+.tableau-share-popup-container {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+
+  .tableau-share-link {
+    input {
+      padding-left: 7px !important;
+      border-left: 0 !important;
+
+      &:focus {
+        outline: 1px solid var(--focus-visible, #0083e0);
+      }
+    }
+  }
+
+  .tableau-copy-button {
+    max-width: 80px;
+    padding: 10px 17px !important;
+    border: 1px solid black !important;
+    margin: 0 !important;
+    background-color: #4472c4 !important;
+    border-radius: 7px !important;
+  }
+
+  @media screen and (max-width: @largestMobileScreen) {
+    flex-direction: column;
+  }
+}
+
+.tableau-note-button,
+.tableau-more-info-button,
 .tableau-download-button,
-.tableau-share-button,
-.tableau-sources-button {
+.tableau-sources-button,
+.tableau-share-button {
   display: inline-flex;
   align-items: center;
   padding-bottom: 3px;
@@ -154,7 +214,6 @@
   background-color: transparent;
   color: @textColor;
   cursor: pointer;
-  font-weight: bold;
 
   .icon {
     margin-left: 0.5rem;
@@ -171,24 +230,25 @@
   }
 }
 
+.tableau-more-info-button,
+.tableau-download-button,
+.tableau-share-button {
+  gap: 0.25rem;
+
+  i {
+    margin-bottom: 1px;
+  }
+}
+
+#tableau-note-popup,
 #tableau-sources-popup,
 #tableau-download-popup {
   .ui.popup {
-    min-width: 600px;
-    background-color: #f9f9f9;
+    background-color: @grey-1;
     box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
 
     &::before {
-      background-color: #f9f9f9;
-    }
-
-    .sources-list > li,
-    .sources-list > li > * {
-      color: @textColor;
-    }
-
-    a:hover {
-      color: @secondaryColor;
+      background-color: @grey-1;
     }
   }
 
@@ -198,24 +258,72 @@
     padding-inline-start: 0;
   }
 
-  @media screen and (max-width: @largestMobileScreen) {
+  .embed-sources-param-description {
+    margin-left: 5px;
+  }
+
+  @media screen and (min-width: @largestMobileScreen) {
     .ui.popup {
-      min-width: 300px;
+      max-width: 600px;
     }
   }
 }
 
 #tableau-download-popup {
-  .ui.popup {
-    min-width: 460px;
-    text-align: center;
+  ul.no-bullets {
+    padding: 0;
+    margin: 0;
+    list-style-type: none;
+  }
+
+  .visualization-wrapper {
+    position: relative;
+
+    .visualization-info {
+      display: flex;
+      align-items: center;
+
+      > * {
+        padding: 0 0.5rem;
+        border-collapse: collapse;
+      }
+
+      > *:first-child {
+        padding-left: 0;
+      }
+
+      > *:last-child {
+        padding-right: 0;
+        margin-right: 0;
+
+        &.tableau-download-container {
+          margin-left: auto;
+        }
+      }
+
+      > *:not(:last-child) {
+        border-right: 2px solid @textColor;
+      }
+    }
+  }
+
+  .tableau-download-button.tableau-format-download {
+    padding: 0;
+    color: #679ad6;
+    font-weight: normal;
+
+    &:hover {
+      color: #164b7f;
+    }
   }
 }
 
 @media print {
   .tableau-download-container,
+  .tableau-note-container,
   .tableau-sources-container,
   .tableau-share-container,
+  #tableau-note-popup,
   #tableau-sources-popup {
     display: none;
   }

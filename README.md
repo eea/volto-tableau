@@ -20,6 +20,8 @@
 
 Registers a VisualizationView component for a content type named 'tableau_visualization'.
 
+![Tableau](https://raw.githubusercontent.com/eea/volto-tableau/master/docs/volto-tableau.gif)
+
 ## Getting started
 
 ### Try volto-tableau with Docker

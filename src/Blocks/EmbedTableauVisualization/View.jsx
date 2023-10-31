@@ -31,7 +31,7 @@ const View = (props) => {
   }, [tableau_vis_url]);
 
   return (
-    <div className="embed-container">
+    <div className="embed-tableau">
       <PrivacyProtection
         {...props}
         data={{ ...data, url: tableau_visualization?.url }}

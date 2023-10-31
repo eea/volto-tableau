@@ -14,16 +14,20 @@ import isUndefined from 'lodash/isUndefined';
 import cx from 'classnames';
 import { Button } from 'semantic-ui-react';
 import { Toast, Icon } from '@plone/volto/components';
+import {
+  FigureNote,
+  Sources,
+  MoreInfo,
+  Share,
+} from '@eeacms/volto-datablocks/Toolbar';
 import { useTableau } from '@eeacms/volto-tableau/hooks';
-import JsonCodeSnippet from '@eeacms/volto-tableau/Utils/JsonCodeSnippet/JsonCodeSnippet';
-import FigureNote from '@eeacms/volto-tableau/Utils/FigureNote/FigureNote';
-import Sources from '@eeacms/volto-tableau/Utils/Sources/Sources';
-import MoreInfoLink from '@eeacms/volto-tableau/Utils/MoreInfoLink/MoreInfoLink';
-import Download from '@eeacms/volto-tableau/Utils/Download/Download';
-import Share from '@eeacms/volto-tableau/Utils/Share/Share';
+import { JsonCodeSnippet, Download } from '@eeacms/volto-tableau/Utils';
+
 import { getSheetnames, getActiveSheetname, getDevice } from './helpers';
 
 import resetSVG from '@plone/volto/icons/reset.svg';
+
+import '@eeacms/volto-datablocks/Toolbar/styles.less';
 
 const TableauDebug = ({ mode, data, vizState, url, version, clearData }) => {
   const { loaded, error } = vizState;
@@ -418,19 +422,19 @@ const Tableau = forwardRef((props, ref) => {
         })}
         ref={vizEl}
       />
-      <div className="visualization-info-container">
-        <div className="visualization-info">
-          {with_note && loaded && <FigureNote note={figure_note || []} />}
-          {with_sources && loaded && <Sources sources={sources} />}
-          {with_more_info && loaded && (
-            <MoreInfoLink contentTypeLink={tableau_vis_url} />
-          )}
+      {loaded && (
+        <div className="visualization-toolbar">
+          <div className="left-col">
+            {with_note && <FigureNote note={figure_note || []} />}
+            {with_sources && <Sources sources={sources} />}
+            {with_more_info && <MoreInfo href={tableau_vis_url} />}
+          </div>
+          <div className="right-col">
+            {with_download && loaded && <Download viz={viz.current} />}
+            {with_share && loaded && <Share href={tableau_vis_url} />}
+          </div>
         </div>
-        <div className="visualization-info">
-          {with_download && loaded && <Download viz={viz.current} />}
-          {with_share && loaded && <Share contentTypeLink={tableau_vis_url} />}
-        </div>
-      </div>
+      )}
     </div>
   );
 });

@@ -7,7 +7,11 @@ export default function VisualizationViewWidget(props) {
     <Tableau
       data={{
         ...value,
-        with_download: true,
+        with_note: false,
+        with_sources: false,
+        with_more_info: true,
+        with_share: false,
+        with_download: false,
       }}
       breakpoints={
         config.blocks.blocksConfig.embed_tableau_visualization.breakpoints

@@ -1,5 +1,3 @@
-import React from 'react';
-
 export const loadTableauScript = (callback, version) => {
   if (!__CLIENT__) return;
   const source = `https://public.tableau.com/javascripts/api/tableau-${version}.min.js`;
@@ -34,25 +32,3 @@ export const loadTableauScript = (callback, version) => {
 // https://public.tableau.com/javascripts/api/tableau-2.2.2.min.js
 // https://public.tableau.com/javascripts/api/tableau-2.1.2.min.js
 // https://public.tableau.com/javascripts/api/tableau-2.0.3.min.js
-
-export const useCopyToClipboard = (text) => {
-  const [copyStatus, setCopyStatus] = React.useState('inactive');
-  const copy = React.useCallback(() => {
-    navigator.clipboard.writeText(text).then(
-      () => setCopyStatus('copied'),
-      () => setCopyStatus('failed'),
-    );
-  }, [text]);
-
-  React.useEffect(() => {
-    if (copyStatus === 'inactive') {
-      return;
-    }
-
-    const timeout = setTimeout(() => setCopyStatus('inactive'), 3000);
-
-    return () => clearTimeout(timeout);
-  }, [copyStatus]);
-
-  return [copyStatus, copy];
-};

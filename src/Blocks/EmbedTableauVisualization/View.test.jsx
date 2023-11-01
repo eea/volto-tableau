@@ -39,6 +39,6 @@ describe('View', () => {
         <View data={data} />
       </Provider>,
     );
-    expect(container.querySelector('.embed-container')).toBeInTheDocument();
+    expect(container.querySelector('.embed-tableau')).toBeInTheDocument();
   });
 });

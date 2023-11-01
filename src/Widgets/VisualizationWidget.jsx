@@ -72,7 +72,14 @@ const VisualizationWidget = (props) => {
             >
               <Tableau
                 ref={viz}
-                data={value}
+                data={{
+                  ...(value || {}),
+                  with_note: false,
+                  with_sources: false,
+                  with_more_info: false,
+                  with_share: false,
+                  with_download: false,
+                }}
                 mode="edit"
                 breakpoints={
                   config.blocks.blocksConfig.embed_tableau_visualization
@@ -116,6 +123,11 @@ const VisualizationWidget = (props) => {
         data={{
           ...props.value,
           autoScale: true,
+          with_note: false,
+          with_sources: false,
+          with_more_info: false,
+          with_share: false,
+          with_download: false,
         }}
         breakpoints={
           config.blocks.blocksConfig.embed_tableau_visualization.breakpoints

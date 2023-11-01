@@ -17,13 +17,11 @@
     "url": "git@github.com:eea/volto-tableau.git"
   },
   "addons": [
-    "@eeacms/volto-datablocks",
     "@eeacms/volto-resize-helper",
     "@eeacms/volto-embed",
     "@eeacms/volto-object-widget"
   ],
   "dependencies": {
-    "@eeacms/volto-datablocks": "*",
     "@eeacms/volto-embed": "*",
     "@eeacms/volto-object-widget": "*",
     "@eeacms/volto-resize-helper": "*"

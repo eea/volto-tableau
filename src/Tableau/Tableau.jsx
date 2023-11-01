@@ -19,7 +19,7 @@ import {
   Sources,
   MoreInfo,
   Share,
-} from '@eeacms/volto-datablocks/Toolbar';
+} from '@eeacms/volto-embed/Toolbar';
 import { useTableau } from '@eeacms/volto-tableau/hooks';
 import { JsonCodeSnippet, Download } from '@eeacms/volto-tableau/Utils';
 
@@ -27,7 +27,7 @@ import { getSheetnames, getActiveSheetname, getDevice } from './helpers';
 
 import resetSVG from '@plone/volto/icons/reset.svg';
 
-import '@eeacms/volto-datablocks/Toolbar/styles.less';
+import '@eeacms/volto-embed/Toolbar/styles.less';
 
 const TableauDebug = ({ mode, data, vizState, url, version, clearData }) => {
   const { loaded, error } = vizState;
@@ -100,11 +100,11 @@ const Tableau = forwardRef((props, ref) => {
     toolbarPosition = 'Top',
     breakpointUrls = [],
     tableau_vis_url,
-    with_note,
-    with_sources,
-    with_more_info,
-    with_download,
-    with_share,
+    with_note = true,
+    with_sources = true,
+    with_more_info = true,
+    with_download = true,
+    with_share = true,
     tableau_height = '700',
   } = data;
   const device = useMemo(

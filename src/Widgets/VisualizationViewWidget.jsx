@@ -10,8 +10,8 @@ export default function VisualizationViewWidget(props) {
         with_note: false,
         with_sources: false,
         with_more_info: true,
-        with_share: false,
-        with_download: false,
+        with_share: true,
+        with_download: true,
       }}
       breakpoints={
         config.blocks.blocksConfig.embed_tableau_visualization.breakpoints

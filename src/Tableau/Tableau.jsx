@@ -427,11 +427,13 @@ const Tableau = forwardRef((props, ref) => {
           <div className="left-col">
             {with_note && <FigureNote note={figure_note || []} />}
             {with_sources && <Sources sources={sources} />}
-            {with_more_info && <MoreInfo href={tableau_vis_url} />}
+            {with_more_info && <MoreInfo href={tableau_vis_url || data.url} />}
           </div>
           <div className="right-col">
             {with_download && loaded && <Download viz={viz.current} />}
-            {with_share && loaded && <Share href={tableau_vis_url} />}
+            {with_share && loaded && (
+              <Share href={tableau_vis_url || data.url} />
+            )}
           </div>
         </div>
       )}

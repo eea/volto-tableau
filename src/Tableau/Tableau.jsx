@@ -333,6 +333,7 @@ const Tableau = forwardRef((props, ref) => {
   }, [data]);
 
   useEffect(() => {
+    // console.log('HERE trigger initiateViz', tableau, url);
     if (!tableau) return;
     if (url) {
       disposeViz();

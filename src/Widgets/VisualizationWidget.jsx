@@ -82,8 +82,8 @@ const VisualizationWidget = (props) => {
                 }}
                 mode="edit"
                 breakpoints={
-                  config.blocks.blocksConfig.embed_tableau_visualization
-                    .breakpoints
+                  config.blocks.blocksConfig?.embed_tableau_visualization
+                    ?.breakpoints
                 }
                 extraOptions={extraOptions}
                 setVizState={setVizState}
@@ -130,7 +130,7 @@ const VisualizationWidget = (props) => {
           with_download: false,
         }}
         breakpoints={
-          config.blocks.blocksConfig.embed_tableau_visualization.breakpoints
+          config.blocks.blocksConfig?.embed_tableau_visualization?.breakpoints
         }
         extraOptions={extraOptions}
       />

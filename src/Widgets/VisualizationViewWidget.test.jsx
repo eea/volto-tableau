@@ -8,6 +8,11 @@ import VisualizationViewWidget from './VisualizationViewWidget';
 const mockStore = configureStore([]);
 const store = mockStore({});
 
+jest.mock('@plone/volto/components', () => ({
+  Icon: ({ children }) => <img alt="incon">{children}</img>,
+  Toast: ({ children }) => <p>{children}</p>,
+}));
+
 describe('VisualizationViewWidget', () => {
   it('should render the component', () => {
     const data = {

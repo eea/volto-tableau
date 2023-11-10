@@ -74,7 +74,7 @@ const VisualizationWidget = (props) => {
                 ref={viz}
                 data={{
                   ...(value || {}),
-                  with_note: false,
+                  with_notes: false,
                   with_sources: false,
                   with_more_info: false,
                   with_share: false,
@@ -123,7 +123,7 @@ const VisualizationWidget = (props) => {
         data={{
           ...props.value,
           autoScale: true,
-          with_note: false,
+          with_notes: false,
           with_sources: false,
           with_more_info: false,
           with_share: false,

@@ -1,26 +1,31 @@
-export const loadTableauScript = (callback, version) => {
-  if (!__CLIENT__) return;
-  const source = `https://public.tableau.com/javascripts/api/tableau-${version}.min.js`;
-  const existingScript = document.getElementById(`tableauJS-${version}`);
-  const existingScriptSource =
-    existingScript && existingScript.getAttribute('src');
-  // Replace script loaded on each version change
-  if (existingScript && existingScriptSource !== source) {
-    existingScript.setAttribute('src', source);
-  }
-  if (!existingScript) {
-    const script = document.createElement('script');
-    script.src = source;
-    script.id = `tableauJS-${version}`;
-    document.body.appendChild(script);
-    script.onload = () => {
-      window[`tableau_${version}`] = window.tableau;
-      if (callback) callback();
-    };
-  }
-  // Trigger callback
-  if (existingScript && callback) callback();
-};
+export async function loadTableauScript(version) {
+  return new Promise((resolve) => {
+    if (!__CLIENT__) {
+      resolve();
+      return;
+    }
+    const source = `https://public.tableau.com/javascripts/api/tableau-${version}.min.js`;
+    const existingScript = document.getElementById(`tableauJS-${version}`);
+    const existingScriptSource =
+      existingScript && existingScript.getAttribute('src');
+    // Replace script loaded on each version change
+    if (existingScript && existingScriptSource !== source) {
+      existingScript.setAttribute('src', source);
+    }
+    if (!existingScript) {
+      const script = document.createElement('script');
+      script.src = source;
+      script.id = `tableauJS-${version}`;
+      document.body.appendChild(script);
+      script.addEventListener('load', () => {
+        window[`tableau_${version}`] = window.tableau;
+        resolve(window[`tableau_${version}`]);
+      });
+    } else {
+      resolve(window[`tableau_${version}`]);
+    }
+  });
+}
 
 // Script url for each version. In case you might need to add them in the load balancer
 // https://public.tableau.com/javascripts/api/tableau-2.8.0.min.js

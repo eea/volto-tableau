@@ -9,7 +9,7 @@ import Tableau from '@eeacms/volto-tableau/Tableau/Tableau';
 const View = (props) => {
   const data = props.data;
   const {
-    with_note = true,
+    with_notes = true,
     with_sources = true,
     with_more_info = true,
     with_download = true,
@@ -46,7 +46,7 @@ const View = (props) => {
               <Tableau
                 data={{
                   ...tableau_visualization,
-                  with_note,
+                  with_notes,
                   with_sources,
                   with_more_info,
                   with_download,

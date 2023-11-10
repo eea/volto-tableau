@@ -17,7 +17,7 @@ const VisualizationView = (props) => {
         <Tableau
           data={{
             ...tableau_visualization,
-            with_note: false,
+            with_notes: false,
             with_sources: false,
             with_more_info: false,
             with_share: false,

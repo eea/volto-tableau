@@ -1,12 +1,10 @@
 import React from 'react';
-import { PrivacyProtection } from '@eeacms/volto-embed';
-import Tableau from '@eeacms/volto-tableau/Tableau/Tableau';
-
-import { flattenToAppURL } from '@plone/volto/helpers';
-import { getContent } from '@plone/volto/actions';
-
 import { connect } from 'react-redux';
 import { compose } from 'redux';
+import { flattenToAppURL } from '@plone/volto/helpers';
+import { getContent } from '@plone/volto/actions';
+import { PrivacyProtection } from '@eeacms/volto-embed';
+import Tableau from '@eeacms/volto-tableau/Tableau/Tableau';
 
 const View = (props) => {
   const data = props.data;
@@ -16,7 +14,7 @@ const View = (props) => {
     with_more_info = true,
     with_download = true,
     with_share = true,
-    tableau_height = '700',
+    tableau_height,
   } = data;
   const { figure_note = [], data_provenance = {}, tableau_visualization } =
     props.tableau_visualization_data || {};
@@ -31,7 +29,7 @@ const View = (props) => {
   }, [tableau_vis_url]);
 
   return (
-    <div className="embed-container">
+    <div className="embed-tableau">
       <PrivacyProtection
         {...props}
         data={{ ...data, url: tableau_visualization?.url }}

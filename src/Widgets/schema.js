@@ -38,7 +38,8 @@ const staticParameters = {
 };
 
 const breakpointUrlSchema = (config) => {
-  const breakpoints = config.blocks.blocksConfig.tableau_block.breakpoints;
+  const breakpoints =
+    config.blocks.blocksConfig?.tableau_block?.breakpoints || {};
 
   return {
     title: 'URL',

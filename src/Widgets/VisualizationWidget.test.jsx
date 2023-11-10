@@ -11,6 +11,8 @@ const store = mockStore({});
 jest.mock('@plone/volto/components', () => ({
   FormFieldWrapper: jest.fn(({ children }) => <>{children}</>),
   InlineForm: jest.fn(() => <div>Mocked InlineForm</div>),
+  Icon: ({ children }) => <img alt="incon">{children}</img>,
+  Toast: ({ children }) => <p>{children}</p>,
 }));
 
 describe('VisualizationWidget', () => {

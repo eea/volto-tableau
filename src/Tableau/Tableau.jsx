@@ -70,6 +70,7 @@ const TableauDebug = ({ mode, data, vizState, url, version, clearData }) => {
 };
 
 const Tableau = forwardRef((props, ref) => {
+  const tableauEl = useRef(null);
   const vizEl = useRef(null);
   const viz = useRef();
   const vizState = useRef({});
@@ -78,6 +79,7 @@ const Tableau = forwardRef((props, ref) => {
   const [loaded, setLoaded] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [mobile, setMobile] = useState(false);
   const {
     block,
     data = {},
@@ -100,7 +102,7 @@ const Tableau = forwardRef((props, ref) => {
     toolbarPosition = 'Top',
     breakpointUrls = [],
     tableau_vis_url,
-    with_note = true,
+    with_notes = true,
     with_sources = true,
     with_more_info = true,
     with_download = true,
@@ -370,6 +372,18 @@ const Tableau = forwardRef((props, ref) => {
     /* eslint-disable-next-line */
   }, [sheetname]);
 
+  useEffect(() => {
+    if (!loading && tableauEl.current) {
+      const visWidth = tableauEl.current.offsetWidth;
+
+      if (visWidth < 600 && !mobile) {
+        setMobile(true);
+      } else if (visWidth >= 600 && mobile) {
+        setMobile(false);
+      }
+    }
+  }, [screen, mobile, loading]);
+
   useImperativeHandle(
     ref,
     () => {
@@ -385,7 +399,7 @@ const Tableau = forwardRef((props, ref) => {
   );
 
   return (
-    <div className="tableau-wrapper">
+    <div className="tableau-wrapper" ref={tableauEl}>
       {loading && (
         <div className="tableau-loader">
           <span>Loading...</span>
@@ -423,9 +437,9 @@ const Tableau = forwardRef((props, ref) => {
         ref={vizEl}
       />
       {loaded && (
-        <div className="visualization-toolbar">
+        <div className={cx('visualization-toolbar', { mobile })}>
           <div className="left-col">
-            {with_note && <FigureNote note={figure_note || []} />}
+            {with_notes && <FigureNote note={figure_note || []} />}
             {with_sources && <Sources sources={sources} />}
             {with_more_info && <MoreInfo href={tableau_vis_url || data.url} />}
           </div>

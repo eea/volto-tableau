@@ -29,7 +29,7 @@ describe('View', () => {
     tableau_vis_url: 'http://localhost:3000/tableau-ct',
     with_download: true,
     with_more_info: true,
-    with_note: true,
+    with_notes: true,
     with_share: true,
   };
 

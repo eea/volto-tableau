@@ -8,7 +8,7 @@ export default function VisualizationViewWidget(props) {
     <Tableau
       data={{
         ...value,
-        with_note: false,
+        with_notes: false,
         with_sources: false,
         with_more_info: true,
         with_share: true,

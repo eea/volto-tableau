@@ -47,14 +47,17 @@ export default () => {
       {
         id: 'default',
         title: 'Default',
+        fields: ['tableau_vis_url', 'tableau_height'],
+      },
+      {
+        id: 'toolbar',
+        title: 'Toolbar',
         fields: [
-          'tableau_vis_url',
-          'with_note',
+          'with_notes',
           'with_sources',
           'with_more_info',
           'with_download',
           'with_share',
-          'tableau_height',
         ],
       },
       {
@@ -68,13 +71,14 @@ export default () => {
         title: 'Tableau visualization',
         widget: 'url',
       },
-      with_note: {
+      with_notes: {
         title: 'Show note',
         type: 'boolean',
         defaultValue: true,
       },
       with_sources: {
         title: 'Show sources',
+        description: 'Will show sources set in this page Data provenance',
         type: 'boolean',
         defaultValue: true,
       },

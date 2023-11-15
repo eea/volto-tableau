@@ -19,6 +19,7 @@ import {
   Sources,
   MoreInfo,
   Share,
+  Enlarge,
 } from '@eeacms/volto-embed/Toolbar';
 import { useTableau } from '@eeacms/volto-tableau/hooks';
 import { JsonCodeSnippet, Download } from '@eeacms/volto-tableau/Utils';
@@ -107,6 +108,7 @@ const Tableau = forwardRef((props, ref) => {
     with_more_info = true,
     with_download = true,
     with_share = true,
+    with_enlarge = true,
     tableau_height = 700,
   } = data;
   const device = useMemo(
@@ -444,6 +446,22 @@ const Tableau = forwardRef((props, ref) => {
             {with_more_info && <MoreInfo href={tableau_vis_url || data.url} />}
           </div>
           <div className="right-col">
+            {with_enlarge && loaded && (
+              <Enlarge>
+                <Tableau
+                  {...props}
+                  data={{
+                    ...props.data,
+                    with_notes: false,
+                    with_sources: false,
+                    with_more_info: false,
+                    with_enlarge: false,
+                    with_share: false,
+                    with_download: false,
+                  }}
+                />
+              </Enlarge>
+            )}
             {with_download && loaded && <Download viz={viz.current} />}
             {with_share && loaded && (
               <Share href={tableau_vis_url || data.url} />

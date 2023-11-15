@@ -58,6 +58,7 @@ export default () => {
           'with_more_info',
           'with_download',
           'with_share',
+          'with_enlarge',
         ],
       },
       {
@@ -84,6 +85,11 @@ export default () => {
       },
       with_more_info: {
         title: 'Show more info',
+        type: 'boolean',
+        defaultValue: true,
+      },
+      with_enlarge: {
+        title: 'Show enlarge button',
         type: 'boolean',
         defaultValue: true,
       },

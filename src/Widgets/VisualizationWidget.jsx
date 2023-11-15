@@ -78,6 +78,7 @@ const VisualizationWidget = (props) => {
                   with_sources: false,
                   with_more_info: false,
                   with_share: false,
+                  with_enlarge: false,
                   with_download: false,
                 }}
                 mode="edit"
@@ -127,6 +128,7 @@ const VisualizationWidget = (props) => {
           with_sources: false,
           with_more_info: false,
           with_share: false,
+          with_enlarge: false,
           with_download: false,
         }}
         breakpoints={

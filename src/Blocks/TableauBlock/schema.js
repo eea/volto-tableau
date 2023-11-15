@@ -100,6 +100,7 @@ export default (config, viz, vizState) => {
           'with_sources',
           'with_download',
           'with_share',
+          'with_enlarge',
         ],
       },
       {
@@ -144,6 +145,11 @@ export default (config, viz, vizState) => {
       },
       with_share: {
         title: 'Show share button',
+        type: 'boolean',
+        defaultValue: true,
+      },
+      with_enlarge: {
+        title: 'Show enlarge button',
         type: 'boolean',
         defaultValue: true,
       },

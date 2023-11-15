@@ -21,6 +21,7 @@ const VisualizationView = (props) => {
             with_sources: false,
             with_more_info: false,
             with_share: false,
+            with_enlarge: false,
             with_download: true,
           }}
           breakpoints={

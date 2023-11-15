@@ -22,6 +22,7 @@ const View = React.forwardRef((props, ref) => {
     with_sources = true,
     with_download = true,
     with_share = true,
+    with_enlarge = true,
     sources,
   } = data;
 
@@ -75,7 +76,13 @@ const View = React.forwardRef((props, ref) => {
         ref={viz}
         mode={mode}
         block={block}
-        data={{ ...data, with_sources, with_download, with_share }}
+        data={{
+          ...data,
+          with_sources,
+          with_download,
+          with_share,
+          with_enlarge,
+        }}
         sources={sources}
         extraFilters={extraFilters}
         extraOptions={extraOptions}

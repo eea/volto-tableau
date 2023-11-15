@@ -10,8 +10,9 @@ export default function VisualizationViewWidget(props) {
         ...value,
         with_notes: false,
         with_sources: false,
-        with_more_info: true,
+        with_more_info: false,
         with_share: true,
+        with_enlarge: true,
         with_download: true,
       }}
       breakpoints={

@@ -128,7 +128,6 @@ export default (config, viz, vizState) => {
       url: {
         title: 'Url',
         widget: 'textarea',
-        isDisabled,
       },
       title: {
         title: 'Title',

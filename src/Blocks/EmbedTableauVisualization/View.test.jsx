@@ -34,11 +34,12 @@ describe('View', () => {
   };
 
   it('should render the component', () => {
-    const { container } = render(
+    const { asFragment } = render(
       <Provider store={store}>
         <View data={data} />
       </Provider>,
     );
-    expect(container.querySelector('.embed-tableau')).toBeInTheDocument();
+    expect(asFragment()).toMatchSnapshot();
+    //expect(container.querySelector('.embed-tableau')).toBeInTheDocument();
   });
 });

@@ -1,9 +1,6 @@
 import React from 'react';
-import { connect } from 'react-redux';
-import { compose } from 'redux';
 import { Message } from 'semantic-ui-react';
 import { flattenToAppURL } from '@plone/volto/helpers';
-import { getContent } from '@plone/volto/actions';
 import { PrivacyProtection } from '@eeacms/volto-embed';
 import Tableau from '@eeacms/volto-tableau/Tableau/Tableau';
 
@@ -24,25 +21,17 @@ const View = (props) => {
     tableau_visualization || {};
 
   React.useEffect(() => {
-    if (tableau_vis_url && props.mode === 'edit') {
+    if (
+      tableau_vis_url &&
+      flattenToAppURL(tableau_visualization?.['@id']) !== tableau_vis_url &&
+      props.mode === 'edit'
+    ) {
       props.getContent(tableau_vis_url, null, props.id);
     }
-  }, [props, tableau_vis_url]);
+  }, [props, tableau_vis_url, tableau_visualization]);
 
-  if (props.mode === 'edit' && !tableau_vis_url) {
-    return (
-      <Message>
-        Please select a tableau visualization from block editor.
-      </Message>
-    );
-  }
-
-  if (props.mode === 'edit' && !tableau_vis_url) {
+  if (!tableau_visualization && !tableau_vis_url) {
     return <Message>Url is not set in the visualization</Message>;
-  }
-
-  if (!tableau_visualization && !data.tableau_vis_url) {
-    return null;
   }
 
   return (
@@ -71,13 +60,4 @@ const View = (props) => {
   );
 };
 
-export default compose(
-  connect(
-    (state, props) => ({
-      tableau_visualization: state.content.subrequests?.[props.id]?.data,
-    }),
-    {
-      getContent,
-    },
-  ),
-)(React.memo(View));
+export default View;

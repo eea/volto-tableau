@@ -17,18 +17,17 @@ const View = (props) => {
     with_share = true,
     with_enlarge = true,
     tableau_height = 700,
+    tableau_visualization,
   } = data;
-  const { figure_note = [], data_provenance = {}, tableau_visualization } =
-    props.tableau_visualization_data || {};
-
   const tableau_vis_url = flattenToAppURL(data.tableau_vis_url || '');
+  const { figure_note = [], data_provenance = {} } =
+    tableau_visualization || {};
 
   React.useEffect(() => {
-    if (tableau_vis_url) {
+    if (tableau_vis_url && props.mode === 'edit') {
       props.getContent(tableau_vis_url, null, props.id);
     }
-    // eslint-disable-next-line
-  }, [tableau_vis_url]);
+  }, [props, tableau_vis_url]);
 
   if (props.mode === 'edit' && !tableau_vis_url) {
     return (
@@ -38,11 +37,11 @@ const View = (props) => {
     );
   }
 
-  if (props.mode === 'edit' && !tableau_visualization?.url) {
+  if (props.mode === 'edit' && !tableau_vis_url) {
     return <Message>Url is not set in the visualization</Message>;
   }
 
-  if (!tableau_visualization?.url) {
+  if (!tableau_visualization && !data.tableau_vis_url) {
     return null;
   }
 
@@ -65,7 +64,7 @@ const View = (props) => {
             tableau_vis_url,
           }}
           figure_note={figure_note}
-          sources={data_provenance.data || []}
+          sources={data_provenance?.data || []}
         />
       </PrivacyProtection>
     </div>
@@ -75,7 +74,7 @@ const View = (props) => {
 export default compose(
   connect(
     (state, props) => ({
-      tableau_visualization_data: state.content.subrequests?.[props.id]?.data,
+      tableau_visualization: state.content.subrequests?.[props.id]?.data,
     }),
     {
       getContent,

@@ -1,3 +1,20 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`View should render the component 1`] = `<DocumentFragment />`;
+exports[`View should render the component 1`] = `
+<DocumentFragment>
+  <div
+    class="embed-tableau"
+  >
+    <div>
+      <div
+        class="tableau-wrapper"
+      >
+        <div
+          class="tableau tableau-2.8.0"
+          style="height: 700px;"
+        />
+      </div>
+    </div>
+  </div>
+</DocumentFragment>
+`;

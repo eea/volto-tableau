@@ -1,15 +1,16 @@
 import React from 'react';
 import BlockDataForm from '@plone/volto/components/manage/Form/BlockDataForm';
 import { SidebarPortal } from '@plone/volto/components';
-import View from './View';
 import getSchema from './schema';
+
+import View from './View';
 
 const Edit = (props) => {
   const schema = React.useMemo(() => getSchema(props), [props]);
 
   return (
     <React.Fragment>
-      <View {...props} mode="edit" />
+      <View mode="edit" {...props} />
       <SidebarPortal selected={props.selected}>
         <BlockDataForm
           block={props.block}

@@ -17,6 +17,13 @@ jest.mock('@eeacms/volto-matomo/utils', () => ({
   trackLink: jest.fn(),
 }));
 
+jest.mock(
+  '@eeacms/volto-embed/PrivacyProtection/PrivacyProtection',
+  () => ({ children }) => {
+    return children;
+  },
+);
+
 const store = mockStore({
   intl: {
     locale: 'en',
@@ -45,7 +52,7 @@ describe('View', () => {
   it('should render the component', () => {
     const component = renderer.create(
       <Provider store={store}>
-        <View data={data} useVisibilitySensor={false} />
+        <View data={data} />
       </Provider>,
     );
     const json = component.toJSON();

@@ -5,28 +5,16 @@ exports[`View should render the component 1`] = `
   className="embed-tableau"
 >
   <div
-    className="privacy-protection-wrapper"
-    style={
-      Object {
-        "height": "auto",
-        "minHeight": "200px",
-        "overflow": "hidden",
-        "position": "relative",
-      }
-    }
+    className="tableau-wrapper"
   >
     <div
-      className="tableau-wrapper"
-    >
-      <div
-        className="tableau tableau-2.8.0"
-        style={
-          Object {
-            "height": "700px",
-          }
+      className="tableau tableau-2.8.0"
+      style={
+        Object {
+          "height": "700px",
         }
-      />
-    </div>
+      }
+    />
   </div>
 </div>
 `;

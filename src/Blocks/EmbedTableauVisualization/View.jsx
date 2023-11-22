@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { Message } from 'semantic-ui-react';
 import { flattenToAppURL } from '@plone/volto/helpers';
 import { PrivacyProtection } from '@eeacms/volto-embed';
@@ -9,14 +9,9 @@ import { pickMetadata } from '@eeacms/volto-embed/helpers';
 import Tableau from '@eeacms/volto-tableau/Tableau/Tableau';
 
 function getTableauVisualization(props) {
-  const { isBlock } = props;
-  const content = (isBlock ? props.tableauContent : props.content) || {};
+  const content = props.tableauContent || {};
   const tableau_visualization =
-    (isBlock
-      ? props.tableauContent?.tableau_visualization
-      : props.content?.tableau_visualization) ||
-    props.data.tableau_visualization ||
-    {};
+    content.tableau_visualization || props.data?.tableau_visualization || {};
   return {
     ...pickMetadata(content),
     ...tableau_visualization,
@@ -24,7 +19,7 @@ function getTableauVisualization(props) {
 }
 
 const View = (props) => {
-  const { isBlock, id, mode, data, getContent } = props;
+  const { id, mode, data, getContent } = props;
   const {
     with_notes = true,
     with_sources = true,
@@ -35,21 +30,25 @@ const View = (props) => {
     tableau_height = 700,
   } = data;
 
-  const tableau_vis_url = flattenToAppURL(data.tableau_vis_url || '');
+  const tableau_vis_url = useMemo(
+    () => flattenToAppURL(data.tableau_vis_url || ''),
+    [data.tableau_vis_url],
+  );
 
-  const tableau_visualization = getTableauVisualization(props);
+  const tableau_visualization = useMemo(() => getTableauVisualization(props), [
+    props,
+  ]);
 
   useEffect(() => {
     const tableauVisId = flattenToAppURL(tableau_visualization['@id'] || '');
     if (
-      isBlock &&
       mode === 'edit' &&
       tableau_vis_url &&
       tableau_vis_url !== tableauVisId
     ) {
       getContent(tableau_vis_url, null, id);
     }
-  }, [id, isBlock, getContent, mode, tableau_vis_url, tableau_visualization]);
+  }, [id, getContent, mode, tableau_vis_url, tableau_visualization]);
 
   const { figure_note = [], data_provenance = {} } = tableau_visualization;
 
@@ -87,7 +86,6 @@ export default compose(
   connect(
     (state, props) => ({
       tableauContent: state.content.subrequests?.[props.id]?.data,
-      isBlock: !!props.data?.['@type'],
     }),
     {
       getContent,

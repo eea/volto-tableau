@@ -22,7 +22,7 @@
     "@eeacms/volto-object-widget"
   ],
   "dependencies": {
-    "@eeacms/volto-embed": "*",
+    "@eeacms/volto-embed": "github:eea/volto-embed#develop",
     "@eeacms/volto-object-widget": "*",
     "@eeacms/volto-resize-helper": "*"
   },

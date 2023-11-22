@@ -1,31 +1,40 @@
 import React from 'react';
-import { render } from '@testing-library/react';
-import '@testing-library/jest-dom/extend-expect';
-import { Provider } from 'react-redux';
+import renderer from 'react-test-renderer';
 import configureStore from 'redux-mock-store';
+import { Provider } from 'react-intl-redux';
 import View from './View';
 
 const mockStore = configureStore([]);
-const store = mockStore({ content: { subrequests: [] } });
 
 window.URL.createObjectURL = jest.fn(() => 'test');
 
-jest.mock('@eeacms/volto-embed', () => ({
-  PrivacyProtection: ({ children }) => <div>{children}</div>,
-}));
-
 jest.mock('@plone/volto/components', () => ({
   Icon: ({ children }) => <img alt="incon">{children}</img>,
-}));
-
-jest.mock('@plone/volto/components', () => ({
   Toast: ({ children }) => <p>{children}</p>,
 }));
+
+jest.mock('@eeacms/volto-matomo/utils', () => ({
+  trackLink: jest.fn(),
+}));
+
+const store = mockStore({
+  intl: {
+    locale: 'en',
+    messages: {},
+  },
+  content: {
+    create: {},
+    subrequests: [],
+  },
+  connected_data_parameters: {},
+});
 
 describe('View', () => {
   const data = {
     '@type': 'embed_tableau_visualization',
-    dataprotection: {},
+    dataprotection: {
+      enabled: false,
+    },
     tableau_vis_url: 'http://localhost:3000/tableau-ct',
     with_download: true,
     with_more_info: true,
@@ -34,12 +43,12 @@ describe('View', () => {
   };
 
   it('should render the component', () => {
-    const { asFragment } = render(
+    const component = renderer.create(
       <Provider store={store}>
-        <View data={data} />
+        <View data={data} useVisibilitySensor={false} />
       </Provider>,
     );
-    expect(asFragment()).toMatchSnapshot();
-    //expect(container.querySelector('.embed-tableau')).toBeInTheDocument();
+    const json = component.toJSON();
+    expect(json).toMatchSnapshot();
   });
 });

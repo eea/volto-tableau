@@ -24,6 +24,10 @@ jest.mock(
   },
 );
 
+jest.mock('@eeacms/volto-embed/helpers', () => ({
+  pickMetadata: (data) => data,
+}));
+
 const store = mockStore({
   intl: {
     locale: 'en',

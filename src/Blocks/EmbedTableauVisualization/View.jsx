@@ -1,10 +1,10 @@
 import React, { useEffect } from 'react';
 import { Message } from 'semantic-ui-react';
 import { flattenToAppURL } from '@plone/volto/helpers';
-import PrivacyProtection from '@eeacms/volto-embed/PrivacyProtection/PrivacyProtection';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { getContent } from '@plone/volto/actions';
+import PrivacyProtection from '@eeacms/volto-embed/PrivacyProtection/PrivacyProtection';
 import { pickMetadata } from '@eeacms/volto-embed/helpers';
 import Tableau from '@eeacms/volto-tableau/Tableau/Tableau';
 

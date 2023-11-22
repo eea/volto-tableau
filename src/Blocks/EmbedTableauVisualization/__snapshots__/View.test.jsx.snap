@@ -1,20 +1,32 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`View should render the component 1`] = `
-<DocumentFragment>
+<div
+  className="embed-tableau"
+>
   <div
-    class="embed-tableau"
+    className="privacy-protection-wrapper"
+    style={
+      Object {
+        "height": "auto",
+        "minHeight": "200px",
+        "overflow": "hidden",
+        "position": "relative",
+      }
+    }
   >
-    <div>
+    <div
+      className="tableau-wrapper"
+    >
       <div
-        class="tableau-wrapper"
-      >
-        <div
-          class="tableau tableau-2.8.0"
-          style="height: 700px;"
-        />
-      </div>
+        className="tableau tableau-2.8.0"
+        style={
+          Object {
+            "height": "700px",
+          }
+        }
+      />
     </div>
   </div>
-</DocumentFragment>
+</div>
 `;

@@ -1,0 +1,111 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Edit should render the component 1`] = `
+<div
+  className="popup"
+>
+  <div
+    className="trigger"
+  >
+    <div
+      className="tableau-download-container"
+    >
+      <button
+        className="trigger-button"
+      >
+        <i
+          className="ri-download-fill"
+        />
+        Download
+      </button>
+    </div>
+  </div>
+  <div
+    className="content"
+  >
+    <div
+      className="item"
+    >
+      <span
+        className="label"
+      >
+        Data formats
+      </span>
+      <div
+        className="types"
+      >
+        <div
+          className="type"
+        >
+          <button
+            onClick={[Function]}
+          >
+            <span>
+              CSV
+            </span>
+          </button>
+        </div>
+        <div
+          className="type"
+        >
+          <button
+            onClick={[Function]}
+          >
+            <span>
+              Excel
+            </span>
+          </button>
+        </div>
+      </div>
+    </div>
+    <div
+      className="item"
+    >
+      <span
+        className="label"
+      >
+        Image formats
+      </span>
+      <div
+        className="types"
+      >
+        <div
+          className="type"
+        >
+          <button
+            onClick={[Function]}
+          >
+            <span>
+              PNG
+            </span>
+          </button>
+        </div>
+      </div>
+    </div>
+    <div
+      className="item"
+    >
+      <span
+        className="label"
+      >
+        Other formats
+      </span>
+      <div
+        className="types"
+      >
+        <div
+          className="type"
+        >
+          <button
+            onClick={[Function]}
+          >
+            <span>
+              PDF
+            </span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;

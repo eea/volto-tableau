@@ -1,0 +1,20 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Edit should render the component 1`] = `
+<div
+  className="embed-tableau"
+>
+  <div
+    className="tableau-wrapper"
+  >
+    <div
+      className="tableau tableau-2.8.0"
+      style={
+        Object {
+          "height": "700px",
+        }
+      }
+    />
+  </div>
+</div>
+`;

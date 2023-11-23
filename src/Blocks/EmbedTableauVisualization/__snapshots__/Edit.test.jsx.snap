@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`View should render the component 1`] = `
+exports[`Edit should render the component 1`] = `
 <div
   className="embed-tableau"
 >

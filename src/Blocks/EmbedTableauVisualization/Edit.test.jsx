@@ -2,7 +2,12 @@ import React from 'react';
 import renderer from 'react-test-renderer';
 import configureStore from 'redux-mock-store';
 import { Provider } from 'react-intl-redux';
-import View from './View';
+import config from '@plone/volto/registry';
+
+import Edit from './Edit';
+import installEmbedTableau from '.';
+
+installEmbedTableau(config);
 
 const mockStore = configureStore([]);
 
@@ -11,6 +16,9 @@ window.URL.createObjectURL = jest.fn(() => 'test');
 jest.mock('@plone/volto/components', () => ({
   Icon: ({ children }) => <img alt="incon">{children}</img>,
   Toast: ({ children }) => <p>{children}</p>,
+  SidebarPortal: jest.requireActual(
+    '@plone/volto/components/manage/Sidebar/SidebarPortal',
+  ).default,
 }));
 
 jest.mock('@eeacms/volto-matomo/utils', () => ({
@@ -40,7 +48,7 @@ const store = mockStore({
   connected_data_parameters: {},
 });
 
-describe('View', () => {
+describe('Edit', () => {
   const data = {
     '@type': 'embed_tableau_visualization',
     dataprotection: {
@@ -56,7 +64,21 @@ describe('View', () => {
   it('should render the component', () => {
     const component = renderer.create(
       <Provider store={store}>
-        <View data={data} />
+        <Edit
+          id="my-tableau"
+          data={data}
+          pathname="/news"
+          selected={false}
+          block="1234"
+          index={1}
+          onChangeBlock={() => {}}
+          onSelectBlock={() => {}}
+          onDeleteBlock={() => {}}
+          onFocusPreviousBlock={() => {}}
+          onFocusNextBlock={() => {}}
+          handleKeyDown={() => {}}
+          content={{}}
+        />
       </Provider>,
     );
     const json = component.toJSON();

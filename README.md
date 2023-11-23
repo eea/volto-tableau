@@ -24,6 +24,10 @@ Registers a VisualizationView component for a content type named 'tableau_visual
 
 ## Getting started
 
+### Upgrade
+
+#### 7.x.x -> requires >= eea.api.dataconnector@7.0
+
 ### Try volto-tableau with Docker
 
       git clone https://github.com/eea/volto-tableau.git
@@ -43,25 +47,25 @@ Go to http://localhost:3000
 
 1. Start Volto frontend
 
-* If you already have a volto project, just update `package.json`:
+- If you already have a volto project, just update `package.json`:
 
-   ```JSON
-   "addons": [
-       "@eeacms/volto-tableau"
-   ],
+  ```JSON
+  "addons": [
+      "@eeacms/volto-tableau"
+  ],
 
-   "dependencies": {
-       "@eeacms/volto-tableau": "*"
-   }
-   ```
+  "dependencies": {
+      "@eeacms/volto-tableau": "*"
+  }
+  ```
 
-* If not, create one:
+- If not, create one:
 
-   ```
-   npm install -g yo @plone/generator-volto
-   yo @plone/volto my-volto-project --canary --addon @eeacms/volto-tableau
-   cd my-volto-project
-   ```
+  ```
+  npm install -g yo @plone/generator-volto
+  yo @plone/volto my-volto-project --canary --addon @eeacms/volto-tableau
+  cd my-volto-project
+  ```
 
 1. Install new add-ons and restart Volto:
 

@@ -1,14 +1,30 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import { compose } from 'redux';
+import React, { useEffect } from 'react';
 import { Message } from 'semantic-ui-react';
 import { flattenToAppURL } from '@plone/volto/helpers';
+import { connect } from 'react-redux';
+import { compose } from 'redux';
 import { getContent } from '@plone/volto/actions';
-import { PrivacyProtection } from '@eeacms/volto-embed';
+import PrivacyProtection from '@eeacms/volto-embed/PrivacyProtection/PrivacyProtection';
+import { pickMetadata } from '@eeacms/volto-embed/helpers';
 import Tableau from '@eeacms/volto-tableau/Tableau/Tableau';
 
+function getTableauVisualization(props) {
+  const { isBlock } = props;
+  const content = (isBlock ? props.tableauContent : props.content) || {};
+  const tableau_visualization =
+    (isBlock
+      ? props.tableauContent?.tableau_visualization
+      : props.content?.tableau_visualization) ||
+    props.data.tableau_visualization ||
+    {};
+  return {
+    ...pickMetadata(content),
+    ...tableau_visualization,
+  };
+}
+
 const View = (props) => {
-  const data = props.data;
+  const { isBlock, id, mode, data, getContent } = props;
   const {
     with_notes = true,
     with_sources = true,
@@ -18,32 +34,27 @@ const View = (props) => {
     with_enlarge = true,
     tableau_height = 700,
   } = data;
-  const { figure_note = [], data_provenance = {}, tableau_visualization } =
-    props.tableau_visualization_data || {};
 
   const tableau_vis_url = flattenToAppURL(data.tableau_vis_url || '');
 
-  React.useEffect(() => {
-    if (tableau_vis_url) {
-      props.getContent(tableau_vis_url, null, props.id);
+  const tableau_visualization = getTableauVisualization(props);
+
+  useEffect(() => {
+    const tableauVisId = flattenToAppURL(tableau_visualization['@id'] || '');
+    if (
+      isBlock &&
+      mode === 'edit' &&
+      tableau_vis_url &&
+      tableau_vis_url !== tableauVisId
+    ) {
+      getContent(tableau_vis_url, null, id);
     }
-    // eslint-disable-next-line
-  }, [tableau_vis_url]);
+  }, [id, isBlock, getContent, mode, tableau_vis_url, tableau_visualization]);
+
+  const { figure_note = [], data_provenance = {} } = tableau_visualization;
 
   if (props.mode === 'edit' && !tableau_vis_url) {
-    return (
-      <Message>
-        Please select a tableau visualization from block editor.
-      </Message>
-    );
-  }
-
-  if (props.mode === 'edit' && !tableau_visualization?.url) {
-    return <Message>Url is not set in the visualization</Message>;
-  }
-
-  if (!tableau_visualization?.url) {
-    return null;
+    return <Message>Please select a tableau from block editor.</Message>;
   }
 
   return (
@@ -65,7 +76,7 @@ const View = (props) => {
             tableau_vis_url,
           }}
           figure_note={figure_note}
-          sources={data_provenance.data || []}
+          sources={data_provenance?.data || []}
         />
       </PrivacyProtection>
     </div>
@@ -75,7 +86,8 @@ const View = (props) => {
 export default compose(
   connect(
     (state, props) => ({
-      tableau_visualization_data: state.content.subrequests?.[props.id]?.data,
+      tableauContent: state.content.subrequests?.[props.id]?.data,
+      isBlock: !!props.data?.['@type'],
     }),
     {
       getContent,

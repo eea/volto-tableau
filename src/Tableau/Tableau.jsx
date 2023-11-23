@@ -89,20 +89,19 @@ const Tableau = forwardRef((props, ref) => {
     extraOptions = {},
     mode = 'view',
     screen = {},
-    figure_note = [],
-    sources,
     version = '2.8.0',
     setVizState,
     onChangeBlock,
   } = props;
   const {
+    data_provenance = {},
+    figure_note = [],
     autoScale = false,
     hideTabs = false,
     hideToolbar = false,
     sheetname = '',
     toolbarPosition = 'Top',
     breakpointUrls = [],
-    tableau_vis_url,
     with_notes = true,
     with_sources = true,
     with_more_info = true,
@@ -441,9 +440,9 @@ const Tableau = forwardRef((props, ref) => {
       {loaded && (
         <div className={cx('visualization-toolbar', { mobile })}>
           <div className="left-col">
-            {with_notes && <FigureNote note={figure_note || []} />}
-            {with_sources && <Sources sources={sources} />}
-            {with_more_info && <MoreInfo href={tableau_vis_url || data.url} />}
+            {with_notes && <FigureNote notes={figure_note || []} />}
+            {with_sources && <Sources sources={data_provenance?.data || []} />}
+            {with_more_info && <MoreInfo href={data['@id']} />}
           </div>
           <div className="right-col">
             {with_enlarge && loaded && (
@@ -463,9 +462,7 @@ const Tableau = forwardRef((props, ref) => {
               </Enlarge>
             )}
             {with_download && loaded && <Download viz={viz.current} />}
-            {with_share && loaded && (
-              <Share href={tableau_vis_url || data.url} />
-            )}
+            {with_share && loaded && <Share href={data['@id']} />}
           </div>
         </div>
       )}

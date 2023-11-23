@@ -51,8 +51,6 @@ const View = (props) => {
     }
   }, [id, isBlock, getContent, mode, tableau_vis_url, tableau_visualization]);
 
-  const { figure_note = [], data_provenance = {} } = tableau_visualization;
-
   if (props.mode === 'edit' && !tableau_vis_url) {
     return <Message>Please select a tableau from block editor.</Message>;
   }
@@ -75,8 +73,6 @@ const View = (props) => {
             tableau_height,
             tableau_vis_url,
           }}
-          figure_note={figure_note}
-          sources={data_provenance?.data || []}
         />
       </PrivacyProtection>
     </div>

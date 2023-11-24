@@ -6,7 +6,9 @@ import configureStore from 'redux-mock-store';
 import VisualizationViewWidget from './VisualizationViewWidget';
 
 const mockStore = configureStore([]);
-const store = mockStore({});
+const store = mockStore({
+  content: { data: {} },
+});
 
 jest.mock('@plone/volto/components', () => ({
   Icon: ({ children }) => <img alt="incon">{children}</img>,

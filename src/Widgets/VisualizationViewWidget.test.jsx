@@ -15,6 +15,10 @@ jest.mock('@plone/volto/components', () => ({
   Toast: ({ children }) => <p>{children}</p>,
 }));
 
+jest.mock('@eeacms/volto-embed/helpers', () => ({
+  pickMetadata: (data) => data,
+}));
+
 describe('VisualizationViewWidget', () => {
   it('should render the component', () => {
     const data = {

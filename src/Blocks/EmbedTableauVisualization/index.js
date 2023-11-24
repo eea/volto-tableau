@@ -6,7 +6,7 @@ import sliderSVG from '@plone/volto/icons/slider.svg';
 export default (config) => {
   config.blocks.blocksConfig.embed_tableau_visualization = {
     id: 'embed_tableau_visualization',
-    title: 'Embed EEA Tableau visualization',
+    title: 'Embed Dashboard (Tableau)',
     icon: sliderSVG,
     group: 'common',
     edit: EmbedTableauVisualizatonEdit,

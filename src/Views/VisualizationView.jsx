@@ -3,6 +3,7 @@ import { hasBlocksData } from '@plone/volto/helpers';
 import { Container } from 'semantic-ui-react';
 import config from '@plone/volto/registry';
 import RenderBlocks from '@plone/volto/components/theme/View/RenderBlocks';
+import { pickMetadata } from '@eeacms/volto-embed/helpers';
 import Tableau from '@eeacms/volto-tableau/Tableau/Tableau';
 
 const VisualizationView = (props) => {
@@ -17,6 +18,7 @@ const VisualizationView = (props) => {
         <Tableau
           data={{
             ...tableau_visualization,
+            ...pickMetadata(content),
             with_notes: false,
             with_sources: false,
             with_more_info: false,

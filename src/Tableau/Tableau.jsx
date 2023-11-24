@@ -316,14 +316,14 @@ const Tableau = forwardRef((props, ref) => {
   };
 
   const updateScale = () => {
-    const tableauEl = vizEl.current.querySelector('iframe');
+    const iframe = vizEl.current.querySelector('iframe');
     const { sheetSize = {} } = viz.current.getVizSize() || {};
     const vizWidth = sheetSize?.minSize?.width || 1;
     const scale = Math.min(vizEl.current.clientWidth / vizWidth, 1);
-    tableauEl.style.transform = `scale(${scale})`;
+    iframe.style.transform = `scale(${scale})`;
     window.requestAnimationFrame(() => {
       if (vizEl.current) {
-        vizEl.current.style.height = `${scale * tableauEl.clientHeight}px`;
+        vizEl.current.style.height = `${scale * iframe.clientHeight}px`;
       }
     });
   };

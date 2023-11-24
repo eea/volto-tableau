@@ -1,13 +1,14 @@
-import Tableau from '@eeacms/volto-tableau/Tableau/Tableau';
+import { connect } from 'react-redux';
 import config from '@plone/volto/registry';
+import { pickMetadata } from '@eeacms/volto-embed/helpers';
+import Tableau from '@eeacms/volto-tableau/Tableau/Tableau';
 
-export default function VisualizationViewWidget(props) {
-  const { value = {} } = props;
-
+function VisualizationViewWidget(props) {
   return (
     <Tableau
       data={{
-        ...value,
+        ...(props.value || {}),
+        ...pickMetadata(props.content),
         with_notes: false,
         with_sources: false,
         with_more_info: false,
@@ -21,3 +22,7 @@ export default function VisualizationViewWidget(props) {
     />
   );
 }
+
+export default connect((state) => ({ content: state.content.data }))(
+  VisualizationViewWidget,
+);

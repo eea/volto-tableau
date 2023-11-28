@@ -29,9 +29,13 @@ describe('VisualizationViewWidget', () => {
       with_share: true,
     };
 
+    const value = {
+      staticParameters: [],
+    };
+
     const { container } = render(
       <Provider store={store}>
-        <VisualizationViewWidget data={data} />
+        <VisualizationViewWidget data={data} value={value} />
       </Provider>,
     );
     expect(container.querySelector('.tableau-wrapper')).toBeInTheDocument();

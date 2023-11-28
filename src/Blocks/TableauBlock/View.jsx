@@ -29,7 +29,7 @@ const View = React.forwardRef((props, ref) => {
   const extraOptions = React.useMemo(() => {
     const options = {};
     staticParameters.forEach((parameter) => {
-      if (parameter.field) {
+      if (parameter.field && parameter.value) {
         options[parameter.field] = parameter.value;
       }
     });

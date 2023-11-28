@@ -24,7 +24,7 @@ const VisualizationWidget = (props) => {
   const extraOptions = React.useMemo(() => {
     const options = {};
     (value.staticParameters || []).forEach((parameter) => {
-      if (parameter.field) {
+      if (parameter.field && parameter.value) {
         options[parameter.field] = parameter.value;
       }
     });

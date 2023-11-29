@@ -38,6 +38,7 @@ describe('Edit', () => {
           onFocusNextBlock={() => {}}
           handleKeyDown={() => {}}
           content={{}}
+          useVisibilitySensor={false}
         />
       </Provider>,
     );

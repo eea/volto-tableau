@@ -24,7 +24,7 @@ function getTableauVisualization(props) {
 }
 
 const View = (props) => {
-  const { isBlock, id, mode, data, getContent } = props;
+  const { isBlock, id, mode, data, getContent, useVisibilitySensor } = props;
   const {
     with_notes = true,
     with_sources = true,
@@ -60,6 +60,7 @@ const View = (props) => {
       <PrivacyProtection
         {...props}
         data={{ ...data, url: tableau_visualization?.url }}
+        useVisibilitySensor={useVisibilitySensor}
       >
         <Tableau
           data={{

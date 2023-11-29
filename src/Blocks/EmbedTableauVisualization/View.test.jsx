@@ -19,7 +19,7 @@ describe('View', () => {
   it('should render the component', () => {
     const component = renderer.create(
       <Provider store={global.store}>
-        <View data={data} />
+        <View data={data} useVisibilitySensor={false} />
       </Provider>,
     );
     const json = component.toJSON();

@@ -10,6 +10,7 @@ module.exports = {
     '@plone/volto/babel': '<rootDir>/node_modules/@plone/volto/babel',
     '@plone/volto/(.*)$': '<rootDir>/node_modules/@plone/volto/src/$1',
     '@package/(.*)$': '<rootDir>/src/$1',
+    '@root/(.*)$': '<rootDir>/src/$1',
     '@plone/volto-quanta/(.*)$': '<rootDir>/src/addons/volto-quanta/src/$1',
     '@eeacms/(.*?)/(.*)$': '<rootDir>/node_modules/@eeacms/$1/src/$2',
     '@plone/volto-slate':
@@ -32,4 +33,7 @@ module.exports = {
       statements: 5,
     },
   },
+  setupFilesAfterEnv: [
+    '<rootDir>/node_modules/@eeacms/volto-tableau/jest.setup.js',
+  ],
 };

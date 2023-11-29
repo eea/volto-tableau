@@ -1,19 +1,8 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
-import { Provider } from 'react-redux';
-import configureStore from 'redux-mock-store';
+import { Provider } from 'react-intl-redux';
 import VisualizationWidget from './VisualizationWidget';
-
-const mockStore = configureStore([]);
-const store = mockStore({});
-
-jest.mock('@plone/volto/components', () => ({
-  FormFieldWrapper: jest.fn(({ children }) => <>{children}</>),
-  InlineForm: jest.fn(() => <div>Mocked InlineForm</div>),
-  Icon: ({ children }) => <img alt="incon">{children}</img>,
-  Toast: ({ children }) => <p>{children}</p>,
-}));
 
 describe('VisualizationWidget', () => {
   it('should render the component', () => {
@@ -36,7 +25,7 @@ describe('VisualizationWidget', () => {
     };
 
     const { container } = render(
-      <Provider store={store}>
+      <Provider store={global.store}>
         <VisualizationWidget {...data} />
       </Provider>,
     );

@@ -24,7 +24,7 @@ function getTableauVisualization(props) {
 }
 
 const View = (props) => {
-  const { isBlock, id, mode, data, getContent } = props;
+  const { isBlock, id, mode, data, getContent, useVisibilitySensor } = props;
   const {
     with_notes = true,
     with_sources = true,
@@ -32,7 +32,7 @@ const View = (props) => {
     with_download = true,
     with_share = true,
     with_enlarge = true,
-    tableau_height = 700,
+    tableau_height,
   } = data;
 
   const tableau_vis_url = flattenToAppURL(data.tableau_vis_url || '');
@@ -60,17 +60,19 @@ const View = (props) => {
       <PrivacyProtection
         {...props}
         data={{ ...data, url: tableau_visualization?.url }}
+        useVisibilitySensor={useVisibilitySensor}
       >
         <Tableau
           data={{
             ...tableau_visualization,
+            tableau_height:
+              tableau_height || tableau_visualization.tableau_height,
             with_notes,
             with_sources,
             with_more_info,
             with_download,
             with_share,
             with_enlarge,
-            tableau_height,
             tableau_vis_url,
           }}
         />

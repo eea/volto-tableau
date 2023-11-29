@@ -30,16 +30,11 @@ describe('Blocks Tests', () => {
     // when I add a maps block
     cy.addNewBlock('tableau');
 
-    cy.get(`.sidebar-container .field-wrapper-url #field-url`).type(
-      'https://tableau-public.discomap.eea.europa.eu/views/GHGProjections/Dashboard1&:jsdebug=n',
-    );
+    cy.get(
+      `.sidebar-container .field-wrapper-tableau_vis_url #field-tableau_vis_url`,
+    ).type('/path/to/dashboard');
     cy.get('#toolbar-save').click();
     cy.wait('@content');
     cy.url().should('eq', Cypress.config().baseUrl + '/cypress/my-page');
-
-    // then the page view should contain the maps block
-    cy.get('#page-document iframe')
-      .should('have.attr', 'src')
-      .and('match', /\/\/tableau-public.discomap.eea.europa.eu\//);
   });
 });

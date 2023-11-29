@@ -8,7 +8,7 @@ export default (config) => {
     id: 'embed_tableau_visualization',
     title: 'Embed Dashboard (Tableau)',
     icon: sliderSVG,
-    group: 'common',
+    group: 'data_visualizations',
     edit: EmbedTableauVisualizatonEdit,
     view: EmbedTableauVisualizatonView,
     restricted: false,

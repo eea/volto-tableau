@@ -9,8 +9,7 @@ import React, {
 } from 'react';
 import { connect } from 'react-redux';
 import { toast } from 'react-toastify';
-import isEqual from 'lodash/isEqual';
-import isUndefined from 'lodash/isUndefined';
+import { isEqual, isUndefined, isNaN, isNumber } from 'lodash';
 import cx from 'classnames';
 import { Button } from 'semantic-ui-react';
 import { Toast, Icon } from '@plone/volto/components';
@@ -29,6 +28,14 @@ import { getSheetnames, getActiveSheetname, getDevice } from './helpers';
 import resetSVG from '@plone/volto/icons/reset.svg';
 
 import '@eeacms/volto-embed/Toolbar/styles.less';
+
+function getHeight(height) {
+  const asNumber = isNumber(Number(height)) && !isNaN(Number(height));
+  if (asNumber) {
+    return `${height}px`;
+  }
+  return height;
+}
 
 const TableauDebug = ({ mode, data, vizState, url, version, clearData }) => {
   const { loaded, error } = vizState;
@@ -108,7 +115,7 @@ const Tableau = forwardRef((props, ref) => {
     with_download = true,
     with_share = true,
     with_enlarge = true,
-    tableau_height = 700,
+    tableau_height,
   } = data;
   const device = useMemo(
     () => getDevice(breakpoints, screen.page?.width || Infinity),
@@ -431,7 +438,7 @@ const Tableau = forwardRef((props, ref) => {
         clearData={clearData}
       />
       <div
-        style={{ height: tableau_height + 'px' }}
+        style={tableau_height ? { height: getHeight(tableau_height) } : {}}
         className={cx('tableau', `tableau-${version}`, {
           'tableau-autoscale': autoScale,
         })}
@@ -445,6 +452,8 @@ const Tableau = forwardRef((props, ref) => {
             {with_more_info && <MoreInfo href={data['@id']} />}
           </div>
           <div className="right-col">
+            {with_download && loaded && <Download viz={viz.current} />}
+            {with_share && loaded && <Share href={data['@id']} />}
             {with_enlarge && loaded && (
               <Enlarge>
                 <Tableau
@@ -461,8 +470,6 @@ const Tableau = forwardRef((props, ref) => {
                 />
               </Enlarge>
             )}
-            {with_download && loaded && <Download viz={viz.current} />}
-            {with_share && loaded && <Share href={data['@id']} />}
           </div>
         </div>
       )}

@@ -1,3 +1,16 @@
+import { defineMessages } from 'react-intl';
+
+const messages = defineMessages({
+  CSSHeight: {
+    id: 'CSS height',
+    defaultMessage: 'CSS height',
+  },
+  CSSTableauHeightDescription: {
+    id: 'Tableau height',
+    defaultMessage: 'Tableau height',
+  },
+});
+
 const getProtectionSchema = () => ({
   title: 'Data Protection',
 
@@ -40,9 +53,9 @@ const getProtectionSchema = () => ({
   required: [],
 });
 
-export default () => {
+export default (props) => {
   return {
-    title: 'Embed EEA Tableau visualization',
+    title: 'Embed Dashboard (Tableau)',
     fieldsets: [
       {
         id: 'default',
@@ -104,9 +117,18 @@ export default () => {
         defaultValue: true,
       },
       tableau_height: {
-        title: 'Height',
-        type: 'text',
-        defaultValue: '700',
+        title: (
+          <a
+            rel="noreferrer"
+            target="_blank"
+            href="https://developer.mozilla.org/en-US/docs/Web/CSS/height"
+          >
+            {props.intl.formatMessage(messages.CSSHeight)}
+          </a>
+        ),
+        description: props.intl.formatMessage(
+          messages.CSSTableauHeightDescription,
+        ),
       },
       dataprotection: {
         widget: 'object',

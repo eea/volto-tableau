@@ -21,7 +21,11 @@ Array [
       >
         <div
           className="tableau tableau-2.8.0"
-          style={Object {}}
+          style={
+            Object {
+              "height": "700px",
+            }
+          }
         />
       </div>
     </div>

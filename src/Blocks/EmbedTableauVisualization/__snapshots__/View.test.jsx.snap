@@ -20,7 +20,11 @@ exports[`View should render the component 1`] = `
     >
       <div
         className="tableau tableau-2.8.0"
-        style={Object {}}
+        style={
+          Object {
+            "height": "700px",
+          }
+        }
       />
     </div>
   </div>

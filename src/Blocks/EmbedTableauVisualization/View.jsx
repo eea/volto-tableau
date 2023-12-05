@@ -39,6 +39,18 @@ const View = (props) => {
 
   const tableau_visualization = getTableauVisualization(props);
 
+  const { staticParameters = [] } = tableau_visualization;
+
+  const extraOptions = React.useMemo(() => {
+    const options = {};
+    staticParameters.forEach((parameter) => {
+      if (parameter.field && parameter.value) {
+        options[parameter.field] = parameter.value;
+      }
+    });
+    return options;
+  }, [staticParameters]);
+
   useEffect(() => {
     const tableauVisId = flattenToAppURL(tableau_visualization['@id'] || '');
     if (
@@ -75,6 +87,7 @@ const View = (props) => {
             with_enlarge,
             tableau_vis_url,
           }}
+          extraOptions={extraOptions}
         />
       </PrivacyProtection>
     </div>

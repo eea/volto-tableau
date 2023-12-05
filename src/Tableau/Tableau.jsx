@@ -34,7 +34,7 @@ function getHeight(height) {
   if (asNumber) {
     return `${height}px`;
   }
-  return height;
+  return height || '700px';
 }
 
 const TableauDebug = ({ mode, data, vizState, url, version, clearData }) => {
@@ -438,7 +438,7 @@ const Tableau = forwardRef((props, ref) => {
         clearData={clearData}
       />
       <div
-        style={tableau_height ? { height: getHeight(tableau_height) } : {}}
+        style={{ height: getHeight(tableau_height) }}
         className={cx('tableau', `tableau-${version}`, {
           'tableau-autoscale': autoScale,
         })}

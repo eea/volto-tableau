@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Message } from 'semantic-ui-react';
 import { flattenToAppURL } from '@plone/volto/helpers';
 import { connect } from 'react-redux';
@@ -7,6 +7,7 @@ import { getContent } from '@plone/volto/actions';
 import PrivacyProtection from '@eeacms/volto-embed/PrivacyProtection/PrivacyProtection';
 import { pickMetadata } from '@eeacms/volto-embed/helpers';
 import Tableau from '@eeacms/volto-tableau/Tableau/Tableau';
+import qs from 'querystring';
 
 function getTableauVisualization(props) {
   const { isBlock } = props;
@@ -24,7 +25,16 @@ function getTableauVisualization(props) {
 }
 
 const View = (props) => {
-  const { isBlock, id, mode, data, getContent, useVisibilitySensor } = props;
+  const [extraFilters, setExtraFilters] = useState({});
+  const {
+    isBlock,
+    id,
+    mode,
+    data,
+    getContent,
+    useVisibilitySensor,
+    query = {},
+  } = props;
   const {
     with_notes = true,
     with_sources = true,
@@ -39,7 +49,7 @@ const View = (props) => {
 
   const tableau_visualization = getTableauVisualization(props);
 
-  const { staticParameters = [] } = tableau_visualization;
+  const { staticParameters = [], urlParameters = [] } = tableau_visualization;
 
   const extraOptions = React.useMemo(() => {
     const options = {};
@@ -51,6 +61,19 @@ const View = (props) => {
     return options;
   }, [staticParameters]);
 
+  React.useEffect(() => {
+    const newFilters = { ...extraFilters };
+    urlParameters.forEach((element) => {
+      if (element.field && typeof query[element.urlParam] !== 'undefined') {
+        newFilters[element.field] = query[element.urlParam];
+      } else if (newFilters[element.field]) {
+        delete newFilters[element.field];
+      }
+    });
+    setExtraFilters(newFilters);
+    /* eslint-disable-next-line */
+  }, [JSON.stringify(query), JSON.stringify(urlParameters)]);
+
   useEffect(() => {
     const tableauVisId = flattenToAppURL(tableau_visualization['@id'] || '');
     if (
@@ -61,11 +84,18 @@ const View = (props) => {
     ) {
       getContent(tableau_vis_url, null, id);
     }
-  }, [id, isBlock, getContent, mode, tableau_vis_url, tableau_visualization]);
+  }, [id, isBlock, getContent, mode, tableau_vis_url]);
 
   if (props.mode === 'edit' && !tableau_vis_url) {
     return <Message>Please select a tableau from block editor.</Message>;
   }
+
+  // console.log('here urlParameters', urlParameters);
+  // console.log('here data', data);
+  // console.log('here', tableau_visualization);
+  // console.log('here extraFilters', extraFilters);
+  console.log('here query', query);
+  // console.log('here extraOptions', extraOptions);
 
   return (
     <div className="embed-tableau">
@@ -88,6 +118,7 @@ const View = (props) => {
             tableau_vis_url,
           }}
           extraOptions={extraOptions}
+          extraFilters={extraFilters}
         />
       </PrivacyProtection>
     </div>
@@ -97,6 +128,11 @@ const View = (props) => {
 export default compose(
   connect(
     (state, props) => ({
+      query: {
+        ...(qs.parse(state.router.location?.search?.replace('?', '')) || {}),
+        ...(state.discodata_query?.search || {}),
+        ...(qs.parse(props.data.tableau_vis_url.split('?')[1]) || {}),
+      },
       tableauContent: state.content.subrequests?.[props.id]?.data,
       isBlock: !!props.data?.['@type'],
     }),

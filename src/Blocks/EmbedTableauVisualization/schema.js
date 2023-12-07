@@ -83,7 +83,7 @@ export default (props) => {
     properties: {
       tableau_vis_url: {
         title: 'Tableau visualization',
-        widget: 'url',
+        widget: 'object_by_path',
       },
       with_notes: {
         title: 'Show note',

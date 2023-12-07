@@ -84,18 +84,12 @@ const View = (props) => {
     ) {
       getContent(tableau_vis_url, null, id);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id, isBlock, getContent, mode, tableau_vis_url]);
 
   if (props.mode === 'edit' && !tableau_vis_url) {
     return <Message>Please select a tableau from block editor.</Message>;
   }
-
-  // console.log('here urlParameters', urlParameters);
-  // console.log('here data', data);
-  // console.log('here', tableau_visualization);
-  // console.log('here extraFilters', extraFilters);
-  console.log('here query', query);
-  // console.log('here extraOptions', extraOptions);
 
   return (
     <div className="embed-tableau">

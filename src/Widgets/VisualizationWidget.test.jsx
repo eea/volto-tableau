@@ -2,7 +2,19 @@ import React from 'react';
 import { render } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import { Provider } from 'react-intl-redux';
+import configureStore from 'redux-mock-store';
+import { MemoryRouter } from 'react-router-dom';
 import VisualizationWidget from './VisualizationWidget';
+
+const mockStore = configureStore();
+
+const store = mockStore({
+  userSession: { token: '1234' },
+  intl: {
+    locale: 'en',
+    messages: {},
+  },
+});
 
 describe('VisualizationWidget', () => {
   it('should render the component', () => {
@@ -25,8 +37,10 @@ describe('VisualizationWidget', () => {
     };
 
     const { container } = render(
-      <Provider store={global.store}>
-        <VisualizationWidget {...data} />
+      <Provider store={store}>
+        <MemoryRouter>
+          <VisualizationWidget {...data} />
+        </MemoryRouter>
       </Provider>,
     );
     expect(container.querySelector('.tableau-wrapper')).toBeInTheDocument();

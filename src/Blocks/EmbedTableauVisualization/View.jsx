@@ -24,7 +24,15 @@ function getTableauVisualization(props) {
 }
 
 const View = (props) => {
-  const { isBlock, id, mode, data, getContent, useVisibilitySensor } = props;
+  const {
+    isBlock,
+    id,
+    mode,
+    data,
+    getContent,
+    useVisibilitySensor,
+    data_query,
+  } = props;
   const {
     with_notes = true,
     with_sources = true,
@@ -33,6 +41,8 @@ const View = (props) => {
     with_share = true,
     with_enlarge = true,
     tableau_height,
+    enable_queries,
+    static_params,
   } = data;
 
   const tableau_vis_url = flattenToAppURL(data.tableau_vis_url || '');
@@ -48,17 +58,26 @@ const View = (props) => {
         options[parameter.field] = parameter.value;
       }
     });
+    if (enable_queries && data_query && data_query.length > 0) {
+      data_query.forEach((parameter) => {
+        if (parameter.i && parameter.v[0]) {
+          options[parameter.i] = parameter.v[0];
+        }
+      });
+    }
+    if (static_params && static_params.length > 0) {
+      static_params.forEach((parameter) => {
+        if (parameter.field && parameter.value) {
+          options[parameter.field] = parameter.value;
+        }
+      });
+    }
     return options;
-  }, [staticParameters]);
+  }, [data_query, enable_queries, staticParameters, static_params]);
 
   useEffect(() => {
     const tableauVisId = flattenToAppURL(tableau_visualization['@id'] || '');
-    if (
-      isBlock &&
-      mode === 'edit' &&
-      tableau_vis_url &&
-      tableau_vis_url !== tableauVisId
-    ) {
+    if (isBlock && tableau_vis_url && tableau_vis_url !== tableauVisId) {
       getContent(tableau_vis_url, null, id);
     }
   }, [id, isBlock, getContent, mode, tableau_vis_url, tableau_visualization]);
@@ -98,6 +117,7 @@ export default compose(
   connect(
     (state, props) => ({
       tableauContent: state.content.subrequests?.[props.id]?.data,
+      data_query: state.content.data.data_query,
       isBlock: !!props.data?.['@type'],
     }),
     {

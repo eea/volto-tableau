@@ -41,7 +41,7 @@ const Edit = (props) => {
 
 export default compose(
   connect((state, props) => ({
-    data_query: state.content.data.data_query,
+    data_query: state.content?.data?.data_query,
   })),
   injectIntl,
 )(Edit);

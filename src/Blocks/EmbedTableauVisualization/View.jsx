@@ -117,7 +117,7 @@ export default compose(
   connect(
     (state, props) => ({
       tableauContent: state.content.subrequests?.[props.id]?.data,
-      data_query: state.content.data.data_query,
+      data_query: state.content?.data?.data_query,
       isBlock: !!props.data?.['@type'],
     }),
     {

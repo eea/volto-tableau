@@ -72,12 +72,12 @@ Array [
             Tableau height
           </div>
           <div
-            className="mocked-boolean-widget"
-            id="mocked-field-enable_queries"
+            className="mocked-default-widget"
+            id="mocked-field-data_query_params"
           >
-            Enable queries
+            Query parameters:
              - 
-            Will import Criteria from content-type.
+            When using page level parameters to filter the dashboard, please use the corresponding field name from the Tableau service.
           </div>
         </div>
       </div>

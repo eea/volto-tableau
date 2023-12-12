@@ -41,7 +41,6 @@ const View = (props) => {
     with_share = true,
     with_enlarge = true,
     tableau_height,
-    enable_queries,
     static_params,
   } = data;
 
@@ -58,7 +57,7 @@ const View = (props) => {
         options[parameter.field] = parameter.value;
       }
     });
-    if (enable_queries && data_query && data_query.length > 0) {
+    if (data_query && data_query.length > 0) {
       data_query.forEach((parameter) => {
         if (parameter.i && parameter.v[0]) {
           options[parameter.i] = parameter.v[0];
@@ -73,7 +72,7 @@ const View = (props) => {
       });
     }
     return options;
-  }, [data_query, enable_queries, staticParameters, static_params]);
+  }, [data_query, staticParameters, static_params]);
 
   useEffect(() => {
     const tableauVisId = flattenToAppURL(tableau_visualization['@id'] || '');

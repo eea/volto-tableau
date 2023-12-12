@@ -76,12 +76,7 @@ export default (props) => {
       {
         id: 'default',
         title: 'Default',
-        fields: [
-          'tableau_vis_url',
-          'tableau_height',
-          'enable_queries',
-          ...(props.data.enable_queries ? ['data_query_params'] : ''),
-        ],
+        fields: ['tableau_vis_url', 'tableau_height', 'data_query_params'],
       },
       {
         id: 'toolbar',
@@ -159,11 +154,6 @@ export default (props) => {
       dataprotection: {
         widget: 'object',
         schema: getProtectionSchema(),
-      },
-      enable_queries: {
-        title: 'Enable queries',
-        description: 'Will import Criteria from content-type.',
-        type: 'boolean',
       },
       data_query_params: {
         title: 'Query parameters:',

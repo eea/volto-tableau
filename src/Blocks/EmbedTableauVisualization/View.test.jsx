@@ -1,19 +1,7 @@
 import React from 'react';
 import renderer from 'react-test-renderer';
-import configureStore from 'redux-mock-store';
-import { MemoryRouter } from 'react-router-dom';
 import { Provider } from 'react-intl-redux';
 import View from './View';
-
-const mockStore = configureStore();
-
-const store = mockStore({
-  userSession: { token: '1234' },
-  intl: {
-    locale: 'en',
-    messages: {},
-  },
-});
 
 describe('View', () => {
   const data = {
@@ -30,10 +18,8 @@ describe('View', () => {
 
   it('should render the component', () => {
     const component = renderer.create(
-      <Provider store={store}>
-        <MemoryRouter>
-          <View data={data} useVisibilitySensor={false} />
-        </MemoryRouter>
+      <Provider store={global.store}>
+        <View data={data} useVisibilitySensor={false} />
       </Provider>,
     );
     const json = component.toJSON();

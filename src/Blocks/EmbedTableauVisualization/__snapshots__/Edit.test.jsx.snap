@@ -71,6 +71,14 @@ Array [
              - 
             Tableau height
           </div>
+          <div
+            className="mocked-boolean-widget"
+            id="mocked-field-enable_queries"
+          >
+            Enable queries
+             - 
+            Will import Criteria from content-type.
+          </div>
         </div>
       </div>
       <div
@@ -174,6 +182,75 @@ Array [
                     Show enlarge button
                      - 
                     No description
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        className="accordion ui fluid styled form"
+      >
+        <div
+          id="blockform-fieldset-options"
+        >
+          <div
+            className="title"
+            onClick={[Function]}
+          >
+            Options
+            <svg
+              className="icon"
+              dangerouslySetInnerHTML={
+                Object {
+                  "__html": undefined,
+                }
+              }
+              onClick={null}
+              style={
+                Object {
+                  "fill": "currentColor",
+                  "height": "20px",
+                  "width": "auto",
+                }
+              }
+              viewBox=""
+              xmlns=""
+            />
+          </div>
+          <div
+            className="content"
+          >
+            <div
+              aria-hidden={true}
+              className="rah-static rah-static--height-zero"
+              style={
+                Object {
+                  "height": 0,
+                  "overflow": "hidden",
+                }
+              }
+            >
+              <div
+                style={
+                  Object {
+                    "WebkitTransition": "opacity 500ms ease 0ms",
+                    "opacity": 0,
+                    "transition": "opacity 500ms ease 0ms",
+                  }
+                }
+              >
+                <div
+                  className="ui segment attached"
+                >
+                  <div
+                    className="mocked-default-widget"
+                    id="mocked-field-static_params"
+                  >
+                    Static parameters
+                     - 
+                    Set a list of static parameters.
                   </div>
                 </div>
               </div>

@@ -37,6 +37,6 @@ function VisualizationViewWidget(props) {
   );
 }
 
-export default connect((state) => ({ content: state.content.data }))(
+export default connect((state) => ({ content: state?.content?.data }))(
   VisualizationViewWidget,
 );

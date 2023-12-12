@@ -26,7 +26,7 @@ describe('VisualizationWidget', () => {
 
     const { container } = render(
       <Provider store={global.store}>
-        <VisualizationWidget {...data} />
+        <VisualizationWidget {...data} id={'1234'} title="Title" />
       </Provider>,
     );
     expect(container.querySelector('.tableau-wrapper')).toBeInTheDocument();

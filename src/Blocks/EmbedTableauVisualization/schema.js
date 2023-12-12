@@ -53,6 +53,22 @@ const getProtectionSchema = () => ({
   required: [],
 });
 
+const staticParameters = {
+  title: 'Parameter',
+  fieldsets: [{ id: 'default', title: 'Default', fields: ['field', 'value'] }],
+  properties: {
+    field: {
+      title: 'Tableau fieldname',
+      type: 'text',
+    },
+    value: {
+      title: 'Value',
+      type: 'text',
+    },
+  },
+  required: [],
+};
+
 export default (props) => {
   return {
     title: 'Embed Dashboard (Tableau)',
@@ -60,7 +76,12 @@ export default (props) => {
       {
         id: 'default',
         title: 'Default',
-        fields: ['tableau_vis_url', 'tableau_height'],
+        fields: [
+          'tableau_vis_url',
+          'tableau_height',
+          'enable_queries',
+          ...(props.data.enable_queries ? ['data_query_params'] : ''),
+        ],
       },
       {
         id: 'toolbar',
@@ -73,6 +94,11 @@ export default (props) => {
           'with_share',
           'with_enlarge',
         ],
+      },
+      {
+        id: 'options',
+        title: 'Extra options',
+        fields: ['static_params'],
       },
       {
         id: 'privacy',
@@ -133,6 +159,23 @@ export default (props) => {
       dataprotection: {
         widget: 'object',
         schema: getProtectionSchema(),
+      },
+      enable_queries: {
+        title: 'Enable queries',
+        description: 'Will import Criteria from content-type.',
+        type: 'boolean',
+      },
+      data_query_params: {
+        title: 'Query parameters:',
+        description:
+          'When using page level parameters to filter the dashboard, please use the corresponding field name from the Tableau service.',
+        widget: 'tableau_query_widget',
+      },
+      static_params: {
+        title: 'Static parameters',
+        widget: 'object_list',
+        schema: staticParameters,
+        description: 'Set a list of static parameters.',
       },
     },
 

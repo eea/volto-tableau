@@ -17,7 +17,6 @@ const applyConfig = (config) => {
   config.views.contentTypesViews.tableau_visualization = VisualizationView;
   config.widgets.id.tableau_visualization = VisualizationWidget;
   config.widgets.views.id.tableau_visualization = VisualizationViewWidget;
-
   config.widgets.widget.tableau_query_widget = TableauQueryWidget;
 
   return [installBlocks].reduce((acc, apply) => apply(acc), config);

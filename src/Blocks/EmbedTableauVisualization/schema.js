@@ -97,7 +97,7 @@ export default (props) => {
       },
       {
         id: 'options',
-        title: 'Options',
+        title: 'Extra options',
         fields: ['static_params'],
       },
       {

@@ -50,12 +50,31 @@ Array [
           className="ui segment form attached"
         >
           <div
-            className="mocked-url-widget"
+            className="mocked-default-widget"
             id="mocked-field-tableau_vis_url"
           >
             Tableau visualization
              - 
-            No description
+            <div>
+              <p>
+                When using context query parameters please use the corresponding field name from the Tableau service.
+              </p>
+              <p>
+                NOTE: The embeded tableau dashboard must have the parameters defined in the
+                 
+                <span
+                  style={
+                    Object {
+                      "color": "rgb(15, 130, 204)",
+                    }
+                  }
+                >
+                  'Dynamic parameters'
+                </span>
+                 
+                list so that the context query parameters can take effect.
+              </p>
+            </div>
           </div>
           <div
             className="mocked-default-widget"
@@ -174,6 +193,75 @@ Array [
                     Show enlarge button
                      - 
                     No description
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        className="accordion ui fluid styled form"
+      >
+        <div
+          id="blockform-fieldset-options"
+        >
+          <div
+            className="title"
+            onClick={[Function]}
+          >
+            Parameters
+            <svg
+              className="icon"
+              dangerouslySetInnerHTML={
+                Object {
+                  "__html": undefined,
+                }
+              }
+              onClick={null}
+              style={
+                Object {
+                  "fill": "currentColor",
+                  "height": "20px",
+                  "width": "auto",
+                }
+              }
+              viewBox=""
+              xmlns=""
+            />
+          </div>
+          <div
+            className="content"
+          >
+            <div
+              aria-hidden={true}
+              className="rah-static rah-static--height-zero"
+              style={
+                Object {
+                  "height": 0,
+                  "overflow": "hidden",
+                }
+              }
+            >
+              <div
+                style={
+                  Object {
+                    "WebkitTransition": "opacity 500ms ease 0ms",
+                    "opacity": 0,
+                    "transition": "opacity 500ms ease 0ms",
+                  }
+                }
+              >
+                <div
+                  className="ui segment attached"
+                >
+                  <div
+                    className="mocked-default-widget"
+                    id="mocked-field-staticParameters"
+                  >
+                    Static parameters
+                     - 
+                    Set a list of static parameters.
                   </div>
                 </div>
               </div>

@@ -16,7 +16,62 @@ msgstr ""
 msgid "CSS height"
 msgstr ""
 
+#: Widgets/CreatableSelectWidget
+# defaultMessage: Choices
+msgid "Choices"
+msgstr ""
+
+#: Widgets/CreatableSelectWidget
+# defaultMessage: Close
+msgid "Close"
+msgstr ""
+
+#: Widgets/CreatableSelectWidget
+# defaultMessage: Default
+msgid "Default"
+msgstr ""
+
+#: Widgets/CreatableSelectWidget
+# defaultMessage: Description
+msgid "Description"
+msgstr ""
+
+#: Widgets/CreatableSelectWidget
+# defaultMessage: No options
+msgid "No options"
+msgstr ""
+
+#: Widgets/CreatableSelectWidget
+# defaultMessage: No value
+msgid "No value"
+msgstr ""
+
+#: Widgets/CreatableSelectWidget
+# defaultMessage: Required
+msgid "Required"
+msgstr ""
+
+#: Widgets/CreatableSelectWidget
+# defaultMessage: Select…
+msgid "Select…"
+msgstr ""
+
+#: Widgets/CreatableSelectWidget
+# defaultMessage: Short Name
+msgid "Short Name"
+msgstr ""
+
 #: Blocks/EmbedTableauVisualization/schema
 # defaultMessage: Tableau height
 msgid "Tableau height"
+msgstr ""
+
+#: Widgets/CreatableSelectWidget
+# defaultMessage: Title
+msgid "Title"
+msgstr ""
+
+#: Widgets/CreatableSelectWidget
+# defaultMessage: Used for programmatic access to the fieldset.
+msgid "Used for programmatic access to the fieldset."
 msgstr ""

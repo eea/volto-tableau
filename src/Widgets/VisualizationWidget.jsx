@@ -1,14 +1,26 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { withRouter } from 'react-router';
+import { connect } from 'react-redux';
+import { compose } from 'redux';
+import { isEqual } from 'lodash';
 import { Modal, Button, Grid } from 'semantic-ui-react';
 import config from '@plone/volto/registry';
 import { FormFieldWrapper, InlineForm } from '@plone/volto/components';
 import Tableau from '@eeacms/volto-tableau/Tableau/Tableau';
 import getSchema from './schema';
+import {
+  getQuery,
+  getTableauVisualization,
+  getParameters,
+  getFilters,
+} from '@eeacms/volto-tableau/Tableau/helpers';
 
 import '@eeacms/volto-tableau/less/tableau.less';
 
 const VisualizationWidget = (props) => {
+  const { location, content } = props;
   const viz = React.useRef();
+  const [schema, setSchema] = React.useState(null);
   const [vizState, setVizState] = React.useState({
     loaded: false,
     loading: false,
@@ -17,19 +29,27 @@ const VisualizationWidget = (props) => {
   const [open, setOpen] = React.useState(false);
   const [value, setValue] = React.useState(props.value);
 
-  const schema = React.useMemo(() => getSchema(config, viz.current, vizState), [
-    vizState,
-  ]);
+  const [tableauVisualization, setTableauVisualization] = useState(() =>
+    getTableauVisualization({
+      isBlock: false,
+      content: {
+        ...content,
+        tableau_visualization: value,
+      },
+    }),
+  );
 
-  const extraOptions = React.useMemo(() => {
-    const options = {};
-    (value.staticParameters || []).forEach((parameter) => {
-      if (parameter.field && parameter.value) {
-        options[parameter.field] = parameter.value;
-      }
-    });
-    return options;
-  }, [value]);
+  const [query, setQuery] = useState(() => {
+    return getQuery({ location });
+  });
+
+  const [extraParameters, setExtraParameters] = useState(() =>
+    getParameters({ tableauVisualization, query }),
+  );
+
+  const [extraFilters, setExtraFilters] = useState(() =>
+    getFilters({ tableauVisualization, query }),
+  );
 
   const handleApplyChanges = () => {
     props.onChange(props.id, value);
@@ -40,6 +60,63 @@ const VisualizationWidget = (props) => {
     setValue(props.value);
     setOpen(false);
   };
+
+  React.useEffect(() => {
+    if (!open && !isEqual(props.value, value)) {
+      setValue(props.value);
+    }
+  }, [props.value, value, open]);
+
+  /**
+   * Update tableau visualization
+   */
+  React.useEffect(() => {
+    setTableauVisualization(
+      getTableauVisualization({
+        isBlock: false,
+        content: {
+          ...content,
+          tableau_visualization: value,
+        },
+      }),
+    );
+  }, [content, value]);
+
+  /**
+   * Update query
+   */
+  React.useEffect(() => {
+    setQuery(
+      getQuery({
+        location,
+      }),
+    );
+  }, [location]);
+
+  /**
+   * Update extra parameters
+   */
+  React.useEffect(() => {
+    setExtraParameters(getParameters({ tableauVisualization, query }));
+  }, [tableauVisualization, query]);
+
+  /**
+   * Update extra filters
+   */
+  React.useEffect(() => {
+    setExtraFilters(getFilters({ tableauVisualization, query }));
+  }, [tableauVisualization, query]);
+
+  /**
+   * Get schema
+   */
+  React.useEffect(() => {
+    getSchema({ config, viz: viz.current, vizState, data: value }).then(
+      (schema) => {
+        setSchema(schema);
+      },
+    );
+  }, [vizState, value]);
 
   return (
     <FormFieldWrapper {...props}>
@@ -52,17 +129,19 @@ const VisualizationWidget = (props) => {
               computer={4}
               className="tableau-editor-column"
             >
-              <InlineForm
-                block={props.block}
-                schema={schema}
-                onChangeField={(id, fieldValue) => {
-                  setValue((value) => ({
-                    ...value,
-                    [id]: fieldValue,
-                  }));
-                }}
-                formData={value}
-              />
+              {schema && (
+                <InlineForm
+                  block={props.block}
+                  schema={schema}
+                  onChangeField={(id, fieldValue) => {
+                    setValue((value) => ({
+                      ...value,
+                      [id]: fieldValue,
+                    }));
+                  }}
+                  formData={value}
+                />
+              )}
             </Grid.Column>
             <Grid.Column
               mobile={8}
@@ -73,7 +152,7 @@ const VisualizationWidget = (props) => {
               <Tableau
                 ref={viz}
                 data={{
-                  ...(value || {}),
+                  ...tableauVisualization,
                   with_notes: false,
                   with_sources: false,
                   with_more_info: false,
@@ -86,7 +165,8 @@ const VisualizationWidget = (props) => {
                   config.blocks.blocksConfig?.embed_tableau_visualization
                     ?.breakpoints
                 }
-                extraOptions={extraOptions}
+                extraParameters={extraParameters}
+                extraFilters={extraFilters}
                 setVizState={setVizState}
                 onChangeBlock={(_, newValue) => {
                   setValue(newValue);
@@ -122,7 +202,7 @@ const VisualizationWidget = (props) => {
       </div>
       <Tableau
         data={{
-          ...props.value,
+          ...tableauVisualization,
           autoScale: true,
           with_notes: false,
           with_sources: false,
@@ -134,10 +214,14 @@ const VisualizationWidget = (props) => {
         breakpoints={
           config.blocks.blocksConfig?.embed_tableau_visualization?.breakpoints
         }
-        extraOptions={extraOptions}
+        extraParameters={extraParameters}
+        extraFilters={extraFilters}
       />
     </FormFieldWrapper>
   );
 };
 
-export default React.memo(VisualizationWidget);
+export default compose(
+  withRouter,
+  connect((state) => ({ content: state?.content?.data })),
+)(VisualizationWidget);

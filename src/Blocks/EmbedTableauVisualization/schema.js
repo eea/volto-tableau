@@ -53,6 +53,22 @@ const getProtectionSchema = () => ({
   required: [],
 });
 
+const staticParameters = {
+  title: 'Parameter',
+  fieldsets: [{ id: 'default', title: 'Default', fields: ['field', 'value'] }],
+  properties: {
+    field: {
+      title: 'Tableau fieldname',
+      type: 'text',
+    },
+    value: {
+      title: 'Value',
+      type: 'text',
+    },
+  },
+  required: [],
+};
+
 export default (props) => {
   return {
     title: 'Embed Dashboard (Tableau)',
@@ -75,6 +91,11 @@ export default (props) => {
         ],
       },
       {
+        id: 'options',
+        title: 'Parameters',
+        fields: ['staticParameters'],
+      },
+      {
         id: 'privacy',
         title: 'Privacy',
         fields: ['dataprotection'],
@@ -83,7 +104,23 @@ export default (props) => {
     properties: {
       tableau_vis_url: {
         title: 'Tableau visualization',
-        widget: 'url',
+        widget: 'internal_url',
+        description: (
+          <div>
+            <p>
+              When using context query parameters please use the corresponding
+              field name from the Tableau service.
+            </p>
+            <p>
+              NOTE: The embeded tableau dashboard must have the parameters
+              defined in the{' '}
+              <span style={{ color: 'rgb(15, 130, 204)' }}>
+                'Dynamic parameters'
+              </span>{' '}
+              list so that the context query parameters can take effect.
+            </p>
+          </div>
+        ),
       },
       with_notes: {
         title: 'Show note',
@@ -133,6 +170,12 @@ export default (props) => {
       dataprotection: {
         widget: 'object',
         schema: getProtectionSchema(),
+      },
+      staticParameters: {
+        title: 'Static parameters',
+        widget: 'object_list',
+        schema: staticParameters,
+        description: 'Set a list of static parameters.',
       },
     },
 

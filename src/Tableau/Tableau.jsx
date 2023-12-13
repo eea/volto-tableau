@@ -9,7 +9,22 @@ import React, {
 } from 'react';
 import { connect } from 'react-redux';
 import { toast } from 'react-toastify';
-import { isEqual, isUndefined, isNaN, isNumber } from 'lodash';
+import {
+  isEqual,
+  isUndefined,
+  isNaN,
+  isNumber,
+  forOwn,
+  find,
+  includes,
+  isArray,
+  isString,
+  isInteger,
+  isBoolean,
+  toString,
+  toInteger,
+  toNumber,
+} from 'lodash';
 import cx from 'classnames';
 import { Button } from 'semantic-ui-react';
 import { Toast, Icon } from '@plone/volto/components';
@@ -48,7 +63,9 @@ const TableauDebug = ({ mode, data, vizState, url, version, clearData }) => {
   return (
     <div className="tableau-debug">
       {!url && !vizState.error && <p className="tableau-error">URL required</p>}
-      {vizState.error && <p className="tableau-error">{vizState.error}</p>}
+      {isString(vizState.error) && (
+        <p className="tableau-error">{vizState.error}</p>
+      )}
       {vizState.loaded && url && (
         <h3 className="tableau-version">
           Tableau <span className="version">{version}</span>
@@ -93,6 +110,7 @@ const Tableau = forwardRef((props, ref) => {
     data = {},
     breakpoints = {},
     extraFilters = {},
+    extraParameters = {},
     extraOptions = {},
     mode = 'view',
     screen = {},
@@ -244,10 +262,10 @@ const Tableau = forwardRef((props, ref) => {
         hideToolbar,
         toolbarPosition,
         device: !!breakpointUrl ? device : 'desktop',
-        ...data.filters,
-        ...data.parameters,
-        ...extraFilters,
         ...extraOptions,
+        ...data.filters,
+        ...extraFilters,
+        ...extraParameters,
         onFirstInteractive: () => {
           onVizStateUpdate(true, true, null);
           setInitiateViz(false);
@@ -296,30 +314,9 @@ const Tableau = forwardRef((props, ref) => {
         },
       });
     } catch (e) {
-      onVizStateUpdate(false, false, e.get_message());
+      onVizStateUpdate(false, false, e?.get_message?.() || e);
       setInitiateViz(false);
     }
-  };
-
-  const addExtraFilters = (extraFilters) => {
-    const worksheets =
-      viz.current.getWorkbook().getActiveSheet().getWorksheets() || [];
-
-    worksheets.forEach((worksheet) => {
-      if (worksheet.getSheetType() === tableau.DashboardObjectType.WORKSHEET) {
-        Object.keys(extraFilters).forEach((filter) => {
-          if (!extraFilters[filter]) {
-            worksheet.clearFilterAsync(filter);
-          } else {
-            worksheet.applyFilterAsync(
-              filter,
-              extraFilters[filter],
-              tableau.FilterUpdateType.REPLACE,
-            );
-          }
-        });
-      }
-    });
   };
 
   const updateScale = () => {
@@ -358,12 +355,99 @@ const Tableau = forwardRef((props, ref) => {
     /* eslint-disable-next-line */
   }, [loaded, loading, initiateViz]);
 
+  /**
+   * TODO: make this work
+   */
+  // useEffect(() => {
+  //   async function addExtraFilters() {
+  //     if (vizState.current.loaded && viz.current) {
+  //       const dashboard = viz.current.getWorkbook().getActiveSheet();
+  //       const tableauFilters = await dashboard.getFiltersAsync();
+
+  //       forOwn(extraFilters, (value, fieldName) => {
+  //         const tableauFilter = find(
+  //           tableauFilters,
+  //           (f) => f.getFieldName() === fieldName,
+  //         );
+  //         if (!tableauFilter) return;
+  //         if (!value) {
+  //           tableauFilter.getWorksheet().clearFilterAsync(fieldName);
+  //           return;
+  //         }
+  //         const filterType = tableauFilter.getFilterType();
+  //         if (filterType === 'categorical') {
+  //           if (!isArray(value)) {
+  //             value = [value];
+  //           }
+  //           dashboard.applyFilterAsync(
+  //             fieldName,
+  //             value,
+  //             tableau.FilterUpdateType.REPLACE,
+  //           );
+  //         }
+  //         /**
+  //          * TODO: handle other filter types
+  //          */
+  //       });
+  //     }
+  //   }
+  //   addExtraFilters();
+  //   /* eslint-disable-next-line */
+  // }, [loaded, JSON.stringify(extraFilters)]);
+
   useEffect(() => {
-    if (vizState.current.loaded && viz.current) {
-      addExtraFilters(extraFilters);
+    async function addExtraParameters() {
+      if (vizState.current.loaded && viz.current) {
+        const workbook = viz.current.getWorkbook();
+        const tableauParameters = await workbook.getParametersAsync();
+        forOwn(extraParameters, (value, fieldName) => {
+          const tableauParameter = find(
+            tableauParameters,
+            (p) => p.getName() === fieldName,
+          );
+          if (!tableauParameter || !value) return;
+          const allowableValuesType = tableauParameter.getAllowableValuesType();
+          const dataType = tableauParameter.getDataType();
+          if (includes(['all', 'list'], allowableValuesType)) {
+            const values = tableauParameter
+              .getAllowableValues()
+              ?.map((v) => v.value);
+            if (!isArray(value)) {
+              value = [value];
+            }
+            value = value
+              .filter((v) => includes(values, v))
+              .map((v) => {
+                if (dataType === 'string' && !isString(v)) {
+                  return toString(v);
+                }
+                if (dataType === 'integer' && !isInteger(v)) {
+                  return toInteger(v);
+                }
+                if (dataType === 'float' && !isNumber(v)) {
+                  return toNumber(v);
+                }
+                if (dataType === 'boolean' && !isBoolean(v)) {
+                  return !!v;
+                }
+                return v;
+              });
+            if (value.length) {
+              workbook.changeParameterValueAsync(fieldName, value);
+            }
+          }
+          if (allowableValuesType === 'range' && value) {
+            /**
+             * TODO: handle range parameters
+             */
+            workbook.changeParameterValueAsync(fieldName, value);
+          }
+        });
+      }
     }
+    addExtraParameters();
     /* eslint-disable-next-line */
-  }, [JSON.stringify(extraFilters)]);
+  }, [loaded, JSON.stringify(extraParameters)]);
 
   useEffect(() => {
     if (vizState.current.loaded && viz.current && autoScale) {

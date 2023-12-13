@@ -1,25 +1,37 @@
-import React from 'react';
-import { hasBlocksData } from '@plone/volto/helpers';
+import React, { useState } from 'react';
+import { withRouter } from 'react-router';
 import { Container } from 'semantic-ui-react';
+import { hasBlocksData } from '@plone/volto/helpers';
 import config from '@plone/volto/registry';
 import RenderBlocks from '@plone/volto/components/theme/View/RenderBlocks';
-import { pickMetadata } from '@eeacms/volto-embed/helpers';
 import Tableau from '@eeacms/volto-tableau/Tableau/Tableau';
+import {
+  getQuery,
+  getTableauVisualization,
+  getParameters,
+  getFilters,
+} from '@eeacms/volto-tableau/Tableau/helpers';
 
 const VisualizationView = (props) => {
-  const { content = {} } = props;
-  const { tableau_visualization = {} } = content;
-  const { staticParameters = [] } = tableau_visualization;
+  const { location, content } = props;
 
-  const extraOptions = React.useMemo(() => {
-    const options = {};
-    staticParameters.forEach((parameter) => {
-      if (parameter.field && parameter.value) {
-        options[parameter.field] = parameter.value;
-      }
-    });
-    return options;
-  }, [staticParameters]);
+  const [tableauVisualization] = useState(() =>
+    getTableauVisualization({
+      isBlock: false,
+      content,
+    }),
+  );
+  const [query] = useState(() => {
+    return getQuery({ location });
+  });
+
+  const [extraParameters] = useState(() =>
+    getParameters({ tableauVisualization, query }),
+  );
+
+  const [extraFilters] = useState(() =>
+    getFilters({ tableauVisualization, query }),
+  );
 
   return (
     <Container id="page-document">
@@ -28,8 +40,7 @@ const VisualizationView = (props) => {
       ) : (
         <Tableau
           data={{
-            ...tableau_visualization,
-            ...pickMetadata(content),
+            ...tableauVisualization,
             with_notes: false,
             with_sources: false,
             with_more_info: false,
@@ -37,14 +48,15 @@ const VisualizationView = (props) => {
             with_enlarge: true,
             with_download: true,
           }}
-          extraOptions={extraOptions}
           breakpoints={
             config.blocks.blocksConfig.embed_tableau_visualization.breakpoints
           }
+          extraParameters={extraParameters}
+          extraFilters={extraFilters}
         />
       )}
     </Container>
   );
 };
 
-export default VisualizationView;
+export default withRouter(VisualizationView);

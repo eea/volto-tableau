@@ -1,27 +1,41 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { connect } from 'react-redux';
+import { compose } from 'redux';
+import { withRouter } from 'react-router';
 import config from '@plone/volto/registry';
-import { pickMetadata } from '@eeacms/volto-embed/helpers';
 import Tableau from '@eeacms/volto-tableau/Tableau/Tableau';
+import {
+  getQuery,
+  getTableauVisualization,
+  getParameters,
+  getFilters,
+} from '@eeacms/volto-tableau/Tableau/helpers';
 
 function VisualizationViewWidget(props) {
-  const { staticParameters = [] } = props.value;
+  const { location, content } = props;
 
-  const extraOptions = React.useMemo(() => {
-    const options = {};
-    staticParameters.forEach((parameter) => {
-      if (parameter.field && parameter.value) {
-        options[parameter.field] = parameter.value;
-      }
-    });
-    return options;
-  }, [staticParameters]);
+  const [tableauVisualization] = useState(() =>
+    getTableauVisualization({
+      isBlock: false,
+      content,
+    }),
+  );
+  const [query] = useState(() => {
+    return getQuery({ location });
+  });
+
+  const [extraParameters] = useState(() =>
+    getParameters({ tableauVisualization, query }),
+  );
+
+  const [extraFilters] = useState(() =>
+    getFilters({ tableauVisualization, query }),
+  );
 
   return (
     <Tableau
       data={{
-        ...(props.value || {}),
-        ...pickMetadata(props.content),
+        ...tableauVisualization,
         with_notes: false,
         with_sources: false,
         with_more_info: false,
@@ -29,14 +43,16 @@ function VisualizationViewWidget(props) {
         with_enlarge: true,
         with_download: true,
       }}
-      extraOptions={extraOptions}
       breakpoints={
         config.blocks.blocksConfig?.embed_tableau_visualization?.breakpoints
       }
+      extraParameters={extraParameters}
+      extraFilters={extraFilters}
     />
   );
 }
 
-export default connect((state) => ({ content: state.content.data }))(
-  VisualizationViewWidget,
-);
+export default compose(
+  withRouter,
+  connect((state) => ({ content: state?.content?.data })),
+)(VisualizationViewWidget);

@@ -10,13 +10,41 @@ global.store = mockStore({
   },
   content: {
     create: {},
+    data: {
+      '@id': 'http://localhost:3000/my-page',
+    },
     subrequests: [],
   },
-  connected_data_parameters: {},
+  connected_data_parameters: {
+    byContextPath: {},
+  },
 });
 
+const mockReactRouter = jest.requireActual('react-router');
 const mockSemanticComponents = jest.requireActual('semantic-ui-react');
 const mockComponents = jest.requireActual('@plone/volto/components');
+
+jest.mock('react-router', () => {
+  return {
+    ...mockReactRouter,
+    withRouter: (WrappedComponent) => {
+      return (props) => {
+        return (
+          <WrappedComponent
+            {...props}
+            location={{
+              pathname: '/path/to/content',
+              search: '',
+              hash: '',
+              state: null,
+              key: '5nvxpbdafa',
+            }}
+          />
+        );
+      };
+    },
+  };
+});
 
 jest.mock('semantic-ui-react', () => ({
   ...mockSemanticComponents,
@@ -32,7 +60,6 @@ jest.mock('semantic-ui-react', () => ({
 
 jest.doMock('@plone/volto/components', () => {
   return {
-    __esModule: true,
     ...mockComponents,
     Toast: ({ children }) => <div className="toast">{children}</div>,
     SidebarPortal: ({ children }) => <div id="sidebar">{children}</div>,

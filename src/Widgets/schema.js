@@ -20,6 +20,9 @@ async function getUrlParametersSchema({ viz, vizState, data }) {
     properties: {
       field: {
         title: 'Tableau parameter',
+        widget: 'creatable_select',
+        isMulti: false,
+        creatable: true,
         choices: tableauParameters
           .filter((p) => {
             return !includes(currentFields, p.getName());
@@ -50,6 +53,9 @@ async function getStaticParametersSchema({ viz, vizState, data }) {
     properties: {
       field: {
         title: 'Tableau parameter',
+        widget: 'creatable_select',
+        isMulti: false,
+        creatable: true,
         choices: tableauParameters
           .filter((p) => {
             return !includes(currentFields, p.getName());
@@ -84,6 +90,9 @@ async function getDynamicFiltersSchema({ viz, vizState, data }) {
     properties: {
       field: {
         title: 'Tableau filter',
+        widget: 'creatable_select',
+        isMulti: false,
+        creatable: true,
         choices: tableauFilters
           .filter((p) => {
             return !includes(currentFields, p.getFieldName());
@@ -116,6 +125,9 @@ async function getStaticFiltersSchema({ viz, vizState, data }) {
     properties: {
       field: {
         title: 'Tableau filter',
+        widget: 'creatable_select',
+        isMulti: false,
+        creatable: true,
         choices: tableauFilters
           .filter((p) => {
             return !includes(currentFields, p.getFieldName());
@@ -229,20 +241,6 @@ export default async ({ config, viz, vizState, data }) => {
         title: 'Dynamic parameters',
         widget: 'object_list',
         schema: await getUrlParametersSchema({ viz, vizState, data }),
-        schemaExtender: (schema, data) => {
-          const tableauParameter = find(
-            schema.tableauParameters,
-            (p) => p.getName() === data.field,
-          );
-          if (!vizState.loading && data.field && !tableauParameter) {
-            schema.properties.field.description = (
-              <span style={{ color: 'rgb(218, 1, 45)' }}>
-                Parameter not found
-              </span>
-            );
-          }
-          return schema;
-        },
         description: (
           <div style={{ color: 'rgb(15, 130, 204)', fontWeight: '400' }}>
             <p>Set a list of dynamic parameters that can be used as:</p>
@@ -294,13 +292,8 @@ export default async ({ config, viz, vizState, data }) => {
             schema.tableauParameters,
             (p) => p.getName() === data.field,
           );
-          if (!vizState.loading && data.field && !tableauParameter) {
-            schema.properties.field.description = (
-              <span style={{ color: 'rgb(218, 1, 45)' }}>
-                Parameter not found
-              </span>
-            );
-          }
+
+          schema.fieldsets[0].fields = ['field', 'value'];
 
           if (!data.field || !tableauParameter) {
             return schema;
@@ -326,7 +319,6 @@ export default async ({ config, viz, vizState, data }) => {
             schema.properties.value.type = 'number';
             schema.properties.value.step = tableauParameter.getStepSize();
           }
-          schema.fieldsets[0].fields = ['field', 'value'];
           return schema;
         },
         description: (
@@ -342,18 +334,6 @@ export default async ({ config, viz, vizState, data }) => {
         title: 'Dynamic filters',
         widget: 'object_list',
         schema: await getDynamicFiltersSchema({ viz, vizState, data }),
-        schemaExtender: (schema, data) => {
-          const tableauFilter = find(
-            schema.tableauFilters,
-            (p) => p.getFieldName() === data.field,
-          );
-          if (!vizState.loading && data.field && !tableauFilter) {
-            schema.properties.field.description = (
-              <span style={{ color: 'rgb(218, 1, 45)' }}>Filter not found</span>
-            );
-          }
-          return schema;
-        },
         description: (
           <div style={{ color: 'rgb(15, 130, 204)', fontWeight: '400' }}>
             <p>Set a list of dynamic filters that can be used as:</p>
@@ -405,11 +385,8 @@ export default async ({ config, viz, vizState, data }) => {
             schema.tableauFilters,
             (p) => p.getFieldName() === data.field,
           );
-          if (!vizState.loading && data.field && !tableauFilters) {
-            schema.properties.field.description = (
-              <span style={{ color: 'rgb(218, 1, 45)' }}>Filter not found</span>
-            );
-          }
+
+          schema.fieldsets[0].fields = ['field', 'value'];
 
           if (!data.field || !tableauFilters) {
             return schema;

@@ -76,7 +76,7 @@ export default (props) => {
       {
         id: 'default',
         title: 'Default',
-        fields: ['tableau_vis_url', 'tableau_height', 'data_query_params'],
+        fields: ['tableau_vis_url', 'tableau_height'],
       },
       {
         id: 'toolbar',
@@ -92,8 +92,8 @@ export default (props) => {
       },
       {
         id: 'options',
-        title: 'Extra options',
-        fields: ['static_params'],
+        title: 'Parameters',
+        fields: ['staticParameters'],
       },
       {
         id: 'privacy',
@@ -104,7 +104,23 @@ export default (props) => {
     properties: {
       tableau_vis_url: {
         title: 'Tableau visualization',
-        widget: 'url',
+        widget: 'internal_url',
+        description: (
+          <div>
+            <p>
+              When using context query parameters please use the corresponding
+              field name from the Tableau service.
+            </p>
+            <p>
+              NOTE: The embeded tableau dashboard must have the parameters
+              defined in the{' '}
+              <span style={{ color: 'rgb(15, 130, 204)' }}>
+                'Dynamic parameters'
+              </span>{' '}
+              list so that the context query parameters can take effect.
+            </p>
+          </div>
+        ),
       },
       with_notes: {
         title: 'Show note',
@@ -155,13 +171,7 @@ export default (props) => {
         widget: 'object',
         schema: getProtectionSchema(),
       },
-      data_query_params: {
-        title: 'Query parameters:',
-        description:
-          'When using page level parameters to filter the dashboard, please use the corresponding field name from the Tableau service.',
-        widget: 'tableau_query_widget',
-      },
-      static_params: {
+      staticParameters: {
         title: 'Static parameters',
         widget: 'object_list',
         schema: staticParameters,

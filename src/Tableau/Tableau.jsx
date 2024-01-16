@@ -118,6 +118,7 @@ const Tableau = forwardRef((props, ref) => {
     setVizState,
     onChangeBlock,
   } = props;
+
   const {
     data_provenance = {},
     figure_note = [],

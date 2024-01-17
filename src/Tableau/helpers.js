@@ -31,16 +31,21 @@ export function getTableauVisualization({
   tableauContent,
   content,
 }) {
-  const mergedContent = (isBlock ? tableauContent : content) || {};
-  const tableau_visualization =
+  const mergedContent =
     (isBlock
-      ? tableauContent?.tableau_visualization
-      : content?.tableau_visualization) ||
-    data?.tableau_visualization ||
-    {};
+      ? tableauContent
+      : {
+          ...content,
+          tableau_visualization: {
+            ...(content?.tableau_visualization || {}),
+            ...pickMetadata(content),
+          },
+        }) || {};
+  const tableau_visualization =
+    mergedContent?.tableau_visualization || data?.tableau_visualization || {};
   return {
-    ...pickMetadata(mergedContent),
     ...tableau_visualization,
+    ...(isBlock ? pickMetadata(mergedContent) : {}),
   };
 }
 

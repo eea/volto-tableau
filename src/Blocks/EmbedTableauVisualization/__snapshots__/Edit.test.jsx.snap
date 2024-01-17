@@ -156,14 +156,6 @@ Array [
                   </div>
                   <div
                     className="mocked-boolean-widget"
-                    id="mocked-field-with_sources"
-                  >
-                    Show sources
-                     - 
-                    Will show sources set in this page Data provenance
-                  </div>
-                  <div
-                    className="mocked-boolean-widget"
                     id="mocked-field-with_more_info"
                   >
                     Show more info

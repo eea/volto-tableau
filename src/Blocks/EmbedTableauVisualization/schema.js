@@ -83,7 +83,6 @@ export default (props) => {
         title: 'Toolbar',
         fields: [
           'with_notes',
-          'with_sources',
           'with_more_info',
           'with_download',
           'with_share',

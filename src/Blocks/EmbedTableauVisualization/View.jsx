@@ -41,7 +41,6 @@ const View = (props) => {
   } = props;
   const {
     with_notes = true,
-    with_sources = true,
     with_more_info = true,
     with_download = true,
     with_share = true,
@@ -135,13 +134,25 @@ const View = (props) => {
      * tableau visualization
      */
     const tableauVisId = flattenToAppURL(tableauVisualization['@id'] || '');
-    if (isBlock && tableau_vis_url && tableau_vis_url !== tableauVisId) {
+    if (
+      mode === 'edit' &&
+      !tableauVisualization.error &&
+      isBlock &&
+      tableau_vis_url &&
+      tableau_vis_url !== tableauVisId
+    ) {
       getContent(tableau_vis_url, null, id);
     }
   }, [id, isBlock, getContent, mode, tableau_vis_url, tableauVisualization]);
 
   if (props.mode === 'edit' && !tableau_vis_url) {
     return <Message>Please select a tableau from block editor.</Message>;
+  }
+
+  if (tableauVisualization?.error) {
+    return (
+      <p dangerouslySetInnerHTML={{ __html: tableauVisualization.error }} />
+    );
   }
 
   return (
@@ -157,7 +168,7 @@ const View = (props) => {
             tableau_height:
               tableau_height || tableauVisualization.tableau_height,
             with_notes,
-            with_sources,
+            with_sources: true,
             with_more_info,
             with_download,
             with_share,

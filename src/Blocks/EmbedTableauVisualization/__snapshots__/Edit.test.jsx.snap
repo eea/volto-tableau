@@ -82,7 +82,7 @@ Array [
           >
             <a
               href="https://developer.mozilla.org/en-US/docs/Web/CSS/height"
-              rel="noreferrer"
+              rel="noopener"
               target="_blank"
             >
               CSS height

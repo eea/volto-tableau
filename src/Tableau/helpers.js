@@ -28,8 +28,8 @@ export function getQuery({
 export function getTableauVisualization({
   isBlock,
   data,
-  tableauContent,
-  content,
+  tableauContent = {},
+  content = {},
 }) {
   const mergedContent =
     (isBlock
@@ -37,12 +37,12 @@ export function getTableauVisualization({
       : {
           ...content,
           tableau_visualization: {
-            ...(content?.tableau_visualization || {}),
+            ...(content.tableau_visualization || {}),
             ...pickMetadata(content),
           },
         }) || {};
   const tableau_visualization =
-    mergedContent?.tableau_visualization || data?.tableau_visualization || {};
+    mergedContent.tableau_visualization || data?.tableau_visualization || {};
   return {
     ...tableau_visualization,
     ...(isBlock ? pickMetadata(mergedContent) : {}),

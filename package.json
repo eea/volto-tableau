@@ -1,6 +1,6 @@
 {
   "name": "@eeacms/volto-tableau",
-  "version": "7.2.0",
+  "version": "7.2.1",
   "description": "@eeacms/volto-tableau: Volto add-on",
   "main": "src/index.js",
   "author": "European Environment Agency: IDM2 A-Team",
@@ -32,7 +32,8 @@
     "babel-plugin-transform-class-properties": "^6.24.1",
     "husky": "^8.0.3",
     "lint-staged": "^14.0.1",
-    "md5": "^2.3.0"
+    "md5": "^2.3.0",
+    "dotenv": "^16.3.2"
   },
   "lint-staged": {
     "src/**/*.{js,jsx,ts,tsx,json}": [

@@ -19,6 +19,7 @@ import '@eeacms/volto-tableau/less/tableau.less';
 
 const VisualizationWidget = (props) => {
   const { location, content } = props;
+  const ogValue = props.value || {};
   const viz = React.useRef();
   const [schema, setSchema] = React.useState(null);
   const [vizState, setVizState] = React.useState({
@@ -27,7 +28,7 @@ const VisualizationWidget = (props) => {
     error: null,
   });
   const [open, setOpen] = React.useState(false);
-  const [value, setValue] = React.useState(props.value);
+  const [value, setValue] = React.useState(ogValue);
 
   const [tableauVisualization, setTableauVisualization] = useState(() =>
     getTableauVisualization({
@@ -57,13 +58,13 @@ const VisualizationWidget = (props) => {
   };
 
   const handleClose = () => {
-    setValue(props.value);
+    setValue(ogValue);
     setOpen(false);
   };
 
   React.useEffect(() => {
-    if (!open && !isEqual(props.value, value)) {
-      setValue(props.value);
+    if (!open && !isEqual(props.value || {}, value)) {
+      setValue(props.value || {});
     }
   }, [props.value, value, open]);
 

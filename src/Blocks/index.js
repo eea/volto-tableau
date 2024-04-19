@@ -2,7 +2,7 @@ import { uniqBy } from 'lodash';
 import installEmbedTableauVisualization from './EmbedTableauVisualization';
 import installTableauBlock from './TableauBlock';
 
-export default (config) => {
+const config = (config) => {
   config.blocks.groupBlocksOrder = uniqBy(
     [
       ...config.blocks.groupBlocksOrder,
@@ -16,3 +16,5 @@ export default (config) => {
     config,
   );
 };
+
+export default config;

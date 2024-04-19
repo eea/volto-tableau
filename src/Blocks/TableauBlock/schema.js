@@ -84,7 +84,7 @@ const sourceSchema = {
   required: [],
 };
 
-export default (config, viz, vizState) => {
+const schema = (config, viz, vizState) => {
   const isDisabled = !canChangeVizData(viz, vizState);
 
   return {
@@ -227,3 +227,5 @@ export default (config, viz, vizState) => {
     required: ['url'],
   };
 };
+
+export default schema;

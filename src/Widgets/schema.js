@@ -168,8 +168,7 @@ const breakpointUrlSchema = (config) => {
   };
 };
 
-// eslint-disable-next-line import/no-anonymous-default-export
-export default async ({ config, viz, vizState, data }) => {
+const schema = async ({ config, viz, vizState, data }) => {
   const isDisabled = !canChangeVizData(viz, vizState);
 
   return {
@@ -429,3 +428,5 @@ export default async ({ config, viz, vizState, data }) => {
     required: ['url'],
   };
 };
+
+export default schema;

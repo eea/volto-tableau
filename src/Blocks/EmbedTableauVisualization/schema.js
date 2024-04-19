@@ -69,8 +69,7 @@ const staticParameters = {
   required: [],
 };
 
-// eslint-disable-next-line import/no-anonymous-default-export
-export default (props) => {
+const schema = (props) => {
   return {
     title: 'Embed Dashboard (Tableau)',
     fieldsets: [
@@ -182,3 +181,5 @@ export default (props) => {
     required: ['tableau_vis_url'],
   };
 };
+
+export default schema;

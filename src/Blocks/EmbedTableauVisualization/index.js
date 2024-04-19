@@ -3,8 +3,7 @@ import EmbedTableauVisualizatonView from './View';
 
 import sliderSVG from '@plone/volto/icons/slider.svg';
 
-// eslint-disable-next-line import/no-anonymous-default-export
-export default (config) => {
+const config = (config) => {
   config.blocks.blocksConfig.embed_tableau_visualization = {
     id: 'embed_tableau_visualization',
     title: 'Embed Dashboard (Tableau)',
@@ -29,3 +28,5 @@ export default (config) => {
 
   return config;
 };
+
+export default config;

@@ -84,8 +84,7 @@ const sourceSchema = {
   required: [],
 };
 
-// eslint-disable-next-line import/no-anonymous-default-export
-export default (config, viz, vizState) => {
+const schema = (config, viz, vizState) => {
   const isDisabled = !canChangeVizData(viz, vizState);
 
   return {
@@ -228,3 +227,5 @@ export default (config, viz, vizState) => {
     required: ['url'],
   };
 };
+
+export default schema;

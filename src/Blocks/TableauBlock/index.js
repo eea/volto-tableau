@@ -3,8 +3,7 @@ import TableauView from './View';
 
 import sliderSVG from '@plone/volto/icons/slider.svg';
 
-// eslint-disable-next-line import/no-anonymous-default-export
-export default (config) => {
+const config = (config) => {
   config.blocks.blocksConfig.tableau_block = {
     id: 'tableau_block',
     title: 'Tableau',
@@ -29,3 +28,5 @@ export default (config) => {
 
   return config;
 };
+
+export default config;

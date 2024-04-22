@@ -13,9 +13,10 @@ const Edit = (props) => {
     error: null,
   });
 
-  const schema = React.useMemo(() => getSchema(config, viz.current, vizState), [
-    vizState,
-  ]);
+  const schema = React.useMemo(
+    () => getSchema(config, viz.current, vizState),
+    [vizState],
+  );
 
   return (
     <>

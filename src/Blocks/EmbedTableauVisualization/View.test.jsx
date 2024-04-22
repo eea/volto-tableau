@@ -1,6 +1,8 @@
 import React from 'react';
-import renderer from 'react-test-renderer';
+import { render } from '@testing-library/react';
 import { Provider } from 'react-intl-redux';
+import '@testing-library/jest-dom/extend-expect';
+
 import View from './View';
 
 describe('View', () => {
@@ -17,12 +19,22 @@ describe('View', () => {
   };
 
   it('should render the component', () => {
-    const component = renderer.create(
+    const { container } = render(
       <Provider store={global.store}>
         <View data={data} useVisibilitySensor={false} />
       </Provider>,
     );
-    const json = component.toJSON();
-    expect(json).toMatchSnapshot();
+
+    expect(container.querySelector('.embed-tableau')).toBeInTheDocument();
+    expect(
+      container.querySelector('.privacy-protection-wrapper'),
+    ).toBeInTheDocument();
+    expect(container.querySelector('.privacy-protection-wrapper')).toHaveStyle({
+      height: 'auto',
+      minHeight: '200px',
+      overflow: 'hidden',
+      position: 'relative',
+    });
+    expect(container.querySelector('.tableau-wrapper')).toBeInTheDocument();
   });
 });

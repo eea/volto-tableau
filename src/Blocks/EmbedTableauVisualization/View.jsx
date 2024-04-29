@@ -135,7 +135,6 @@ const View = (props) => {
      */
     const tableauVisId = flattenToAppURL(tableauVisualization['@id'] || '');
     if (
-      mode === 'edit' &&
       !tableauVisualization.error &&
       isBlock &&
       tableau_vis_url &&

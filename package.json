@@ -27,7 +27,7 @@
     "@eeacms/volto-resize-helper": "*"
   },
   "devDependencies": {
-    "@cypress/code-coverage": "^3.9.5",
+    "@cypress/code-coverage": "^3.10.0",
     "@plone/scripts": "*",
     "babel-plugin-transform-class-properties": "^6.24.1",
     "dotenv": "^16.3.2",

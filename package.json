@@ -1,6 +1,6 @@
 {
   "name": "@eeacms/volto-tableau",
-  "version": "8.0.1",
+  "version": "8.0.2",
   "description": "@eeacms/volto-tableau: Volto add-on",
   "main": "src/index.js",
   "author": "European Environment Agency: IDM2 A-Team",
@@ -27,10 +27,10 @@
     "@eeacms/volto-resize-helper": "*"
   },
   "devDependencies": {
-    "cypress": "13.1.0",
     "@cypress/code-coverage": "^3.10.0",
     "@plone/scripts": "*",
     "babel-plugin-transform-class-properties": "^6.24.1",
+    "cypress": "13.1.0",
     "dotenv": "^16.3.2",
     "husky": "^8.0.3",
     "lint-staged": "^14.0.1",

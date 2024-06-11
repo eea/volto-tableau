@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { withRouter } from 'react-router';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
@@ -20,6 +20,7 @@ import '@eeacms/volto-tableau/less/tableau.less';
 const VisualizationWidget = (props) => {
   const { location, content } = props;
   const ogValue = props.value || {};
+  const inAddForm = props.location.pathname.split('/').pop() === 'add';
   const viz = React.useRef();
   const [schema, setSchema] = React.useState(null);
   const [vizState, setVizState] = React.useState({
@@ -34,7 +35,7 @@ const VisualizationWidget = (props) => {
     getTableauVisualization({
       isBlock: false,
       content: {
-        ...content,
+        ...(inAddForm ? {} : content),
         tableau_visualization: value,
       },
     }),
@@ -76,12 +77,12 @@ const VisualizationWidget = (props) => {
       getTableauVisualization({
         isBlock: false,
         content: {
-          ...content,
+          ...(inAddForm ? {} : content),
           tableau_visualization: value,
         },
       }),
     );
-  }, [content, value]);
+  }, [content, value, inAddForm]);
 
   /**
    * Update query

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import cx from 'classnames';
 import { withRouter } from 'react-router';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
@@ -156,7 +157,11 @@ const View = (props) => {
   }
 
   return (
-    <div className="embed-tableau">
+    <div
+      className={cx('embed-tableau', {
+        'full-width': tableauVisualization?.fullwidth,
+      })}
+    >
       <PrivacyProtection
         {...props}
         data={{ ...data, url: tableauVisualization?.url }}

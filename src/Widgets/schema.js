@@ -6,9 +6,7 @@ import {
 
 async function getUrlParametersSchema({ viz, vizState, data }) {
   const tableauParameters =
-    vizState.loaded && viz
-      ? await viz.getWorkbook?.().getParametersAsync?.()
-      : [];
+    vizState.loaded && viz ? await viz.getWorkbook().getParametersAsync() : [];
 
   const currentFields = (data.urlParameters || [])
     .map((p) => p.field)
@@ -43,9 +41,7 @@ async function getUrlParametersSchema({ viz, vizState, data }) {
 
 async function getStaticParametersSchema({ viz, vizState, data }) {
   const tableauParameters =
-    vizState.loaded && viz
-      ? await viz.getWorkbook?.().getParametersAsync?.()
-      : [];
+    vizState.loaded && viz ? await viz.getWorkbook().getParametersAsync() : [];
 
   const currentFields = (data.staticParameters || [])
     .map((p) => p.field)
@@ -79,7 +75,7 @@ async function getStaticParametersSchema({ viz, vizState, data }) {
 async function getDynamicFiltersSchema({ viz, vizState, data }) {
   const tableauFilters =
     vizState.loaded && viz
-      ? (await viz.getWorkbook?.().getActiveSheet?.().getFiltersAsync?.()) || []
+      ? await viz.getWorkbook().getActiveSheet().getFiltersAsync()
       : [];
 
   const currentFields = (data.staticFilters || [])
@@ -116,7 +112,7 @@ async function getDynamicFiltersSchema({ viz, vizState, data }) {
 async function getStaticFiltersSchema({ viz, vizState, data }) {
   const tableauFilters =
     vizState.loaded && viz
-      ? (await viz.getWorkbook?.().getActiveSheet?.().getFiltersAsync?.()) || []
+      ? await viz.getWorkbook().getActiveSheet().getFiltersAsync()
       : [];
 
   const currentFields = (data.staticFilters || [])
@@ -191,7 +187,6 @@ const schema = async ({ config, viz, vizState, data }) => {
           'hideTabs',
           'hideToolbar',
           'autoScale',
-          'fullwidth',
           'toolbarPosition',
           'breakpointUrls',
         ],
@@ -231,11 +226,6 @@ const schema = async ({ config, viz, vizState, data }) => {
         title: 'Auto scale',
         type: 'boolean',
         description: 'Scale down tableau according to width',
-        isDisabled,
-      },
-      fullwidth: {
-        title: 'Full width',
-        type: 'boolean',
         isDisabled,
       },
       toolbarPosition: {

@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import cx from 'classnames';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { withRouter } from 'react-router';
@@ -34,24 +33,22 @@ function VisualizationViewWidget(props) {
   );
 
   return (
-    <div className={cx({ 'full-width': tableauVisualization.fullwidth })}>
-      <Tableau
-        data={{
-          ...tableauVisualization,
-          with_notes: false,
-          with_sources: false,
-          with_more_info: false,
-          with_share: true,
-          with_enlarge: true,
-          with_download: true,
-        }}
-        breakpoints={
-          config.blocks.blocksConfig?.embed_tableau_visualization?.breakpoints
-        }
-        extraParameters={extraParameters}
-        extraFilters={extraFilters}
-      />
-    </div>
+    <Tableau
+      data={{
+        ...tableauVisualization,
+        with_notes: false,
+        with_sources: false,
+        with_more_info: false,
+        with_share: true,
+        with_enlarge: true,
+        with_download: true,
+      }}
+      breakpoints={
+        config.blocks.blocksConfig?.embed_tableau_visualization?.breakpoints
+      }
+      extraParameters={extraParameters}
+      extraFilters={extraFilters}
+    />
   );
 }
 

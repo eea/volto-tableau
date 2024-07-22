@@ -104,9 +104,9 @@ export const createSlateBlockWithList = ({
 
   // move the text cursor
   const sse = getSelectedSlateEditor();
-  sse.type('{leftarrow}');
+  sse.type('{leftarrow}', { force: true });
   for (let i = 0; i < firstItemText.length; ++i) {
-    sse.type('{rightarrow}');
+    sse.type('{rightarrow}', { force: true });
   }
 
   // simulate pressing Enter

@@ -32,8 +32,8 @@ describe('Blocks Tests', () => {
 
     cy.get(
       `.sidebar-container .field-wrapper-tableau_vis_url #field-tableau_vis_url`,
-    ).type('/path/to/dashboard');
-    cy.get('#toolbar-save').click();
+    ).type('/path/to/dashboard', { force: true });
+    cy.get('#toolbar-save').click({ force: true });
     cy.wait('@content');
     cy.url().should('eq', Cypress.config().baseUrl + '/cypress/my-page');
   });

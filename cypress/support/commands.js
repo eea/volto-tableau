@@ -399,7 +399,7 @@ Cypress.Commands.add('clearSlate', (selector) => {
   return cy
     .get(selector)
     .focus()
-    .click()
+    .click({force:true})
     .wait(1000)
     .type('{selectAll}')
     .wait(1000)
@@ -419,19 +419,19 @@ Cypress.Commands.add('clearSlateTitle', () => {
 Cypress.Commands.add('setSlateSelection', (subject, query, endQuery) => {
   cy.get('.slate-editor.selected [contenteditable=true]')
     .focus()
-    .click()
+    .click({force:true})
     .setSelection(subject, query, endQuery)
     .wait(1000); // this wait is needed for the selection change to be detected after
 });
 
 Cypress.Commands.add('getSlateEditorAndType', (type) => {
-  cy.getSlate().focus().click().type(type);
+  cy.getSlate().focus().click({force:true}).type(type);
 });
 
 Cypress.Commands.add('setSlateCursor', (subject, query, endQuery) => {
   cy.get('.slate-editor.selected [contenteditable=true]')
     .focus()
-    .click()
+    .click({force:true})
     .setCursor(subject, query, endQuery)
     .wait(1000);
 });
@@ -446,7 +446,7 @@ Cypress.Commands.add('toolbarSave', () => {
   cy.wait(1000);
 
   // Save
-  cy.get('#toolbar-save').click();
+  cy.get('#toolbar-save').click({force:true});
   cy.waitForResourceToLoad('@navigation');
   cy.waitForResourceToLoad('@breadcrumbs');
   cy.waitForResourceToLoad('@actions');

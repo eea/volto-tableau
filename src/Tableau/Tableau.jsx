@@ -49,7 +49,7 @@ function getHeight(height) {
   if (asNumber) {
     return `${height}px`;
   }
-  return height || '700px';
+  return height;
 }
 
 const TableauDebug = ({ mode, data, vizState, url, version, clearData }) => {

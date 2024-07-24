@@ -41,7 +41,9 @@ async function getUrlParametersSchema({ viz, vizState, data }) {
 
 async function getStaticParametersSchema({ viz, vizState, data }) {
   const tableauParameters =
-    vizState.loaded && viz ? await viz.getWorkbook().getParametersAsync() : [];
+    vizState.loaded && viz
+      ? (await viz.getWorkbook?.().getParametersAsync?.()) || []
+      : [];
 
   const currentFields = (data.staticParameters || [])
     .map((p) => p.field)
@@ -75,7 +77,7 @@ async function getStaticParametersSchema({ viz, vizState, data }) {
 async function getDynamicFiltersSchema({ viz, vizState, data }) {
   const tableauFilters =
     vizState.loaded && viz
-      ? await viz.getWorkbook().getActiveSheet().getFiltersAsync()
+      ? (await viz.getWorkbook?.().getActiveSheet?.().getFiltersAsync?.()) || []
       : [];
 
   const currentFields = (data.staticFilters || [])
@@ -112,7 +114,7 @@ async function getDynamicFiltersSchema({ viz, vizState, data }) {
 async function getStaticFiltersSchema({ viz, vizState, data }) {
   const tableauFilters =
     vizState.loaded && viz
-      ? await viz.getWorkbook().getActiveSheet().getFiltersAsync()
+      ? (await viz.getWorkbook?.().getActiveSheet?.().getFiltersAsync?.()) || []
       : [];
 
   const currentFields = (data.staticFilters || [])

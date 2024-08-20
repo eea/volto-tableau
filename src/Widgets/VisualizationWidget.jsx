@@ -16,6 +16,18 @@ import {
 } from '@eeacms/volto-tableau/Tableau/helpers';
 
 import '@eeacms/volto-tableau/less/tableau.less';
+import { getBaseUrl } from '@plone/volto/helpers';
+
+function blobToBase64(blob) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      resolve(reader.result);
+    };
+    reader.onerror = reject;
+    reader.readAsDataURL(blob);
+  });
+}
 
 const VisualizationWidget = (props) => {
   const { location, content } = props;
@@ -119,6 +131,30 @@ const VisualizationWidget = (props) => {
       },
     );
   }, [vizState, value]);
+
+  React.useEffect(() => {
+    console.log(value);
+    if (value.url) {
+      fetch(
+        `${getBaseUrl(
+          '',
+        )}/cors-proxy/https://screenshot.eea.europa.eu/api/v1/retrieve_image_for_url?url=${encodeURIComponent(
+          value.url,
+        )}&w=1920&h=1000&waitfor=4000`,
+      )
+        .then((e) => e.blob())
+        .then((myBlob) => {
+          console.log(myBlob);
+          blobToBase64(myBlob).then((base64String) => {
+            props.onChange(props.id, {
+              ...value,
+              preview: base64String,
+            });
+          });
+        })
+        .catch(() => {});
+    }
+  }, [value]);
 
   return (
     <FormFieldWrapper {...props}>

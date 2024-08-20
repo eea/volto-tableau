@@ -38,7 +38,12 @@ import {
 import { useTableau } from '@eeacms/volto-tableau/hooks';
 import { JsonCodeSnippet, Download } from '@eeacms/volto-tableau/Utils';
 
-import { getSheetnames, getActiveSheetname, getDevice } from './helpers';
+import {
+  getSheetnames,
+  getActiveSheetname,
+  getDevice,
+  blobToBase64,
+} from './helpers';
 
 import resetSVG from '@plone/volto/icons/reset.svg';
 

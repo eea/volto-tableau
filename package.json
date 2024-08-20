@@ -24,7 +24,8 @@
   "dependencies": {
     "@eeacms/volto-embed": "*",
     "@eeacms/volto-object-widget": "*",
-    "@eeacms/volto-resize-helper": "*"
+    "@eeacms/volto-resize-helper": "*",
+    "@stoddabr/react-tableau-embed-live": "*"
   },
   "devDependencies": {
     "@cypress/code-coverage": "^3.10.0",

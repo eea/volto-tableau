@@ -22,7 +22,7 @@ export const preview_image = (middlewares) => [
     if (
       contentData?.preview_image &&
       contentData?.preview_image?.filename !==
-        'preview_image_generated_map_simple.png'
+        'preview_image_generated_tableau.png'
     ) {
       return next(action);
     }
@@ -33,7 +33,7 @@ export const preview_image = (middlewares) => [
           data: action.request.data.tableau_visualization.preview.split(',')[1],
           encoding: 'base64',
           'content-type': 'image/png',
-          filename: 'preview_image_generated_map_simple.png',
+          filename: 'preview_image_generated_tableau.png',
         },
         preview_image_saved: true,
       };

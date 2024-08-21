@@ -10,7 +10,6 @@ export const preview_image = (middlewares) => [
     }
     const state = store.getState();
     const contentData = state.content.data;
-    console.log(action?.request?.data);
     if (
       !contentData ||
       contentData['@type'] !== 'tableau_visualization' ||

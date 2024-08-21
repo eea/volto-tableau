@@ -133,7 +133,6 @@ const VisualizationWidget = (props) => {
   }, [vizState, value]);
 
   React.useEffect(() => {
-    console.log(value);
     if (value.url) {
       fetch(
         `${getBaseUrl(
@@ -144,7 +143,6 @@ const VisualizationWidget = (props) => {
       )
         .then((e) => e.blob())
         .then((myBlob) => {
-          console.log(myBlob);
           blobToBase64(myBlob).then((base64String) => {
             props.onChange(props.id, {
               ...value,

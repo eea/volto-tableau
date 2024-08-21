@@ -133,7 +133,7 @@ const VisualizationWidget = (props) => {
   }, [vizState, value]);
 
   React.useEffect(() => {
-    if (value.url && value.preview_url_loaded !== value.url) {
+    if (value && value.url && value.preview_url_loaded !== value.url) {
       fetch(
         `${getBaseUrl(
           '',
@@ -153,7 +153,7 @@ const VisualizationWidget = (props) => {
         })
         .catch(() => {});
     }
-  }, [value, onChange]);
+  }, [value, onChange, id]);
 
   return (
     <FormFieldWrapper {...props}>

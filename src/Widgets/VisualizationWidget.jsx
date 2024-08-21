@@ -153,7 +153,7 @@ const VisualizationWidget = (props) => {
         })
         .catch(() => {});
     }
-  }, [value, onChange]);
+  }, [value, onChange, id]);
 
   return (
     <FormFieldWrapper {...props}>

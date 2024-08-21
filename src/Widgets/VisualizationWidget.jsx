@@ -29,8 +29,8 @@ function blobToBase64(blob) {
   });
 }
 
-const VisualizationWidget = ({ onChange, id } = props) => {
-  const { location, content } = props;
+const VisualizationWidget = (props) => {
+  const { location, content, onChange, id } = props;
   const ogValue = props.value || {};
   const inAddForm = props.location.pathname.split('/').pop() === 'add';
   const viz = React.useRef();
@@ -133,7 +133,7 @@ const VisualizationWidget = ({ onChange, id } = props) => {
   }, [vizState, value]);
 
   React.useEffect(() => {
-    if (value.url) {
+    if (value.url && value.preview_url_loaded !== value.url) {
       fetch(
         `${getBaseUrl(
           '',
@@ -147,6 +147,7 @@ const VisualizationWidget = ({ onChange, id } = props) => {
             onChange(id, {
               ...value,
               preview: base64String,
+              preview_url_loaded: value.url,
             });
           });
         })

@@ -29,7 +29,7 @@ function blobToBase64(blob) {
   });
 }
 
-const VisualizationWidget = (props) => {
+const VisualizationWidget = ({ onChange } = props) => {
   const { location, content } = props;
   const ogValue = props.value || {};
   const inAddForm = props.location.pathname.split('/').pop() === 'add';
@@ -144,7 +144,7 @@ const VisualizationWidget = (props) => {
         .then((e) => e.blob())
         .then((myBlob) => {
           blobToBase64(myBlob).then((base64String) => {
-            props.onChange(props.id, {
+            onChange(props.id, {
               ...value,
               preview: base64String,
             });
@@ -152,7 +152,7 @@ const VisualizationWidget = (props) => {
         })
         .catch(() => {});
     }
-  }, [value]);
+  }, [value, onChange]);
 
   return (
     <FormFieldWrapper {...props}>

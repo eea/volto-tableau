@@ -103,7 +103,6 @@ export const preview_image = (middlewares) => [
             ...action.request,
             data: {
               ...action.request.data,
-              ...previewImage,
               tableau_visualization: tableauVisualizationData,
             },
           },

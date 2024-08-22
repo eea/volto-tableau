@@ -16,6 +16,11 @@ export const preview_image = (middlewares) => [
       ? action?.request?.data.preview_image
       : contentData?.preview_image;
     const type = action?.request?.data?.['@type'] || contentData['@type'];
+    console.log(
+      lastPreviewImage,
+      type,
+      action?.request?.data?.tableau_visualization?.preview,
+    );
 
     if (
       !contentData ||
@@ -34,6 +39,7 @@ export const preview_image = (middlewares) => [
         const tableauVisualizationData = {
           ...action.request.data.tableau_visualization,
         };
+
         if (
           tableauVisualizationData.preview &&
           tableauVisualizationData.preview_url_loaded
@@ -84,7 +90,25 @@ export const preview_image = (middlewares) => [
         },
       });
     } catch (error) {
-      return next(action);
+      if (action.request.data.tableau_visualization.preview) {
+        const tableauVisualizationData = {
+          ...action.request.data.tableau_visualization,
+        };
+        delete tableauVisualizationData.preview;
+        delete tableauVisualizationData.preview_url_loaded;
+
+        return next({
+          ...action,
+          request: {
+            ...action.request,
+            data: {
+              ...action.request.data,
+              ...previewImage,
+              tableau_visualization: tableauVisualizationData,
+            },
+          },
+        });
+      } else return next(action);
     }
   },
   ...middlewares,

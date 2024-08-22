@@ -5,7 +5,6 @@ import configureStore from 'redux-mock-store';
 import View from './View';
 import '@testing-library/jest-dom/extend-expect'; // Pentru metode precum toBeInTheDocument
 import Tableau from '@eeacms/volto-tableau/Tableau/Tableau';
-import config from '@plone/volto/registry'; // Importă config pentru a-l moca
 
 jest.mock('@eeacms/volto-tableau/Tableau/Tableau', () =>
   jest.fn(() => <div>Mocked Tableau</div>),

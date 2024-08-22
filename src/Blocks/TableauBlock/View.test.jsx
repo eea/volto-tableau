@@ -10,12 +10,11 @@ jest.mock('@eeacms/volto-tableau/Tableau/Tableau', () =>
   jest.fn(() => <div>Mocked Tableau</div>),
 );
 
-// Mock pentru config
 jest.mock('@plone/volto/registry', () => ({
   blocks: {
     blocksConfig: {
       tableau_block: {
-        breakpoints: {}, // Adaugă aici obiectul breakpoints necesar
+        breakpoints: {},
       },
     },
   },

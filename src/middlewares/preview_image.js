@@ -16,12 +16,6 @@ export const preview_image = (middlewares) => [
       ? action?.request?.data.preview_image
       : contentData?.preview_image;
     const type = action?.request?.data?.['@type'] || contentData['@type'];
-    console.log(
-      lastPreviewImage,
-      type,
-      action?.request?.data?.tableau_visualization?.preview,
-    );
-
     if (
       !contentData ||
       type !== 'tableau_visualization' ||

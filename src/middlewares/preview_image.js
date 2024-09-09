@@ -3,6 +3,33 @@ import {
   UPDATE_CONTENT,
 } from '@plone/volto/constants/ActionTypes';
 
+const cleanAction = (action) => {
+  if (action?.request?.data?.tableau_visualization) {
+    const tableauVisualizationData = {
+      ...action.request.data.tableau_visualization,
+    };
+
+    if (
+      tableauVisualizationData.preview &&
+      tableauVisualizationData.preview_url_loaded
+    )
+      delete tableauVisualizationData.preview;
+    delete tableauVisualizationData.preview_url_loaded;
+
+    return {
+      ...action,
+      request: {
+        ...action.request,
+        data: {
+          ...action.request.data,
+
+          tableau_visualization: tableauVisualizationData,
+        },
+      },
+    };
+  } else return action;
+};
+
 export const preview_image = (middlewares) => [
   (store) => (next) => (action) => {
     if (![CREATE_CONTENT, UPDATE_CONTENT].includes(action.type)) {
@@ -22,37 +49,14 @@ export const preview_image = (middlewares) => [
       contentData.preview_image_saved ||
       !action?.request?.data?.tableau_visualization?.preview
     ) {
-      return next(action);
+      return next(cleanAction(action));
     }
 
     if (
       lastPreviewImage &&
       lastPreviewImage !== 'preview_image_generated_tableau_visualization.png'
     ) {
-      if (action?.request?.data?.tableau_visualization) {
-        const tableauVisualizationData = {
-          ...action.request.data.tableau_visualization,
-        };
-
-        if (
-          tableauVisualizationData.preview &&
-          tableauVisualizationData.preview_url_loaded
-        )
-          delete tableauVisualizationData.preview;
-        delete tableauVisualizationData.preview_url_loaded;
-
-        return next({
-          ...action,
-          request: {
-            ...action.request,
-            data: {
-              ...action.request.data,
-
-              tableau_visualization: tableauVisualizationData,
-            },
-          },
-        });
-      } else return next(action);
+      return next(cleanAction(action));
     }
 
     try {

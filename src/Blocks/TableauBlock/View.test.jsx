@@ -3,7 +3,7 @@ import { render, screen } from '@testing-library/react';
 import { Provider } from 'react-redux';
 import configureStore from 'redux-mock-store';
 import View from './View';
-import '@testing-library/jest-dom/extend-expect'; // Pentru metode precum toBeInTheDocument
+import '@testing-library/jest-dom/extend-expect';
 import Tableau from '@eeacms/volto-tableau/Tableau/Tableau';
 
 jest.mock('@eeacms/volto-tableau/Tableau/Tableau', () =>

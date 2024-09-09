@@ -5,6 +5,7 @@ import {
   VisualizationViewWidget,
   CreatableSelectWidget,
 } from './Widgets';
+import { preview_image } from './middlewares/preview_image';
 
 const applyConfig = (config) => {
   config.settings.allowed_cors_destinations = [
@@ -12,7 +13,10 @@ const applyConfig = (config) => {
     'public.tableau.com',
   ];
 
-  config.settings.storeExtenders = [...(config.settings.storeExtenders || [])];
+  config.settings.storeExtenders = [
+    ...(config.settings.storeExtenders || []),
+    preview_image,
+  ];
 
   config.views.contentTypesViews.tableau_visualization = VisualizationView;
   config.widgets.id.tableau_visualization = VisualizationWidget;

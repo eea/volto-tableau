@@ -433,7 +433,7 @@ const Tableau = forwardRef((props, ref) => {
                 }
                 return v;
               });
-            if (value.length) {
+            if (value?.length) {
               workbook.changeParameterValueAsync(fieldName, value);
             }
           }

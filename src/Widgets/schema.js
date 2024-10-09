@@ -1,8 +1,20 @@
+import { defineMessages } from 'react-intl';
 import { find, includes } from 'lodash';
 import {
   getSheetnamesChoices,
   canChangeVizData,
 } from '@eeacms/volto-tableau/Tableau/helpers';
+
+const messages = defineMessages({
+  CSSHeight: {
+    id: 'CSS height',
+    defaultMessage: 'CSS height',
+  },
+  CSSTableauHeightDescription: {
+    id: 'Tableau height',
+    defaultMessage: 'Tableau height',
+  },
+});
 
 async function getUrlParametersSchema({ viz, vizState, data }) {
   const tableauParameters =
@@ -170,7 +182,7 @@ const breakpointUrlSchema = (config) => {
   };
 };
 
-const schema = async ({ config, viz, vizState, data }) => {
+const schema = async ({ config, viz, vizState, data, intl }) => {
   const isDisabled = !canChangeVizData(viz, vizState);
 
   return {
@@ -189,6 +201,7 @@ const schema = async ({ config, viz, vizState, data }) => {
           'hideTabs',
           'hideToolbar',
           'autoScale',
+          'tableau_height',
           'toolbarPosition',
           'breakpointUrls',
         ],
@@ -229,6 +242,18 @@ const schema = async ({ config, viz, vizState, data }) => {
         type: 'boolean',
         description: 'Scale down tableau according to width',
         isDisabled,
+      },
+      tableau_height: {
+        title: (
+          <a
+            rel="noopener noreferrer"
+            target="_blank"
+            href="https://developer.mozilla.org/en-US/docs/Web/CSS/height"
+          >
+            {intl.formatMessage(messages.CSSHeight)}
+          </a>
+        ),
+        description: intl.formatMessage(messages.CSSTableauHeightDescription),
       },
       toolbarPosition: {
         title: 'Toolbar position',

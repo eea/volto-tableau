@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { withRouter } from 'react-router';
 import { connect } from 'react-redux';
+import { injectIntl } from 'react-intl';
 import { compose } from 'redux';
 import { isEqual } from 'lodash';
 import { Modal, Button, Grid } from 'semantic-ui-react';
@@ -125,12 +126,16 @@ const VisualizationWidget = (props) => {
    * Get schema
    */
   React.useEffect(() => {
-    getSchema({ config, viz: viz.current, vizState, data: value }).then(
-      (schema) => {
-        setSchema(schema);
-      },
-    );
-  }, [vizState, value]);
+    getSchema({
+      config,
+      viz: viz.current,
+      vizState,
+      data: value,
+      intl: props.intl,
+    }).then((schema) => {
+      setSchema(schema);
+    });
+  }, [vizState, value, props.intl]);
 
   React.useEffect(() => {
     if (value && value.url && value.preview_url_loaded !== value.url) {
@@ -139,7 +144,7 @@ const VisualizationWidget = (props) => {
           '',
         )}/cors-proxy/https://screenshot.eea.europa.eu/api/v1/retrieve_image_for_url?url=${encodeURIComponent(
           value.url,
-        )}&w=1920&h=1000&waitfor=4000`,
+        )}&w=1920&h=1000&waitfor=8000`,
       )
         .then((e) => e.blob())
         .then((myBlob) => {
@@ -260,5 +265,6 @@ const VisualizationWidget = (props) => {
 
 export default compose(
   withRouter,
+  injectIntl,
   connect((state) => ({ content: state?.content?.data })),
 )(VisualizationWidget);

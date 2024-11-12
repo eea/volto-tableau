@@ -69,7 +69,7 @@ const staticParameters = {
   required: [],
 };
 
-const schema = (props) => {
+const getSchema = (props) => {
   return {
     title: 'Embed Dashboard (Tableau)',
     fieldsets: [
@@ -182,4 +182,4 @@ const schema = (props) => {
   };
 };
 
-export default schema;
+export default getSchema;

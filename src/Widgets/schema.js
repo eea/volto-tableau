@@ -1,9 +1,6 @@
 import { defineMessages } from 'react-intl';
-import { find, includes } from 'lodash';
-import {
-  getSheetnamesChoices,
-  canChangeVizData,
-} from '@eeacms/volto-tableau/Tableau/helpers';
+import { find, includes, uniq } from 'lodash';
+import { canChangeVizData } from '@eeacms/volto-tableau/Tableau/helpers';
 
 const messages = defineMessages({
   CSSHeight: {
@@ -16,9 +13,8 @@ const messages = defineMessages({
   },
 });
 
-async function getUrlParametersSchema({ viz, vizState, data }) {
-  const tableauParameters =
-    vizState.loaded && viz ? await viz.getWorkbook().getParametersAsync() : [];
+function getUrlParametersSchema({ data, tableauData }) {
+  const tableauParameters = tableauData?.parameters || [];
 
   const currentFields = (data.urlParameters || [])
     .map((p) => p.field)
@@ -51,11 +47,8 @@ async function getUrlParametersSchema({ viz, vizState, data }) {
   };
 }
 
-async function getStaticParametersSchema({ viz, vizState, data }) {
-  const tableauParameters =
-    vizState.loaded && viz
-      ? (await viz.getWorkbook?.().getParametersAsync?.()) || []
-      : [];
+function getStaticParametersSchema({ data, tableauData }) {
+  const tableauParameters = tableauData?.parameters || [];
 
   const currentFields = (data.staticParameters || [])
     .map((p) => p.field)
@@ -86,11 +79,8 @@ async function getStaticParametersSchema({ viz, vizState, data }) {
   };
 }
 
-async function getDynamicFiltersSchema({ viz, vizState, data }) {
-  const tableauFilters =
-    vizState.loaded && viz
-      ? (await viz.getWorkbook?.().getActiveSheet?.().getFiltersAsync?.()) || []
-      : [];
+function getDynamicFiltersSchema({ data, tableauData }) {
+  const tableauFilters = tableauData?.filters || [];
 
   const currentFields = (data.staticFilters || [])
     .map((p) => p.field)
@@ -123,11 +113,8 @@ async function getDynamicFiltersSchema({ viz, vizState, data }) {
   };
 }
 
-async function getStaticFiltersSchema({ viz, vizState, data }) {
-  const tableauFilters =
-    vizState.loaded && viz
-      ? (await viz.getWorkbook?.().getActiveSheet?.().getFiltersAsync?.()) || []
-      : [];
+function getStaticFiltersSchema({ data, tableauData }) {
+  const tableauFilters = tableauData?.filters || [];
 
   const currentFields = (data.staticFilters || [])
     .map((p) => p.field)
@@ -142,11 +129,13 @@ async function getStaticFiltersSchema({ viz, vizState, data }) {
         widget: 'creatable_select',
         isMulti: false,
         creatable: true,
-        choices: tableauFilters
-          .filter((p) => {
-            return !includes(currentFields, p.getFieldName());
-          })
-          .map((p) => [p.getFieldName(), p.getFieldName()]),
+        choices: uniq(
+          tableauFilters
+            .filter((f) => {
+              return !includes(currentFields, f.getFieldName());
+            })
+            .map((f) => f.getFieldName()),
+        ).map((f) => [f, f]),
       },
       value: {
         title: 'Value',
@@ -182,7 +171,7 @@ const breakpointUrlSchema = (config) => {
   };
 };
 
-const schema = async ({ config, viz, vizState, data, intl }) => {
+const schema = ({ config, viz, vizState, data, tableauData, intl }) => {
   const isDisabled = !canChangeVizData(viz, vizState);
 
   return {
@@ -224,7 +213,7 @@ const schema = async ({ config, viz, vizState, data, intl }) => {
       },
       sheetname: {
         title: 'Sheetname',
-        choices: getSheetnamesChoices(viz),
+        choices: tableauData?.sheetNames?.map((sheet) => [sheet, sheet]) || [],
         isDisabled,
       },
       hideTabs: {
@@ -267,7 +256,7 @@ const schema = async ({ config, viz, vizState, data, intl }) => {
       urlParameters: {
         title: 'Dynamic parameters',
         widget: 'object_list',
-        schema: await getUrlParametersSchema({ viz, vizState, data }),
+        schema: getUrlParametersSchema({ data, tableauData }),
         description: (
           <div style={{ color: 'rgb(15, 130, 204)', fontWeight: '400' }}>
             <p>Set a list of dynamic parameters that can be used as:</p>
@@ -313,7 +302,7 @@ const schema = async ({ config, viz, vizState, data, intl }) => {
       staticParameters: {
         title: 'Static parameters',
         widget: 'object_list',
-        schema: await getStaticParametersSchema({ viz, vizState, data }),
+        schema: getStaticParametersSchema({ data, tableauData }),
         schemaExtender: (schema, data) => {
           const tableauParameter = find(
             schema.tableauParameters,
@@ -360,7 +349,7 @@ const schema = async ({ config, viz, vizState, data, intl }) => {
       dynamicFilters: {
         title: 'Dynamic filters',
         widget: 'object_list',
-        schema: await getDynamicFiltersSchema({ viz, vizState, data }),
+        schema: getDynamicFiltersSchema({ data, tableauData }),
         description: (
           <div style={{ color: 'rgb(15, 130, 204)', fontWeight: '400' }}>
             <p>Set a list of dynamic filters that can be used as:</p>
@@ -406,7 +395,7 @@ const schema = async ({ config, viz, vizState, data, intl }) => {
       staticFilters: {
         title: 'Static filters',
         widget: 'object_list',
-        schema: await getStaticFiltersSchema({ viz, vizState, data }),
+        schema: getStaticFiltersSchema({ data, tableauData }),
         schemaExtender: (schema, data) => {
           const tableauFilters = find(
             schema.tableauFilters,

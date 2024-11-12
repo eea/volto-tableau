@@ -250,8 +250,14 @@ const VisualizationWidget = (props) => {
           <Grid>
             <Grid.Row>
               <div className="map-edit-actions-container">
-                <Button onClick={handleClose}>Close</Button>
-                <Button color="green" onClick={handleApplyChanges}>
+                <Button disabled={vizState.loading} onClick={handleClose}>
+                  Close
+                </Button>
+                <Button
+                  disabled={vizState.loading}
+                  color="green"
+                  onClick={handleApplyChanges}
+                >
                   Apply changes
                 </Button>
               </div>

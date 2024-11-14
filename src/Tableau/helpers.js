@@ -151,8 +151,10 @@ export const getActiveSheetname = (viz) => {
 export const canChangeVizData = (viz, vizState) => {
   // If viz is null it means that the viz is loading
   // If viz is undefined it means that there is no viz nor it is loading
-  if (vizState?.loading) return false;
-  return !!viz || isUndefined(viz);
+  if (vizState?.loading || !viz || isUndefined(viz)) {
+    return false;
+  }
+  return true;
 };
 
 export const getDevice = (breakpoints, width) => {

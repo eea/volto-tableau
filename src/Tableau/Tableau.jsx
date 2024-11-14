@@ -25,6 +25,7 @@ import {
   toInteger,
   toNumber,
 } from 'lodash';
+import qs from 'qs';
 import cx from 'classnames';
 import { Button } from 'semantic-ui-react';
 import { Toast, Icon } from '@plone/volto/components';
@@ -44,12 +45,34 @@ import resetSVG from '@plone/volto/icons/reset.svg';
 
 import '@eeacms/volto-embed/Toolbar/styles.less';
 
+function decodeString(str) {
+  const tempDiv = document.createElement('div');
+  tempDiv.innerHTML = str;
+  return tempDiv.textContent || tempDiv.innerText || '';
+}
+
 function getHeight(height) {
   const asNumber = isNumber(Number(height)) && !isNaN(Number(height));
   if (asNumber) {
     return `${height}px`;
   }
   return height;
+}
+
+function getTableauValue(value, dataType) {
+  if (dataType === 'string' && !isString(value)) {
+    return toString(value);
+  }
+  if (dataType === 'integer' && !isInteger(value)) {
+    return toInteger(value);
+  }
+  if (dataType === 'float' && !isNumber(value)) {
+    return toNumber(value);
+  }
+  if (dataType === 'boolean' && !isBoolean(value)) {
+    return !!value;
+  }
+  return value;
 }
 
 const TableauDebug = ({ mode, data, vizState, url, version, clearData }) => {
@@ -136,6 +159,7 @@ const Tableau = forwardRef((props, ref) => {
     with_enlarge = true,
     tableau_height,
   } = data;
+
   const device = useMemo(
     () => getDevice(breakpoints, screen.page?.width || Infinity),
     [breakpoints, screen],
@@ -214,46 +238,45 @@ const Tableau = forwardRef((props, ref) => {
     }
   };
 
-  const onVizStateUpdate = useCallback((loaded, loading, error) => {
-    vizState.current = { ...vizState.current, loaded, loading, error };
-    setLoaded(loaded);
-    setLoading(loading);
-    setError(error);
-    if (setVizState) {
-      setVizState({ loaded, loading, error });
-    }
-    /* eslint-disable-next-line */
-  }, []);
+  const onVizStateUpdate = useCallback(
+    (loaded, loading, error) => {
+      vizState.current = { ...vizState.current, loaded, loading, error };
+      setLoaded(loaded);
+      setLoading(loading);
+      setError(error);
+      if (setVizState) {
+        setVizState({ loaded, loading, error });
+      }
+    },
+    [setVizState],
+  );
 
-  const activateDefaultSheet = useCallback(() => {
-    if (!vizState.current.loaded || !viz.current) return;
+  const activateDefaultSheet = useCallback(async () => {
+    if (!vizState.current.loaded || !viz.current) return Promise.resolve();
     const workbook = viz.current.getWorkbook();
     const sheetnames = getSheetnames(viz.current);
     const activeSheetName = getActiveSheetname(viz.current);
     if (sheetnames.includes(sheetname) && sheetname !== activeSheetName) {
-      workbook.activateSheetAsync(sheetname).then(() => {
-        onVizStateUpdate(true, false, null);
-      });
-    } else {
-      onVizStateUpdate(true, false, null);
+      return workbook.activateSheetAsync(sheetname);
     }
-  }, [onVizStateUpdate, sheetname]);
+    return Promise.resolve();
+  }, [sheetname]);
 
-  const clearData = () => {
+  const clearData = useCallback(() => {
     onChangeBlock(block, {
       ...data,
       filters: {},
       parameters: {},
     });
-  };
+  }, [onChangeBlock, block, data]);
 
-  const disposeViz = () => {
+  const disposeViz = useCallback(() => {
     if (viz.current) {
       viz.current.dispose();
       viz.current = null;
     }
     onVizStateUpdate(false, false, null);
-  };
+  }, [onVizStateUpdate]);
 
   const initViz = () => {
     try {
@@ -265,12 +288,12 @@ const Tableau = forwardRef((props, ref) => {
         device: !!breakpointUrl ? device : 'desktop',
         ...extraOptions,
         ...data.filters,
+        ...data.parameters,
         ...extraFilters,
         ...extraParameters,
-        onFirstInteractive: () => {
+        onFirstInteractive: async () => {
           onVizStateUpdate(true, true, null);
-          setInitiateViz(false);
-          activateDefaultSheet();
+          await activateDefaultSheet();
           if (viz.current && mode === 'edit' && !breakpointUrl) {
             const sheetnames = getSheetnames(viz.current);
             const activeSheetname = getActiveSheetname(viz.current);
@@ -281,6 +304,24 @@ const Tableau = forwardRef((props, ref) => {
             newData.url = vizUrl;
             if (!sheetname || !sheetnames.includes(sheetname)) {
               newData.sheetname = activeSheetname;
+            }
+            if (newData.url !== url) {
+              // Get parameters from url
+              const workbook = viz.current.getWorkbook();
+              const tableauParameters = await workbook.getParametersAsync();
+              const searchParams = qs.parse(decodeString(new URL(url).search));
+              tableauParameters.forEach((param) => {
+                const name = param.getName();
+                const dataType = param.getDataType();
+                if (!searchParams[name]) return;
+                if (!newData.parameters) {
+                  newData.parameters = {};
+                }
+                newData.parameters[name] = getTableauValue(
+                  searchParams[name],
+                  dataType,
+                );
+              });
             }
             if (newData.url !== url || newData.sheetname !== sheetname) {
               onChangeBlock(block, {
@@ -312,6 +353,8 @@ const Tableau = forwardRef((props, ref) => {
               },
             );
           }
+          onVizStateUpdate(true, false, null);
+          setInitiateViz(false);
         },
       });
     } catch (e) {
@@ -346,9 +389,9 @@ const Tableau = forwardRef((props, ref) => {
     } else {
       disposeViz();
     }
-    /* eslint-disable-next-line */
-  }, [tableau, url, hideTabs, hideToolbar, toolbarPosition]);
+  }, [tableau, url, disposeViz, hideTabs, hideToolbar, toolbarPosition]);
 
+  // Initialize viz
   useEffect(() => {
     if (initiateViz && !loaded && !loading) {
       initViz();
@@ -396,6 +439,7 @@ const Tableau = forwardRef((props, ref) => {
   //   /* eslint-disable-next-line */
   // }, [loaded, JSON.stringify(extraFilters)]);
 
+  // Add extra parameters
   useEffect(() => {
     async function addExtraParameters() {
       if (vizState.current.loaded && viz.current) {
@@ -419,19 +463,7 @@ const Tableau = forwardRef((props, ref) => {
             value = value
               .filter((v) => includes(values, v))
               .map((v) => {
-                if (dataType === 'string' && !isString(v)) {
-                  return toString(v);
-                }
-                if (dataType === 'integer' && !isInteger(v)) {
-                  return toInteger(v);
-                }
-                if (dataType === 'float' && !isNumber(v)) {
-                  return toNumber(v);
-                }
-                if (dataType === 'boolean' && !isBoolean(v)) {
-                  return !!v;
-                }
-                return v;
+                return getTableauValue(v, dataType);
               });
             if (value?.length) {
               workbook.changeParameterValueAsync(fieldName, value);
@@ -450,6 +482,7 @@ const Tableau = forwardRef((props, ref) => {
     /* eslint-disable-next-line */
   }, [loaded, JSON.stringify(extraParameters)]);
 
+  // Update viz scale on window resize
   useEffect(() => {
     if (vizState.current.loaded && viz.current && autoScale) {
       updateScale();
@@ -457,14 +490,18 @@ const Tableau = forwardRef((props, ref) => {
     /* eslint-disable-next-line */
   }, [loaded, screen?.page?.width]);
 
+  // Activate default sheet
   useEffect(() => {
     if (vizState.current.loaded && viz.current) {
       onVizStateUpdate(true, true, null);
-      activateDefaultSheet();
+      activateDefaultSheet().then(() => {
+        onVizStateUpdate(true, false, null);
+      });
     }
     /* eslint-disable-next-line */
   }, [sheetname]);
 
+  // Set mobile mode
   useEffect(() => {
     if (!loading && tableauEl.current) {
       const visWidth = tableauEl.current.offsetWidth;
@@ -477,6 +514,7 @@ const Tableau = forwardRef((props, ref) => {
     }
   }, [screen, mobile, loading]);
 
+  // Keep viz reference
   useImperativeHandle(
     ref,
     () => {

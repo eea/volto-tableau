@@ -23,6 +23,17 @@ global.store = mockStore({
 const mockReactRouter = jest.requireActual('react-router');
 const mockSemanticComponents = jest.requireActual('semantic-ui-react');
 const mockComponents = jest.requireActual('@plone/volto/components');
+const config = jest.requireActual('@plone/volto/registry').default;
+
+config.blocks.blocksConfig = {
+  embed_tableau_visualization: {
+    breakpoints: {
+      desktop: [Infinity, 992],
+      tablet: [991, 768],
+      phone: [767, 0],
+    },
+  },
+};
 
 jest.mock('react-router', () => {
   return {

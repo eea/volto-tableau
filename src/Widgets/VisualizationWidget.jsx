@@ -35,6 +35,7 @@ const VisualizationWidget = (props) => {
   const ogValue = props.value || {};
   const inAddForm = props.location.pathname.split('/').pop() === 'add';
   const viz = React.useRef();
+  const [tableauData, setTableauData] = React.useState({});
   const [schema, setSchema] = React.useState(null);
   const [vizState, setVizState] = React.useState({
     loaded: false,
@@ -76,6 +77,33 @@ const VisualizationWidget = (props) => {
     setOpen(false);
   };
 
+  React.useEffect(() => {
+    if (!vizState.loaded || !viz.current || !!tableauData[value.url]) return;
+
+    async function _setTableauData() {
+      const workbook = await viz.current.getWorkbook();
+      const sheetNames = workbook.getPublishedSheetsInfo().map((sheet) => {
+        return sheet.getName();
+      });
+      const parameters = await workbook.getParametersAsync();
+      const filters = await workbook.getActiveSheet().getFiltersAsync();
+      setTableauData((tableauData) => ({
+        ...tableauData,
+        [value.url]: {
+          sheetNames,
+          parameters,
+          filters,
+        },
+      }));
+    }
+
+    _setTableauData();
+  }, [vizState, tableauData, value.url]);
+
+  /**
+   * Synchronizes the local `value` state with the `props.value` prop when the component is not open and the values differ.
+   * This ensures that the component's internal state reflects the latest value from the parent component.
+   */
   React.useEffect(() => {
     if (!open && !isEqual(props.value || {}, value)) {
       setValue(props.value || {});
@@ -126,16 +154,17 @@ const VisualizationWidget = (props) => {
    * Get schema
    */
   React.useEffect(() => {
-    getSchema({
-      config,
-      viz: viz.current,
-      vizState,
-      data: value,
-      intl: props.intl,
-    }).then((schema) => {
-      setSchema(schema);
-    });
-  }, [vizState, value, props.intl]);
+    setSchema(
+      getSchema({
+        config,
+        viz: viz.current,
+        vizState,
+        data: value,
+        tableauData: tableauData[value.url],
+        intl: props.intl,
+      }),
+    );
+  }, [vizState, value, tableauData, props.intl]);
 
   React.useEffect(() => {
     if (value && value.url && value.preview_url_loaded !== value.url) {
@@ -221,8 +250,14 @@ const VisualizationWidget = (props) => {
           <Grid>
             <Grid.Row>
               <div className="map-edit-actions-container">
-                <Button onClick={handleClose}>Close</Button>
-                <Button color="green" onClick={handleApplyChanges}>
+                <Button disabled={vizState.loading} onClick={handleClose}>
+                  Close
+                </Button>
+                <Button
+                  disabled={vizState.loading}
+                  color="green"
+                  onClick={handleApplyChanges}
+                >
                   Apply changes
                 </Button>
               </div>

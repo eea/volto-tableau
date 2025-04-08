@@ -178,7 +178,12 @@ const VisualizationWidget = (props) => {
         .then((e) => e.blob())
         .then((myBlob) => {
           blobToBase64(myBlob).then((base64String) => {
-            onChange(id, {
+            setValue({
+              ...value,
+              preview: base64String,
+              preview_url_loaded: value.url,
+            });
+            props.onChange(props.id, {
               ...value,
               preview: base64String,
               preview_url_loaded: value.url,

@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import Tableau from '@eeacms/volto-tableau/Tableau/Tableau';
-import qs from 'querystring';
+import qs from 'query-string';
 import config from '@plone/volto/registry';
 import '@eeacms/volto-tableau/less/tableau.less';
 

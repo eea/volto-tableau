@@ -11,67 +11,69 @@ msgstr ""
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: \n"
 
+#. Default: "CSS height"
 #: Blocks/EmbedTableauVisualization/schema
-# defaultMessage: CSS height
+#: Widgets/schema
 msgid "CSS height"
 msgstr ""
 
+#. Default: "Choices"
 #: Widgets/CreatableSelectWidget
-# defaultMessage: Choices
 msgid "Choices"
 msgstr ""
 
+#. Default: "Close"
 #: Widgets/CreatableSelectWidget
-# defaultMessage: Close
 msgid "Close"
 msgstr ""
 
+#. Default: "Default"
 #: Widgets/CreatableSelectWidget
-# defaultMessage: Default
 msgid "Default"
 msgstr ""
 
+#. Default: "Description"
 #: Widgets/CreatableSelectWidget
-# defaultMessage: Description
 msgid "Description"
 msgstr ""
 
+#. Default: "No options"
 #: Widgets/CreatableSelectWidget
-# defaultMessage: No options
 msgid "No options"
 msgstr ""
 
+#. Default: "No value"
 #: Widgets/CreatableSelectWidget
-# defaultMessage: No value
 msgid "No value"
 msgstr ""
 
+#. Default: "Required"
 #: Widgets/CreatableSelectWidget
-# defaultMessage: Required
 msgid "Required"
 msgstr ""
 
+#. Default: "Select…"
 #: Widgets/CreatableSelectWidget
-# defaultMessage: Select…
 msgid "Select…"
 msgstr ""
 
+#. Default: "Short Name"
 #: Widgets/CreatableSelectWidget
-# defaultMessage: Short Name
 msgid "Short Name"
 msgstr ""
 
+#. Default: "Tableau height"
 #: Blocks/EmbedTableauVisualization/schema
-# defaultMessage: Tableau height
+#: Widgets/schema
 msgid "Tableau height"
 msgstr ""
 
+#. Default: "Title"
 #: Widgets/CreatableSelectWidget
-# defaultMessage: Title
 msgid "Title"
 msgstr ""
 
+#. Default: "Used for programmatic access to the fieldset."
 #: Widgets/CreatableSelectWidget
-# defaultMessage: Used for programmatic access to the fieldset.
 msgid "Used for programmatic access to the fieldset."
 msgstr ""

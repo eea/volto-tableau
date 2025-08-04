@@ -1,5 +1,5 @@
 import { reduce, isUndefined, isString } from 'lodash';
-import qs from 'querystring';
+import qs from 'query-string';
 import { pickMetadata } from '@eeacms/volto-embed/helpers';
 
 export function getQuery({

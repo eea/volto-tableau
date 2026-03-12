@@ -9,6 +9,10 @@ const voltoSlatePath = fs.existsSync(
   ? '<rootDir>/node_modules/@plone/volto-slate/src'
   : '<rootDir>/node_modules/@plone/volto/packages/volto-slate/src'
 
+const countupPath = fs.existsSync(path.join(__dirname, '../countup/src'))
+  ? '<rootDir>/src/addons/countup/src'
+  : '<rootDir>/node_modules/@eeacms/countup'
+
 module.exports = {
   testMatch: ['**/src/addons/**/?(*.)+(spec|test).[jt]s?(x)'],
   collectCoverageFrom: [
@@ -25,6 +29,7 @@ module.exports = {
     '@plone/volto-quanta/(.*)$': '<rootDir>/src/addons/volto-quanta/src/$1',
     '@eeacms/search/(.*)$': '<rootDir>/src/addons/volto-searchlib/searchlib/$1',
     '@eeacms/search': '<rootDir>/src/addons/volto-searchlib/searchlib',
+    '@eeacms/countup$': countupPath,
     '@eeacms/(.*?)/(.*)$': '<rootDir>/node_modules/@eeacms/$1/src/$2',
     '@plone/volto-slate$': voltoSlatePath,
     '@plone/volto-slate/(.*)$': `${voltoSlatePath}/$1`,

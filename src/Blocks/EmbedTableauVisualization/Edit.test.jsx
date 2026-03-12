@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import { Provider } from 'react-intl-redux';
 import config from '@plone/volto/registry';
 import '@testing-library/jest-dom';
@@ -22,7 +22,7 @@ describe('Edit', () => {
     with_share: true,
   };
 
-  it('should render the component', () => {
+  it('should render the component', async () => {
     const { container } = render(
       <Provider store={global.store}>
         <Edit
@@ -44,6 +44,10 @@ describe('Edit', () => {
       </Provider>,
     );
 
+    await waitFor(() => {
+      expect(container.querySelector('#sidebar .ui.form')).toBeInTheDocument();
+    });
+
     expect(container.querySelector('.embed-tableau')).toBeInTheDocument();
     expect(
       container.querySelector('.privacy-protection-wrapper'),
@@ -56,11 +60,12 @@ describe('Edit', () => {
     });
     expect(container.querySelector('.tableau-wrapper')).toBeInTheDocument();
     expect(container.querySelector('#sidebar')).toBeInTheDocument();
-    expect(container.querySelector('#sidebar .ui.form')).toBeInTheDocument();
     expect(
       container.querySelector('#sidebar .ui.form .header.pulled'),
     ).toBeInTheDocument();
-    expect(screen.getByText('Embed Dashboard (Tableau)')).toBeInTheDocument();
+    expect(
+      await screen.findByText('Embed Dashboard (Tableau)'),
+    ).toBeInTheDocument();
     expect(
       container.querySelector('#blockform-fieldset-default'),
     ).toBeInTheDocument();

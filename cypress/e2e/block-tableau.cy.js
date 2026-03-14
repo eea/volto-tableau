@@ -31,7 +31,7 @@ describe('Blocks Tests', () => {
       statusCode: 200,
     }).as('content');
     // when I add a maps block
-    cy.addNewBlock('tableau');
+    cy.addNewBlock('tableau', true);
 
     cy.get(
       `.sidebar-container .field-wrapper-tableau_vis_url #field-tableau_vis_url`,

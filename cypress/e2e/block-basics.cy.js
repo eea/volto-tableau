@@ -5,22 +5,24 @@ describe('Blocks Tests', () => {
   afterEach(slateAfterEach);
 
   it('Add Block: Empty', () => {
+    const titleSelector = '.block.inner.title [contenteditable="true"]';
+
     // Change page title
-    cy.clearSlateTitle();
-    cy.getSlateTitle().type('My Add-on Page');
+    cy.get(titleSelector).clear();
+    cy.get(titleSelector).type('My Add-on Page');
 
     cy.get('.documentFirstHeading').contains('My Add-on Page');
 
-    cy.getSlate().click({ force: true });
+    cy.get(titleSelector).type('{enter}');
 
     // Add block
     cy.get('.ui.basic.icon.button.block-add-button')
       .first()
       .click({ force: true });
-    cy.get('.blocks-chooser .title').contains('Media').click({ force: true });
-    cy.get('.content.active.media .button.image')
-      .contains('Image')
-      .click({ force: true });
+    cy.get(".blocks-chooser .ui.form .field.searchbox input[type='text']").type(
+      'image',
+    );
+    cy.get('.button.image').contains('Image').click({ force: true });
 
     // Save
     cy.get('#toolbar-save').click({ force: true });

@@ -1,11 +1,11 @@
 import React from 'react';
-import { render } from '@testing-library/react';
-import '@testing-library/jest-dom/extend-expect';
+import { render, screen, waitFor } from '@testing-library/react';
+import '@testing-library/jest-dom';
 import { Provider } from 'react-intl-redux';
 import VisualizationWidget from './VisualizationWidget';
 
 describe('VisualizationWidget', () => {
-  it('should render the component', () => {
+  it('should render the component', async () => {
     const data = {
       value: {
         url: 'http://localhost:3000/tableau-ct',
@@ -29,6 +29,11 @@ describe('VisualizationWidget', () => {
         <VisualizationWidget {...data} id={'1234'} title="Title" />
       </Provider>,
     );
-    expect(container.querySelector('.tableau-wrapper')).toBeInTheDocument();
+    expect(
+      await screen.findByRole('button', { name: /open tableau editor/i }),
+    ).toBeInTheDocument();
+    await waitFor(() => {
+      expect(container.querySelector('.tableau-wrapper')).toBeInTheDocument();
+    });
   });
 });

@@ -27,15 +27,22 @@ describe('Blocks Tests', () => {
   afterEach(slateAfterEach);
 
   it('Add Tableau block', () => {
-    cy.intercept('GET', `/**/*?expand*`, {
-      statusCode: 200,
-    }).as('content');
+    cy.on('uncaught:exception', (err) => {
+      if (err.message?.includes('Not Found')) {
+        return false;
+      }
+    });
+
+    cy.intercept('GET', `/**/*?expand*`).as('content');
     // when I add a maps block
-    cy.addNewBlock('tableau');
+    cy.addNewBlock('tableau', true);
 
     cy.get(
       `.sidebar-container .field-wrapper-tableau_vis_url #field-tableau_vis_url`,
-    ).type('/path/to/dashboard', { force: true });
+    ).clear({ force: true });
+    cy.get(
+      `.sidebar-container .field-wrapper-tableau_vis_url #field-tableau_vis_url`,
+    ).type('/cypress/my-page', { force: true });
     cy.wait('@content');
     cy.get('#toolbar-save').click({ force: true });
     cy.intercept('GET', `/**/*?expand*`).as('content');

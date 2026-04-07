@@ -1,4 +1,6 @@
-import { reduce, isUndefined, isString } from 'lodash';
+import reduce from 'lodash/reduce';
+import isUndefined from 'lodash/isUndefined';
+import isString from 'lodash/isString';
 import qs from 'query-string';
 import { pickMetadata } from '@eeacms/volto-embed/helpers';
 

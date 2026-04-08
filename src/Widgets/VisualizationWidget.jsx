@@ -6,8 +6,8 @@ import { compose } from 'redux';
 import isEqual from 'lodash/isEqual';
 import { Modal, Button, Grid } from 'semantic-ui-react';
 import config from '@plone/volto/registry';
-import { FormFieldWrapper } from '@plone/volto/components/manage/Widgets';
-import { InlineForm } from '@plone/volto/components/manage/Form';
+import FormFieldWrapper from '@plone/volto/components/manage/Widgets/FormFieldWrapper';
+import InlineForm from '@plone/volto/components/manage/Form/InlineForm';
 import Tableau from '@eeacms/volto-tableau/Tableau/Tableau';
 import getSchema from './schema';
 import {

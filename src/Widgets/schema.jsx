@@ -1,5 +1,7 @@
 import { defineMessages } from 'react-intl';
-import { find, includes, uniq } from 'lodash';
+import find from 'lodash/find';
+import includes from 'lodash/includes';
+import uniq from 'lodash/uniq';
 import { canChangeVizData } from '@eeacms/volto-tableau/Tableau/helpers';
 
 const messages = defineMessages({

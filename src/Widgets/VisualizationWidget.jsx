@@ -3,10 +3,11 @@ import { withRouter } from 'react-router';
 import { connect } from 'react-redux';
 import { injectIntl } from 'react-intl';
 import { compose } from 'redux';
-import { isEqual } from 'lodash';
+import isEqual from 'lodash/isEqual';
 import { Modal, Button, Grid } from 'semantic-ui-react';
 import config from '@plone/volto/registry';
-import { FormFieldWrapper, InlineForm } from '@plone/volto/components';
+import FormFieldWrapper from '@plone/volto/components/manage/Widgets/FormFieldWrapper';
+import InlineForm from '@plone/volto/components/manage/Form/InlineForm';
 import Tableau from '@eeacms/volto-tableau/Tableau/Tableau';
 import getSchema from './schema';
 import {
@@ -17,7 +18,7 @@ import {
 } from '@eeacms/volto-tableau/Tableau/helpers';
 
 import '@eeacms/volto-tableau/less/tableau.less';
-import { getBaseUrl } from '@plone/volto/helpers';
+import { getBaseUrl } from '@plone/volto/helpers/Url/Url';
 
 function blobToBase64(blob) {
   return new Promise((resolve, reject) => {

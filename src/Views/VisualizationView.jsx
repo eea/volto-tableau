@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { withRouter } from 'react-router';
 import { Container } from 'semantic-ui-react';
-import { hasBlocksData } from '@plone/volto/helpers';
+import { hasBlocksData } from '@plone/volto/helpers/Blocks/Blocks';
 import config from '@plone/volto/registry';
 import RenderBlocks from '@plone/volto/components/theme/View/RenderBlocks';
 import Tableau from '@eeacms/volto-tableau/Tableau/Tableau';

@@ -2,10 +2,10 @@ import React, { useEffect, useState } from 'react';
 import { withRouter } from 'react-router';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
-import { isFunction } from 'lodash';
+import isFunction from 'lodash/isFunction';
 import { Message } from 'semantic-ui-react';
-import { flattenToAppURL } from '@plone/volto/helpers';
-import { getContent } from '@plone/volto/actions';
+import { flattenToAppURL } from '@plone/volto/helpers/Url/Url';
+import { getContent } from '@plone/volto/actions/content/content';
 import PrivacyProtection from '@eeacms/volto-embed/PrivacyProtection/PrivacyProtection';
 import Tableau from '@eeacms/volto-tableau/Tableau/Tableau';
 import {

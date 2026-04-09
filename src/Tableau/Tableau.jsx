@@ -9,26 +9,25 @@ import React, {
 } from 'react';
 import { connect } from 'react-redux';
 import { toast } from 'react-toastify';
-import {
-  isEqual,
-  isUndefined,
-  isNaN,
-  isNumber,
-  forOwn,
-  find,
-  includes,
-  isArray,
-  isString,
-  isInteger,
-  isBoolean,
-  toString,
-  toInteger,
-  toNumber,
-} from 'lodash';
+import isEqual from 'lodash/isEqual';
+import isUndefined from 'lodash/isUndefined';
+import isNaN from 'lodash/isNaN';
+import isNumber from 'lodash/isNumber';
+import forOwn from 'lodash/forOwn';
+import find from 'lodash/find';
+import includes from 'lodash/includes';
+import isArray from 'lodash/isArray';
+import isString from 'lodash/isString';
+import isInteger from 'lodash/isInteger';
+import isBoolean from 'lodash/isBoolean';
+import toString from 'lodash/toString';
+import toInteger from 'lodash/toInteger';
+import toNumber from 'lodash/toNumber';
 import qs from 'qs';
 import cx from 'classnames';
 import { Button } from 'semantic-ui-react';
-import { Toast, Icon } from '@plone/volto/components';
+import Toast from '@plone/volto/components/manage/Toast/Toast';
+import Icon from '@plone/volto/components/theme/Icon/Icon';
 import {
   FigureNote,
   Sources,

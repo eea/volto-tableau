@@ -18,21 +18,9 @@ import {
 } from '@eeacms/volto-tableau/Tableau/helpers';
 
 import '@eeacms/volto-tableau/less/tableau.less';
-import { getBaseUrl } from '@plone/volto/helpers/Url/Url';
-
-function blobToBase64(blob) {
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      resolve(reader.result);
-    };
-    reader.onerror = reject;
-    reader.readAsDataURL(blob);
-  });
-}
 
 const VisualizationWidget = (props) => {
-  const { location, content, onChange, id } = props;
+  const { location, content } = props;
   const ogValue = props.value || {};
   const inAddForm = props.location.pathname.split('/').pop() === 'add';
   const viz = React.useRef();
@@ -166,34 +154,6 @@ const VisualizationWidget = (props) => {
       }),
     );
   }, [vizState, value, tableauData, props.intl]);
-
-  React.useEffect(() => {
-    if (value && value.url && value.preview_url_loaded !== value.url) {
-      fetch(
-        `${getBaseUrl(
-          '',
-        )}/cors-proxy/https://screenshot.eea.europa.eu/api/v1/retrieve_image_for_url?url=${encodeURIComponent(
-          value.url,
-        )}&w=1920&h=1000&waitfor=8000`,
-      )
-        .then((e) => e.blob())
-        .then((myBlob) => {
-          blobToBase64(myBlob).then((base64String) => {
-            setValue({
-              ...value,
-              preview: base64String,
-              preview_url_loaded: value.url,
-            });
-            props.onChange(props.id, {
-              ...value,
-              preview: base64String,
-              preview_url_loaded: value.url,
-            });
-          });
-        })
-        .catch(() => {});
-    }
-  }, [props, value, onChange, id]);
 
   return (
     <FormFieldWrapper {...props}>

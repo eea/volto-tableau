@@ -188,7 +188,7 @@ export default compose(
   connect(
     (state, props) => {
       const tableau_vis_url = flattenToAppURL(props.data.tableau_vis_url || '');
-      const pathname = flattenToAppURL(state.content.data['@id']);
+      const pathname = flattenToAppURL(state.content.data?.['@id'] || '');
       return {
         tableauContent: state.content?.subrequests?.[props.id]?.data,
         discodata_query: state.discodata_query,

@@ -1,4 +1,5 @@
 import React from 'react';
+import isUndefined from 'lodash/isUndefined';
 import { connect } from 'react-redux';
 import Tableau from '@eeacms/volto-tableau/Tableau/Tableau';
 import qs from 'query-string';
@@ -29,7 +30,7 @@ const View = React.forwardRef((props, ref) => {
   const extraOptions = React.useMemo(() => {
     const options = {};
     staticParameters.forEach((parameter) => {
-      if (parameter.field && parameter.value) {
+      if (parameter.field && !isUndefined(parameter.value)) {
         options[parameter.field] = parameter.value;
       }
     });
@@ -39,9 +40,9 @@ const View = React.forwardRef((props, ref) => {
   React.useEffect(() => {
     const newFilters = { ...extraFilters };
     urlParameters.forEach((element) => {
-      if (element.field && typeof query[element.urlParam] !== 'undefined') {
+      if (element.field && !isUndefined(query[element.urlParam])) {
         newFilters[element.field] = query[element.urlParam];
-      } else if (newFilters[element.field]) {
+      } else if (element.field in newFilters) {
         delete newFilters[element.field];
       }
     });

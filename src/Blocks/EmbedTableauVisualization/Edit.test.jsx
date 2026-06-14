@@ -1,6 +1,7 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 import { Provider } from 'react-intl-redux';
+import { MemoryRouter } from 'react-router-dom';
 import config from '@plone/volto/registry';
 import '@testing-library/jest-dom';
 
@@ -29,22 +30,24 @@ describe('Edit', () => {
 
     const { container } = render(
       <Provider store={global.store}>
-        <Edit
-          id="my-tableau"
-          data={data}
-          pathname="/news"
-          selected={true}
-          block="1234"
-          index={1}
-          onChangeBlock={() => {}}
-          onSelectBlock={() => {}}
-          onDeleteBlock={() => {}}
-          onFocusPreviousBlock={() => {}}
-          onFocusNextBlock={() => {}}
-          handleKeyDown={() => {}}
-          content={{}}
-          useVisibilitySensor={false}
-        />
+        <MemoryRouter initialEntries={['/news']}>
+          <Edit
+            id="my-tableau"
+            data={data}
+            pathname="/news"
+            selected={true}
+            block="1234"
+            index={1}
+            onChangeBlock={() => {}}
+            onSelectBlock={() => {}}
+            onDeleteBlock={() => {}}
+            onFocusPreviousBlock={() => {}}
+            onFocusNextBlock={() => {}}
+            handleKeyDown={() => {}}
+            content={{}}
+            useVisibilitySensor={false}
+          />
+        </MemoryRouter>
       </Provider>,
     );
 

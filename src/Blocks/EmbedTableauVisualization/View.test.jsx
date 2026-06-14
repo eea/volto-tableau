@@ -1,6 +1,7 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 import { Provider } from 'react-intl-redux';
+import { MemoryRouter } from 'react-router-dom';
 import '@testing-library/jest-dom';
 
 import View from './View';
@@ -21,7 +22,9 @@ describe('View', () => {
   it('should render the component', () => {
     const { container } = render(
       <Provider store={global.store}>
-        <View data={data} useVisibilitySensor={false} />
+        <MemoryRouter initialEntries={['/news']}>
+          <View data={data} useVisibilitySensor={false} />
+        </MemoryRouter>
       </Provider>,
     );
 

@@ -63,7 +63,7 @@ export function getParameters({ tableauVisualization, query, data }) {
     ...reduce(
       staticParameters,
       (acc, { field, value }) => {
-        if (field && value) {
+        if (field && !isUndefined(value)) {
           return {
             ...acc,
             [field]: value,
@@ -76,7 +76,7 @@ export function getParameters({ tableauVisualization, query, data }) {
     ...reduce(
       urlParameters,
       (acc, { field, urlParam }) => {
-        if (field && query[urlParam]) {
+        if (field && !isUndefined(query[urlParam])) {
           return {
             ...acc,
             [field]: isString(query[urlParam])
@@ -102,7 +102,7 @@ export function getFilters({ tableauVisualization, query, data }) {
     ...reduce(
       staticFilters,
       (acc, { field, value }) => {
-        if (field && value) {
+        if (field && !isUndefined(value)) {
           return {
             ...acc,
             [field]: value,

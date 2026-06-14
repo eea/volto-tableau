@@ -1,6 +1,7 @@
 import React from 'react';
 import isObject from 'lodash/isObject';
 import isArray from 'lodash/isArray';
+import isNumber from 'lodash/isNumber';
 import isString from 'lodash/isString';
 import isBoolean from 'lodash/isBoolean';
 import isNull from 'lodash/isNull';
@@ -27,7 +28,8 @@ const JsonCodeSnippet = ({ obj, depth = 1 }) => {
               )}
               {isArray(value) && JSON.stringify(value)}
               {isString(value) && <>"{value}"</>}
-              {isBoolean(value) && <>{value}</>}
+              {isNumber(value) && <>{value}</>}
+              {isBoolean(value) && <>{value.toString()}</>}
               {isNull(value) && <>null</>}
               {isUndefined(value) && <>undefined</>}
             </span>

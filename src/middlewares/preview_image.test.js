@@ -7,7 +7,7 @@ describe('preview_image middleware', () => {
 
   beforeEach(() => {
     store = {
-      getState: jest.fn(() => ({
+      getState: vi.fn(() => ({
         content: {
           data: {
             '@type': 'tableau_visualization',
@@ -17,7 +17,7 @@ describe('preview_image middleware', () => {
         },
       })),
     };
-    next = jest.fn();
+    next = vi.fn();
     middlewares = [];
   });
 

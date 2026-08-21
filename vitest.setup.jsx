@@ -1,4 +1,4 @@
-import { jest } from '@jest/globals';
+import { vi } from 'vitest';
 import configureStore from 'redux-mock-store';
 
 const mockStore = configureStore();
@@ -20,10 +20,19 @@ global.store = mockStore({
   },
 });
 
-const mockReactRouter = jest.requireActual('react-router');
-const mockSemanticComponents = jest.requireActual('semantic-ui-react');
-const mockComponents = jest.requireActual('@plone/volto/components');
-const config = jest.requireActual('@plone/volto/registry').default;
+const mockReactRouter = await vi.importActual('react-router');
+const mockSemanticComponents = await vi.importActual('semantic-ui-react');
+const mockComponents = await vi.importActual('@plone/volto/components');
+const mockReactCookie = await vi.importActual('react-cookie');
+const config = (await vi.importActual('@plone/volto/registry')).default;
+const cookies = {
+  get: vi.fn(),
+  getAll: vi.fn(() => ({})),
+  set: vi.fn(),
+  remove: vi.fn(),
+  addChangeListener: vi.fn(),
+  removeChangeListener: vi.fn(),
+};
 
 config.blocks.blocksConfig = {
   embed_tableau_visualization: {
@@ -35,7 +44,7 @@ config.blocks.blocksConfig = {
   },
 };
 
-jest.mock('react-router', () => {
+vi.doMock('react-router', () => {
   return {
     ...mockReactRouter,
     withRouter: (WrappedComponent) => {
@@ -57,7 +66,7 @@ jest.mock('react-router', () => {
   };
 });
 
-jest.mock('semantic-ui-react', () => ({
+vi.doMock('semantic-ui-react', () => ({
   ...mockSemanticComponents,
   Popup: ({ content, trigger }) => {
     return (
@@ -69,7 +78,7 @@ jest.mock('semantic-ui-react', () => ({
   },
 }));
 
-jest.doMock('@plone/volto/components', () => {
+vi.doMock('@plone/volto/components', () => {
   return {
     ...mockComponents,
     Toast: ({ children }) => <div className="toast">{children}</div>,
@@ -80,7 +89,14 @@ jest.doMock('@plone/volto/components', () => {
   };
 });
 
-global.fetch = jest.fn(() =>
+vi.doMock('react-cookie', () => ({
+  ...mockReactCookie,
+  withCookies: (Component) => (props) => (
+    <Component {...props} cookies={cookies} />
+  ),
+}));
+
+global.fetch = vi.fn(() =>
   Promise.resolve({
     json: () => Promise.resolve({}),
   }),

@@ -273,7 +273,6 @@ export default defineConfig({
         'src/**/*.d.ts',
         'src/**/index.{js,jsx,ts,tsx}',
         'src/**/*config.{js,jsx,ts,tsx}',
-        'src/**/*schema.{js,jsx,ts,tsx}',
       ],
       thresholds: {
         branches: 5,

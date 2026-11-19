@@ -1,0 +1,7 @@
+{
+  "title": "Tableau",
+  "frontend_addon_name": "volto-tableau",
+  "description": "@eeacms/volto-tableau: Volto add-on",
+  "volto_version": "19.3.0",
+  "__template__": "frontend_addon"
+}

@@ -12,6 +12,21 @@ Registers a VisualizationView component for a content type named 'tableau_visual
 
 ![Tableau](https://raw.githubusercontent.com/eea/volto-tableau/master/docs/volto-tableau.gif)
 
+## Upgrade
+
+### Upgrading to 10.x
+
+> This version requires `Volto 18` or `Volto 19` and Node.js 22.
+
+The add-on now ships from `packages/volto-tableau` and the block keeps the same API, so upgrading from 9.x on Volto 18 needs no code changes.
+
+#### Breaking changes
+
+- **Node.js 22 or newer is required** (`engines.node >= 22`), 9.x declared no engine.
+- **React 18 is required.** The package declares `react` and `react-dom` as `^18.2.0` peers, 9.x declared no peers.
+
+The package also declares `qs` (`^6.14.2`), which it imports; 9.x relied on it being hoisted from the project.
+
 ## Requirements
 
 ### Backend

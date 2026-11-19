@@ -6,15 +6,17 @@ import View from './View';
 import '@testing-library/jest-dom';
 import Tableau from '@eeacms/volto-tableau/Tableau/Tableau';
 
-jest.mock('@eeacms/volto-tableau/Tableau/Tableau', () =>
-  jest.fn(() => <div>Mocked Tableau</div>),
-);
+vi.mock('@eeacms/volto-tableau/Tableau/Tableau', () => ({
+  default: vi.fn(() => <div>Mocked Tableau</div>),
+}));
 
-jest.mock('@plone/volto/registry', () => ({
-  blocks: {
-    blocksConfig: {
-      tableau_block: {
-        breakpoints: {},
+vi.mock('@plone/volto/registry', () => ({
+  default: {
+    blocks: {
+      blocksConfig: {
+        tableau_block: {
+          breakpoints: {},
+        },
       },
     },
   },
@@ -67,7 +69,7 @@ describe('View component', () => {
     expect(screen.queryByText('Test Description')).not.toBeInTheDocument();
 
     // Aici simulăm setVizState pentru a actualiza starea vizualizării ca fiind "loaded"
-    mockProps.setVizState = jest.fn((state) => {
+    mockProps.setVizState = vi.fn((state) => {
       state.loaded = true;
     });
 

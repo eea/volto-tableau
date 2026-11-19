@@ -20,3 +20,13 @@ cypress/reports
 .env.test.local
 .env.production.local
 *~
+.*project
+.settings/
+.vscode
+acceptance/cypress/videos/
+acceptance/node_modules
+.storybook-build
+/core
+results
+yarn.lock
+/public
